@@ -29,6 +29,14 @@ namespace PruebaDeArreglosEnUnaLinea
 			get { return strValor; }
 			set { strValor = value; }
 		}
+		private string strToken;
+
+		public string Token
+		{
+			get { return strToken; }
+			set { strToken = value; }
+		}
+
 
 	}
 }

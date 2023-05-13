@@ -31,6 +31,21 @@ namespace PruebaDeArreglosEnUnaLinea
 			get { return blnEsVariable; }
 			set { blnEsVariable = value; }
 		}
+		private string intTokenVar;
+
+		public string TokenVar
+		{
+			get { return intTokenVar; }
+			set { intTokenVar = value; }
+		}
+
+		private string[] strArregloTokens;
+
+		public string[] ArregloTokens
+		{
+			get { return strArregloTokens; }
+			set { strArregloTokens = value; }
+		}
 
 
 	}

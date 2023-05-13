@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.IO;
-
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 
 namespace PruebaDeArreglosEnUnaLinea
 {
@@ -23,10 +24,10 @@ namespace PruebaDeArreglosEnUnaLinea
         Linea[] CodigoLimpio;
         string RutaEpic = "Server=localhost;Database=pruebalex;Uid=root;Pwd=Juan@20";
         int Estado = 0;
+        Variable[] ArregloVarEpico;
         public Form1()
         {
             InitializeComponent();
-            
             dtgVariables.ReadOnly = true;
             dtgVariables.AllowUserToAddRows = false;
             dtgVariables.AllowUserToDeleteRows = false;
@@ -34,9 +35,8 @@ namespace PruebaDeArreglosEnUnaLinea
             dtgVariables.Columns.Add("Columna Tipo", "Tipo de dato");
             dtgVariables.Columns.Add("Columna Variable", "Nombre Variable");
             dtgVariables.Columns.Add("Columna Valor", "Valor");
-
+            dtgVariables.Columns.Add("Columna Token", "Token");
         }
-
         private void btnPasarALexico_Click(object sender, EventArgs e)
         {
 
@@ -45,7 +45,6 @@ namespace PruebaDeArreglosEnUnaLinea
             //Aqui contamos los saltos de linea
             string[] SaltosLinea = CODIGO.Split('\n');
 
-            int PalabrasReservadasXlinea = 0;
             int MAYORLINEAPALABRARESERVADAXLINEA = 0;
             //COMO UTILIZAR ARREGLOS BIDIMENSIONALES
             /*for (int i = 0; i < SaltosLinea.Length; i++)
@@ -91,17 +90,13 @@ namespace PruebaDeArreglosEnUnaLinea
                 //CodigoLimpio[i] = MiLinea;
             }
             auxCadenaTK = CadenaTK;
-            
             string Comando = txtCodigo.Text;
             Comando = Comando.ToLower();
-            string[] Token;
+            //string[] Token;
             string[] Palabras = Comando.Split(' ');
-            string LP = "";
-            string PA = "";
-            int ContadorPalabras = 0;
-
-           
-
+            //string LP = "";
+            //string PA = "";
+            //int ContadorPalabras = 0;
             //Token = new string[PalabrasF.Length];
             //MessageBox.Show("Codigo \n" + Comando+ " \nNum de Palabras: " + PalabrasF.Length + " \nLista de palabras:\n" + LP);
 
@@ -113,7 +108,6 @@ namespace PruebaDeArreglosEnUnaLinea
                 Conexion.Open();
                 try
                 {
-
                     cmd = Conexion.CreateCommand();
                     cmd.CommandText = "Select * From pruebam";
                     MySqlDataAdapter miAdaptador = new MySqlDataAdapter(cmd);
@@ -132,8 +126,6 @@ namespace PruebaDeArreglosEnUnaLinea
 
                             for (int m = 0; m < AuxP.Length + 1; m++)
                             {
-
-
                                 if (m == AuxP.Length)
                                 {
                                     ArregloEpic[m] = ';';
@@ -145,7 +137,6 @@ namespace PruebaDeArreglosEnUnaLinea
 
                                 }
                             }
-
                             //for (int j = 0; j < ArregloEpic.Length; j++)
                             //{
                             //    MessageBox.Show(ArregloEpic[i].ToString());
@@ -219,32 +210,19 @@ namespace PruebaDeArreglosEnUnaLinea
                                         {
                                             //nos ayuda a saber el token de la palabra 
                                             //MessageBox.Show("Si encontro" + row["TOKEN"].ToString());
-                                            if (k==0)
+                                            if (k == 0)
                                             {
                                                 AUXTOK = row["TOKEN"].ToString();
                                             }
                                             else
                                             {
-                                                AUXTOK =  AUXTOK + " " + row["TOKEN"].ToString();
+                                                AUXTOK = AUXTOK + " " + row["TOKEN"].ToString();
                                             }
-                                            
-
-
-
                                             break;
-
                                         }
-
                                     }
-
-
                                 }
-
                             }
-
-
-
-
                             //
                             Estado = 0;
 
@@ -258,7 +236,6 @@ namespace PruebaDeArreglosEnUnaLinea
                         | (_| | (_| (_) | | | | | | (_) | (_| | (_| | |    | || (_) |   <  __/ | | \__ \
                          \__,_|\___\___/|_| |_| |_|\___/ \__,_|\__,_|_|     \__\___/|_|\_\___|_| |_|___/
                           */
-
                         //Token = AUXTOK.Split('\n');
 
                         //MessageBox.Show(AUXTOK);
@@ -268,30 +245,14 @@ namespace PruebaDeArreglosEnUnaLinea
                         //    MessageBox.Show("token " + Token[x]);
                         //}
                         //txtCodigoLexico.Text = AUXTOK;
-                       
                     }
                     txtLexico.Text = "";
 
-                    for (int q = 0; q < CadenaTK.Length; q++)
-                    {
-
-                        //MessageBox.Show("Token es: " + CadenaTK[q].ContenidoDeLinea);
-                        if (q == 0)
-                        {
-                            txtLexico.Text = CadenaTK[q].ContenidoDeLinea;
-                        }
-                        else
-                        {
-                            txtLexico.Text = txtLexico.Text + Environment.NewLine + CadenaTK[q].ContenidoDeLinea;
-                        }
-                    }
                     // GlobalArregllo = Token;
-                    MessageBox.Show("Final de lexico");
-
+                    //MessageBox.Show("Final de lexico");
                 }
                 catch (Exception X)
                 {
-
                     MessageBox.Show(X.Message);
                     if (Conexion.State == ConnectionState.Open)
                     {
@@ -301,7 +262,7 @@ namespace PruebaDeArreglosEnUnaLinea
                 }
                 finally
                 {
-                    //Verificar si la conexionEPICA Esta abierta de ser asi se cierra
+                    //Verificar si la conexionEPICA esta abierta de ser asi se cierra
                     if (Conexion.State == ConnectionState.Open)
                     {
                         //Cerramos la conexion
@@ -313,7 +274,6 @@ namespace PruebaDeArreglosEnUnaLinea
                     //Cerramos la conexion
                     Conexion.Close();
                 }
-
             }
             else
             {
@@ -321,31 +281,32 @@ namespace PruebaDeArreglosEnUnaLinea
             }
             for (int i = 0; i < auxCadenaTK.Length; i++)
             {
+
                 string[] auxiliarVar;
                 auxiliarVar = auxCadenaTK[i].ContenidoDeLinea.Split(' ');
-
                 for (int j = 1; j < auxiliarVar.Length; j++)
                 {
                     if (j == 1)
                     {
                         if (auxiliarVar[j] == "TD01" || auxiliarVar[j] == "TD02" || auxiliarVar[j] == "TD03" || auxiliarVar[j] == "TD04")
                         {
+
                             auxCadenaTK[i].EsVariable = true;
                             break;
                         }
                     }
                 }
-
             }
 
+            btnCargarVariables_Click(sender, e);
+            btnSinctatcio2_Click(sender,e);
         }
-
         private void btnSintactico_Click(object sender, EventArgs e)
         {
             string PruebaEpica = txtLexico.Text;
             bool BANDERAEPICA = true;
             string Error = "Error en";
-            string Try = " ";
+            //string Try = " ";
             string TokensYes = "";
             string[] TokensValidos = new string[37];
             //MessageBox.Show("XD: " + PruebaEpica);
@@ -376,7 +337,7 @@ namespace PruebaDeArreglosEnUnaLinea
                     TokensYes = TokensYes + row["TOKEN"].ToString() + " ";
                 }
                 TokensValidos = TokensYes.Split(' ');
-                MessageBox.Show("token num36: " + TokensValidos[35].ToString() + "\n 36: " + TokensValidos[36].ToString());
+                //MessageBox.Show("token num36: " + TokensValidos[35].ToString() + "\n 36: " + TokensValidos[36].ToString());
 
                 for (int i = 0; i < TokensValidos.Length; i++)
                 {
@@ -387,19 +348,15 @@ namespace PruebaDeArreglosEnUnaLinea
                 bool banderitaFLT = false;
                 bool BanderaIF = false;
                 bool banderaWHILE = false;
-                bool banderallaveopen = false;
-                bool banderallaveclose = false;
                 string TraeTODO = "";
                 string[] GlobalArregllo;
                 //GlobalArregllo = PruebaEpica.Split(' ','\n');
                 for (int i = 0; i < CadenaTK.Length; i++)
                 {
-                    
-                        TraeTODO =  TraeTODO+ "" + CadenaTK[i].ContenidoDeLinea ;
-                    
-                    
+                    TraeTODO = TraeTODO + "" + CadenaTK[i].ContenidoDeLinea;
+
                 }
-                char[] Delimitadores = { ' ',';', '\n','\r' };
+                char[] Delimitadores = { ' ', ';', '\n', '\r' };
                 GlobalArregllo = TraeTODO.Split(Delimitadores);
                 for (
                     int i = 1; i < GlobalArregllo.Length; i++)
@@ -488,7 +445,6 @@ namespace PruebaDeArreglosEnUnaLinea
 
                                         }
                                     }
-
                                     if (banderitaINT)
                                     {
 
@@ -497,8 +453,6 @@ namespace PruebaDeArreglosEnUnaLinea
                                     {
                                         i = i + 2;
                                     }
-
-
                                 }
                                 else
                                 {
@@ -922,11 +876,11 @@ namespace PruebaDeArreglosEnUnaLinea
                     {
                         if (BanderaIF)
                         {
-                            //seguimos con el codigo
+                            //seguimos con el codigo.
                         }
                         else
                         {
-                            //Atrapamos la excepcion
+                            //Atrapamos la excepcion.
                             Error = Error + " No puede utlizar un SINO sin antes utilizar un SI para su desicion";
                             BANDERAEPICA = false;
                             break;
@@ -1074,7 +1028,7 @@ namespace PruebaDeArreglosEnUnaLinea
                     //vaalidacion de cerrar llave "}"
                     else if (TokensValidos[37] == GlobalArregllo[i])
                     {
-              
+
                     }
                     //Validacion de la palabra fin = END4 que el program termine con fin
                     if (i == GlobalArregllo.Length - 1)
@@ -1092,9 +1046,6 @@ namespace PruebaDeArreglosEnUnaLinea
                             break;
                         }
                     }
-
-
-
                 }
                 if (BANDERAEPICA)
                 {
@@ -1161,7 +1112,6 @@ namespace PruebaDeArreglosEnUnaLinea
             }
             return Banderita;
         }
-
         private void button1_Click(object sender, EventArgs e)
         {
             //NOTA LOGRASTE CAPTURAR LA LINEA DONDE HAY UNA VARIABLE
@@ -1170,167 +1120,7 @@ namespace PruebaDeArreglosEnUnaLinea
             //Aqui tomaremos el valor directamente del TXTCodigo
 
             //Aqui contamos los saltos de linea
-            
-            string CODIGO = txtCodigo.Text;
-            CODIGO = CODIGO.ToLower();
-            string[] SaltosLinea = CODIGO.Split('\n');
 
-            //Todo epico aqui
-            CodigoLimpio = new Linea[SaltosLinea.Length];
-            for (int i = 0; i < SaltosLinea.Length; i++)
-            {
-                //string[] CONTADORPRXLINEA = SaltosLinea[i].Split(' ');
-                //Creamos un objeto temporal para llenar el arreglo el obejto
-                Linea MiLinea = new Linea();
-                MiLinea.NumeroDeLinea = i;
-                MiLinea.ContenidoDeLinea = SaltosLinea[i];
-                //CadenaTK[i] = MiLinea;
-                CodigoLimpio[i] = MiLinea;
-            }
-            //Todo epico aqui importante aqui captamos cual es la linea que declara una variable
-            string var = "";
-            int ContadorDeVariables=0;
-            for (int i = 0; i < CodigoLimpio.Length; i++)
-            {
-                if (CadenaTK[i].EsVariable)
-                {
-                    CodigoLimpio[i].EsVariable = true;
-                    ContadorDeVariables++;
-                }
-            }
-            //Aqui simplemente cocactenamos
-            for (int i = 0; i < CodigoLimpio.Length; i++)
-            {
-                if (CodigoLimpio[i].EsVariable)
-                {
-                    var = var + " " + CodigoLimpio[i].ContenidoDeLinea;
-                }
-            }
-            int ContDeVar = 0;
-            Variable[] ArregloDeVariables = new Variable[ContadorDeVariables];
-            for (int i = 0; i < CodigoLimpio.Length; i++)
-            {
-                
-                string[] ValoresVar;
-                Variable[] VA = new Variable[ContadorDeVariables];
-                Variable V = new Variable();
-                
-                if (CodigoLimpio[i].EsVariable)
-                {
-                    
-                    ValoresVar =CodigoLimpio[i].ContenidoDeLinea.Split(' ');
-                    V.TipoDeDato = ValoresVar[0];
-                    V.Identidicador = ValoresVar[1];
-                    if (ValoresVar.Length <= 4)
-                    {
-                        V.Valor = ValoresVar[3];
-                    }
-                    else
-                    {
-                        for (int j  = 3; j < ValoresVar.Length; j++)
-                        {
-                            V.Valor =  V.Valor + " " + ValoresVar[j];
-                        }
-                    }
-                    
-                        ArregloDeVariables[ContDeVar] = V;
-                    
-                    ContDeVar++;
-                    // MessageBox.Show("Variables en objeto\n Tipo de dato: " + V.TipoDeDato + "\n Identificador: " + V.Identidicador + "\n Valor: " + V.Valor);
-
-                }                
-            }
-            /*for (int i = 0; i < ArregloDeVariables.Length; i++)
-            {
-                MessageBox.Show("Variables en objeto\n Tipo de dato: " + ArregloDeVariables[i].TipoDeDato + "\n Identificador: " + ArregloDeVariables[i].Identidicador + "\n Valor: " + ArregloDeVariables[i].Valor);
-            }*/
-            dtgVariables.Rows.Clear();
-            foreach (Variable v in ArregloDeVariables)
-            {
-                dtgVariables.Rows.Add(v.TipoDeDato, v.Identidicador, v.Valor);
-            }
-            void GenerarTXTCODIGO()
-            {
-                MessageBox.Show("GUARDAR CODIGO TXT");
-                SaveFileDialog salvar = new SaveFileDialog();
-                salvar.Filter = "Archivo txt | *.txt";
-                if (salvar.ShowDialog() == DialogResult.OK)
-                {
-                    StreamWriter escribir = new StreamWriter(salvar.FileName);
-                    escribir.WriteLine(txtCodigo.Text);
-                    escribir.Close();
-                    
-                }
-            }     
-            void GenerarTXTLexico()
-            {
-                MessageBox.Show("GUARDAR TXT LEXICO");
-                SaveFileDialog guardar = new SaveFileDialog();
-                guardar.Filter = "Archivo txt | *.txt";
-                if (guardar.ShowDialog() == DialogResult.OK)
-                {
-
-                    StreamWriter escribir = new StreamWriter(guardar.FileName);
-                    MessageBox.Show($"{txtLexico.Text}");
-                    escribir.WriteLine(txtLexico.Text);
-                    escribir.Close();
-                }
-
-            }
-            void GenerarTXTVar()
-            {
-                MessageBox.Show("GUARDAR TXT VARIABLES");
-                SaveFileDialog guardar = new SaveFileDialog();
-                guardar.Filter = "Archivo txt | *.txt";
-                if (guardar.ShowDialog() == DialogResult.OK)
-                {
-
-                    StreamWriter Crear = new StreamWriter(guardar.FileName);
-                    string VariablesEpicas = "";
-                    for (int i = 0; i < CodigoLimpio.Length; i++)
-                    {
-                        if (CodigoLimpio[i].EsVariable)
-                        {
-                            VariablesEpicas = VariablesEpicas + " " + CodigoLimpio[i].ContenidoDeLinea + "\n";
-                        }
-                    }
-
-                    Crear.WriteLine(VariablesEpicas);
-                    Crear.Close();
-                }
-                
-
-            }
-            GenerarTXTCODIGO();
-            GenerarTXTLexico();
-            GenerarTXTVar();
-            MessageBox.Show("se ha generado correctamente el archivo lexico y tambien el archivo de variables");
-            //MessageBox.Show("Test");
-
-
-        }
-
-        private void btnSalir_Click(object sender, EventArgs e)
-        {
-
-            //File.Delete(@" C:\Users\Mein_\Documents\CodigosEpicos\miarchivolexico.txt");
-            //File.Delete(@" C:\Users\Mein_\Documents\CodigosEpicos\miarchivovariables.txt");
-            Application.Exit();
-        }
-
-        private void btnCargar_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog Abrir = new OpenFileDialog();
-            Abrir.Filter = "txt files (*.txt)|*.txt";
-            if (Abrir.ShowDialog() == DialogResult.OK)
-            {
-                txtCodigo.Text = File.ReadAllText(Abrir.FileName);
-            }
-            Abrir.Dispose();
-        }
-
-        private void btnCargarVariables_Click(object sender, EventArgs e)
-        {
             string CODIGO = txtCodigo.Text;
             CODIGO = CODIGO.ToLower();
             string[] SaltosLinea = CODIGO.Split('\n');
@@ -1409,8 +1199,459 @@ namespace PruebaDeArreglosEnUnaLinea
             {
                 dtgVariables.Rows.Add(v.TipoDeDato, v.Identidicador, v.Valor);
             }
+            void GenerarTXTCODIGO()
+            {
+                MessageBox.Show("GUARDAR CODIGO TXT");
+                SaveFileDialog salvar = new SaveFileDialog();
+                salvar.Filter = "Archivo txt | *.txt";
+                if (salvar.ShowDialog() == DialogResult.OK)
+                {
+                    StreamWriter escribir = new StreamWriter(salvar.FileName);
+                    escribir.WriteLine(txtCodigo.Text);
+                    escribir.Close();
+
+                }
+            }
+            void GenerarTXTLexico()
+            {
+                MessageBox.Show("GUARDAR TXT LEXICO");
+                SaveFileDialog guardar = new SaveFileDialog();
+                guardar.Filter = "Archivo txt | *.txt";
+                if (guardar.ShowDialog() == DialogResult.OK)
+                {
+
+                    StreamWriter escribir = new StreamWriter(guardar.FileName);
+                    MessageBox.Show($"{txtLexico.Text}");
+                    escribir.WriteLine(txtLexico.Text);
+                    escribir.Close();
+                }
+
+            }
+            void GenerarTXTVar()
+            {
+                MessageBox.Show("GUARDAR TXT VARIABLES");
+                SaveFileDialog guardar = new SaveFileDialog();
+                guardar.Filter = "Archivo txt | *.txt";
+                if (guardar.ShowDialog() == DialogResult.OK)
+                {
+
+                    StreamWriter Crear = new StreamWriter(guardar.FileName);
+                    string VariablesEpicas = "";
+                    for (int i = 0; i < CodigoLimpio.Length; i++)
+                    {
+                        if (CodigoLimpio[i].EsVariable)
+                        {
+                            VariablesEpicas = VariablesEpicas + " " + CodigoLimpio[i].ContenidoDeLinea + "\n";
+                        }
+                    }
+
+                    Crear.WriteLine(VariablesEpicas);
+                    Crear.Close();
+                }
+
+
+            }
+            GenerarTXTCODIGO();
+            GenerarTXTLexico();
+            GenerarTXTVar();
+            MessageBox.Show("se ha generado correctamente el archivo lexico y tambien el archivo de variables");
+            //MessageBox.Show("Test");
+
+
+        }
+        private void btnSalir_Click(object sender, EventArgs e)
+        {
+
+            //File.Delete(@" C:\Users\Mein_\Documents\CodigosEpicos\miarchivolexico.txt");
+            //File.Delete(@" C:\Users\Mein_\Documents\CodigosEpicos\miarchivovariables.txt");
+            Application.Exit();
+        }
+        private void btnCargar_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog Abrir = new OpenFileDialog();
+            Abrir.Filter = "txt files (*.txt)|*.txt";
+            if (Abrir.ShowDialog() == DialogResult.OK)
+            {
+                txtCodigo.Text = File.ReadAllText(Abrir.FileName);
+            }
+            Abrir.Dispose();
+        }
+        private void btnCargarVariables_Click(object sender, EventArgs e)
+        {
+            string CODIGO = txtCodigo.Text;
+            CODIGO = CODIGO.ToLower();
+            string[] SaltosLinea = CODIGO.Split('\n');
+            string[] Numeros = new string[1000];
+            int contadorConstNum = 0;
+            int contadorConstReal = 0;
+            for (int i = 0; i < Numeros.Length; i++)
+            {
+                string AuxNum = i.ToString();
+                Numeros[i] = AuxNum;
+            }
+            /* Para mi yo del futuro espero que se nos ocurra algo porque estoy en 0 pero tengo una idea: creamos una arreglo
+            variable[] par verificar si existe algún numero del arreglo numeros, pero antes de esto preguntar si esa constante 
+            ya existe el programa y reservarla y que la pase y en el metodo comprobrar variables hacer la misma funcionalidad 
+            con los ID, PD: si funciono :D
+            */
+            //Todo epico aqui
+            CodigoLimpio = new Linea[SaltosLinea.Length];
+            for (int i = 0; i < SaltosLinea.Length; i++)
+            {
+                //string[] CONTADORPRXLINEA = SaltosLinea[i].Split(' ');
+                //Creamos un objeto temporal para llenar el arreglo el obejto
+                Linea MiLinea = new Linea();
+                MiLinea.NumeroDeLinea = i;
+                MiLinea.ContenidoDeLinea = SaltosLinea[i];
+                //CadenaTK[i] = MiLinea;
+                CodigoLimpio[i] = MiLinea;
+            }
+            //en este for contamos las constantes numericas enteras
+            for (int i = 0; i < CodigoLimpio.Length; i++)
+            {
+                string[] auxiliarVar;
+                auxiliarVar = CodigoLimpio[i].ContenidoDeLinea.Split(' ');
+                for (int j = 0; j < auxiliarVar.Length; j++)
+                {
+                    auxiliarVar[j] = auxiliarVar[j].Trim();
+                }
+                //Este for es para atrapar la cantidad de constantes numericas enteras
+                for (int j = 0; j < auxiliarVar.Length; j++)
+                {
+                    string aver = auxiliarVar[j];
+                    int n = 0;
+                    bool result = Int32.TryParse(auxiliarVar[j], out n);
+                    if (result)
+                    {
+                        contadorConstNum++;
+                    }
+                }
+                //Este for es para atrapar la cantidad de constante numericas reales
+                for (int j = 0; j < auxiliarVar.Length; j++)
+                {
+                    string aver = auxiliarVar[j];
+                    float n = 0;
+                    bool result = float.TryParse(auxiliarVar[j], out n);
+                    if (result)
+                    {
+                        contadorConstReal++;
+                    }
+                }
+                //este for es para atrapar la cantidad de variables y marcarlas en el objeto linea
+                for (int j = 0; j < auxiliarVar.Length; j++)
+                { 
+                    if (j == 0)
+                    {
+                        if (auxiliarVar[j] == "int" || auxiliarVar[j] == "flt" || auxiliarVar[j] == "str" || auxiliarVar[j] == "nul")
+                        {
+
+                            CodigoLimpio[i].EsVariable = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            //Todo epico aqui importante aqui captamos cual es la linea que declara una variable
+            string var = "";
+            int ContadorDeVariables = 0;
+            for (int i = 0; i < CodigoLimpio.Length; i++)
+            {
+                if (CodigoLimpio[i].EsVariable)
+                {
+
+                    ContadorDeVariables++;
+                    if (ContadorDeVariables < 10)
+                    {
+                        CodigoLimpio[i].TokenVar = "ID0" + (ContadorDeVariables);
+                        CodigoLimpio[i].EsVariable = true;
+                        //Aqui simplemente cocactenamos
+                        CodigoLimpio[i].ContenidoDeLinea = CodigoLimpio[i].ContenidoDeLinea;
+                        var = var + " " + CodigoLimpio[i].ContenidoDeLinea;
+                    }
+                    else
+                    {
+                        CodigoLimpio[i].TokenVar = "ID" + (ContadorDeVariables);
+                        CodigoLimpio[i].EsVariable = true;
+                        //Aqui simplemente cocactenamos
+                        CodigoLimpio[i].ContenidoDeLinea = CodigoLimpio[i].ContenidoDeLinea;
+                        var = var + " " + CodigoLimpio[i].ContenidoDeLinea;
+                    }
+
+                }
+            }
+            //Usamos un contador de variables para crear el arreglo
+            Variable[] ArregloDeVariables = new Variable[ContadorDeVariables];
+            ArregloDeVariables = ArregloIdentificador(ArregloDeVariables);
+            //Este es el arrreglo de constantes numericas enteras
+            Variable[] ArregloDeConstantesEnteras = new Variable[contadorConstNum];
+            //el metodo nos regresa el arreglo con las constantes numericas ya listas
+            ArregloDeConstantesEnteras = ArregloDeNumEnteros(ArregloDeConstantesEnteras);
+            //Aqui creamos el arreglo de constante reales
+            Variable[] ArregloDeConstantesReales = new Variable[contadorConstReal];
+
+            ArregloDeConstantesReales = ArregloDeNumEnteros(ArregloDeConstantesReales,ArregloDeConstantesEnteras);//puede que funcione?
+
+
+
+            //Eliminamos los espacios vacios del arreglo
+            int ArregloConstReales = EliminarNulls(ArregloDeConstantesReales);
+            int ArregloConstEnteras = EliminarNulls(ArregloDeConstantesEnteras);
+            int maxArreglo = ArregloDeVariables.Length + ArregloConstEnteras + ArregloConstReales;
+
+            //inicializamos el arreglo global para poder usarlo 
+            ArregloVarEpico = new Variable[maxArreglo];
+            for (int i = 0; i < ArregloDeVariables.Length; i++)
+            {
+                ArregloVarEpico[i] = ArregloDeVariables[i];
+            }
+            int calmao = 0;
+            for (int i = ArregloDeVariables.Length; i < ArregloDeVariables.Length+ ArregloDeConstantesEnteras.Length; i++)
+            {
+                ArregloVarEpico[i] = ArregloDeConstantesEnteras[calmao];
+                calmao++;
+            }
+            int calmao2 = 0;
+            for (int i = ArregloDeVariables.Length + ArregloDeConstantesEnteras.Length-1; i < ArregloVarEpico.Length; i++)
+            {
+                ArregloVarEpico[i] = ArregloDeConstantesReales[calmao2];
+                calmao2++;
+            }
+
+            //ArregloVarEpico = ArregloDeVariables + ArregloDeConstantesEnteras;
+            dtgVariables.Rows.Clear();
+            foreach (Variable v in ArregloVarEpico)
+            {
+                if (!(v == null))
+                {
+                    dtgVariables.Rows.Add(v.TipoDeDato, v.Identidicador, v.Valor, v.Token);
+
+                }
+            }
+        }
+        private void ComprobarVariable(Variable[] ArregloDelMetodo, Linea[] ArregloDeTokens, Linea[] ArregloCodigoLimpio)
+        {
+
+
+            for (int i = 0; i < ArregloCodigoLimpio.Length; i++)
+            {
+                string[] auxLim = new string[ArregloCodigoLimpio[i].ContenidoDeLinea.Length];
+                string[] auxTok = new string[ArregloDeTokens[i].ContenidoDeLinea.Length + 1];
+
+                auxLim = ArregloCodigoLimpio[i].ContenidoDeLinea.Split(' ');
+                for (int j = 0; j < auxLim.Length; j++)
+                {
+                    auxLim[j] = auxLim[j].Trim();
+                }
+
+
+                auxTok = ArregloDeTokens[i].ContenidoDeLinea.Split(' ', '\r');
+                auxTok = auxTok.Skip(1).ToArray();
+                for (int j = 0; j < ArregloDelMetodo.Length; j++)
+                {
+                    for (int k = 0; k < auxLim.Length; k++)
+                    {
+                        if (!(ArregloDelMetodo[j] == null))
+                        {
+
+                            string VariableDelMal = auxLim[k];
+                            if (ArregloDelMetodo[j].Identidicador == VariableDelMal)
+                            {
+                                auxTok[k] = ArregloDelMetodo[j].Token;
+                            }
+                        }
+                    }
+                }
+                string EpicoFinalToken = "";
+                for (int j = 0; j < auxTok.Length; j++)
+                {
+                    EpicoFinalToken = EpicoFinalToken + " " + auxTok[j];
+                }
+                ArregloDeTokens[i].ContenidoDeLinea = EpicoFinalToken;
+            }
+            for (int q = 0; q < ArregloDeTokens.Length; q++)
+            {
+                //MessageBox.Show("Token es: " + CadenaTK[q].ContenidoDeLinea);
+                if (q == 0)
+                {
+                    txtLexico.Text = ArregloDeTokens[q].ContenidoDeLinea;
+                }
+                else
+                {
+
+                    txtLexico.Text = txtLexico.Text + Environment.NewLine + ArregloDeTokens[q].ContenidoDeLinea;
+                }
+            }
+        }
+        private bool ExisteAqui(Variable[] ArregloAVerificar, string Comparando)
+        {
+            bool banderita = false;
+            for (int i = 0; i < ArregloAVerificar.Length; i++)
+            {
+                if (ArregloAVerificar[i] == null)
+                {
+                    banderita = false;
+                    break;
+                }
+                if (ArregloAVerificar[i].Identidicador == Comparando)
+                {
+                    banderita = true;
+                    break;
+                }
+            }
+            if (banderita)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        private int EliminarNulls(Variable[] ArregloNoNulls)
+        {
+            int LonigutudReal = 0;
+            for (int i = 0; i < ArregloNoNulls.Length; i++)
+            {
+                if (!(ArregloNoNulls[i] == null))
+                {
+                    LonigutudReal++;
+                }
+            }
+            return LonigutudReal;
+        }
+        private Variable[] ArregloDeNumEnteros(Variable[] ArregloDeConstantesEnteras)
+        {
+            int contaCN = 0;
+            int cnparaArrreglo = 0;
+            for (int i = 0; i < CodigoLimpio.Length; i++)
+            {
+                //Variable[] ConstE = new Variable[contadorConstNum];
+                Variable Num = new Variable();
+                string[] auxiliarVar;
+                auxiliarVar = CodigoLimpio[i].ContenidoDeLinea.Split(' ');
+                for (int j = 0; j < auxiliarVar.Length; j++)
+                {
+                    auxiliarVar[j] = auxiliarVar[j].Trim();
+                    //MessageBox.Show("Codigo limpio: " + auxiliarVar[j] );
+                }
+                for (int j = 0; j < auxiliarVar.Length; j++)
+                {
+                    string aver = auxiliarVar[j];
+                    int n = 0;
+                    bool result = Int32.TryParse(auxiliarVar[j], out n);
+                    if (result)
+                    {
+                        if (!ExisteAqui(ArregloDeConstantesEnteras, aver))
+                        {
+                            contaCN++;
+                            if (contaCN < 10)
+                            {
+                                Num.Identidicador = aver;
+                                Num.Token = "CE0" + contaCN;
+                                Num.Valor = aver;
+                                Num.TipoDeDato = "Num. Entero";
+                            }
+                            else
+                            {
+                                Num.Identidicador = aver;
+                                Num.Token = "CE" + contaCN;
+                                Num.Valor = aver;
+                                Num.TipoDeDato = "Num. Entero";
+                            }
+                            ArregloDeConstantesEnteras[cnparaArrreglo] = Num;
+                            cnparaArrreglo++;
+                        }
+                    }
+
+                }
+            }
+            return ArregloDeConstantesEnteras;
+        }
+        private Variable[] ArregloDeNumEnteros(Variable[] ArregloDeConstantesReales, Variable[] ArregloDeConstantesEnteras)
+        {
+            int contaCN = 0;
+            int cnparaArrreglo = 0;
+            for (int i = 0; i < CodigoLimpio.Length; i++)
+            {
+                //Variable[] ConstE = new Variable[contadorConstNum];
+                Variable Num = new Variable();
+                string[] auxiliarVar;
+                auxiliarVar = CodigoLimpio[i].ContenidoDeLinea.Split(' ');
+                for (int j = 0; j < auxiliarVar.Length; j++)
+                {
+                    auxiliarVar[j] = auxiliarVar[j].Trim();
+                    //MessageBox.Show("Codigo limpio: " + auxiliarVar[j] );
+                }
+                for (int j = 0; j < auxiliarVar.Length; j++)
+                {
+                    string aver = auxiliarVar[j];
+                    float n = 0;
+                    bool result = float.TryParse(auxiliarVar[j], out n);
+                    if (result)
+                    {
+                        if (!ExisteAqui(ArregloDeConstantesReales, aver) && !(ExisteAqui(ArregloDeConstantesEnteras, aver)))
+                        {
+                            contaCN++;
+                            if (contaCN < 10)
+                            {
+                                Num.Identidicador = aver;
+                                Num.Token = "CR0" + contaCN;
+                                Num.Valor = aver;
+                                Num.TipoDeDato = "Num. Real";
+                            }
+                            else
+                            {
+                                Num.Identidicador = aver;
+                                Num.Token = "CR" + contaCN;
+                                Num.Valor = aver;
+                                Num.TipoDeDato = "Num. Real";
+                            }
+                            ArregloDeConstantesReales[cnparaArrreglo] = Num;
+                            cnparaArrreglo++;
+                        }
+                    }
+
+                }
+            }
+            return ArregloDeConstantesReales;
+        }
+        private Variable[] ArregloIdentificador(Variable[] ArregloDeVariables)
+        {
+            int ContDeVar = 0;
+
+            for (int i = 0; i < CodigoLimpio.Length; i++)
+            {
+                string[] ValoresVar;
+                Variable[] VA = new Variable[ArregloDeVariables.Length];
+                Variable V = new Variable();
+                if (CodigoLimpio[i].EsVariable)
+                {
+
+                    ValoresVar = CodigoLimpio[i].ContenidoDeLinea.Split(' ');
+                    V.Token = CodigoLimpio[i].TokenVar;
+                    V.TipoDeDato = ValoresVar[0];
+                    V.Identidicador = ValoresVar[1];
+                    if (ValoresVar.Length <= 4)
+                    {
+                        V.Valor = ValoresVar[3];
+                    }
+                    else
+                    {
+                        for (int j = 3; j < ValoresVar.Length; j++)
+                        {
+                            V.Valor = V.Valor + " " + ValoresVar[j];
+                        }
+                    }
+                    ArregloDeVariables[ContDeVar] = V;
+                    ContDeVar++;
+                    //MessageBox.Show("Variables en objeto\n Tipo de dato: " + V.TipoDeDato + "\n Identificador: " + V.Identidicador + "\n Valor: " + V.Valor +"\n Token: " + V.Token);
+                }
+            }
+            return ArregloDeVariables;
+        }
+        private void btnSinctatcio2_Click(object sender, EventArgs e)
+        {
+            ComprobarVariable(ArregloVarEpico,auxCadenaTK,CodigoLimpio);
         }
     }
 }
-    
-

@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.txtLexico = new System.Windows.Forms.TextBox();
             this.btnPasarALexico = new System.Windows.Forms.Button();
@@ -42,13 +42,14 @@
             this.btnSalir = new System.Windows.Forms.Button();
             this.btnCargar = new System.Windows.Forms.Button();
             this.btnCargarVariables = new System.Windows.Forms.Button();
+            this.btnSinctatcio2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtgVariables)).BeginInit();
             this.SuspendLayout();
             // 
             // txtCodigo
             // 
             this.txtCodigo.BackColor = System.Drawing.SystemColors.InfoText;
-            this.txtCodigo.Font = new System.Drawing.Font("Cascadia Code", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCodigo.Font = new System.Drawing.Font("Cascadia Code", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCodigo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.txtCodigo.Location = new System.Drawing.Point(12, 26);
             this.txtCodigo.Multiline = true;
@@ -59,7 +60,7 @@
             // txtLexico
             // 
             this.txtLexico.BackColor = System.Drawing.SystemColors.MenuText;
-            this.txtLexico.Font = new System.Drawing.Font("Cascadia Code", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLexico.Font = new System.Drawing.Font("Cascadia Code", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLexico.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.txtLexico.Location = new System.Drawing.Point(460, 26);
             this.txtLexico.Multiline = true;
@@ -90,23 +91,23 @@
             // dtgVariables
             // 
             this.dtgVariables.BackgroundColor = System.Drawing.SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Lime;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Desktop;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dtgVariables.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Lime;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Desktop;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dtgVariables.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dtgVariables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgVariables.GridColor = System.Drawing.Color.Lime;
             this.dtgVariables.Location = new System.Drawing.Point(12, 426);
             this.dtgVariables.Name = "dtgVariables";
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.dtgVariables.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.dtgVariables.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dtgVariables.Size = new System.Drawing.Size(437, 150);
             this.dtgVariables.TabIndex = 9;
             // 
@@ -142,7 +143,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(852, 443);
+            this.button1.Location = new System.Drawing.Point(542, 463);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 13;
@@ -152,7 +153,7 @@
             // 
             // btnSalir
             // 
-            this.btnSalir.Location = new System.Drawing.Point(638, 491);
+            this.btnSalir.Location = new System.Drawing.Point(542, 521);
             this.btnSalir.Name = "btnSalir";
             this.btnSalir.Size = new System.Drawing.Size(75, 23);
             this.btnSalir.TabIndex = 14;
@@ -162,7 +163,7 @@
             // 
             // btnCargar
             // 
-            this.btnCargar.Location = new System.Drawing.Point(852, 472);
+            this.btnCargar.Location = new System.Drawing.Point(542, 492);
             this.btnCargar.Name = "btnCargar";
             this.btnCargar.Size = new System.Drawing.Size(75, 23);
             this.btnCargar.TabIndex = 15;
@@ -180,12 +181,23 @@
             this.btnCargarVariables.UseVisualStyleBackColor = true;
             this.btnCargarVariables.Click += new System.EventHandler(this.btnCargarVariables_Click);
             // 
+            // btnSinctatcio2
+            // 
+            this.btnSinctatcio2.Location = new System.Drawing.Point(801, 226);
+            this.btnSinctatcio2.Name = "btnSinctatcio2";
+            this.btnSinctatcio2.Size = new System.Drawing.Size(75, 56);
+            this.btnSinctatcio2.TabIndex = 17;
+            this.btnSinctatcio2.Text = "Prueba";
+            this.btnSinctatcio2.UseVisualStyleBackColor = true;
+            this.btnSinctatcio2.Click += new System.EventHandler(this.btnSinctatcio2_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.ClientSize = new System.Drawing.Size(1042, 613);
+            this.ClientSize = new System.Drawing.Size(1362, 625);
+            this.Controls.Add(this.btnSinctatcio2);
             this.Controls.Add(this.btnCargarVariables);
             this.Controls.Add(this.btnCargar);
             this.Controls.Add(this.btnSalir);
@@ -220,6 +232,7 @@
         private System.Windows.Forms.Button btnSalir;
         private System.Windows.Forms.Button btnCargar;
         private System.Windows.Forms.Button btnCargarVariables;
+        private System.Windows.Forms.Button btnSinctatcio2;
     }
 }
 
