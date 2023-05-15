@@ -25,6 +25,7 @@ namespace PruebaDeArreglosEnUnaLinea
         string RutaEpic = "Server=localhost;Database=pruebalex;Uid=root;Pwd=Juan@20";
         int Estado = 0;
         Variable[] ArregloVarEpico;
+        List<Variable> ListaDeVariables = new List<Variable>();
         public Form1()
         {
             InitializeComponent();
@@ -36,6 +37,14 @@ namespace PruebaDeArreglosEnUnaLinea
             dtgVariables.Columns.Add("Columna Variable", "Nombre Variable");
             dtgVariables.Columns.Add("Columna Valor", "Valor");
             dtgVariables.Columns.Add("Columna Token", "Token");
+
+            dtgTriplos.ReadOnly = true;
+            dtgTriplos.AllowUserToAddRows = false;
+            dtgTriplos.AllowUserToDeleteRows = false;
+            dtgTriplos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgTriplos.Columns.Add("Columna Dato Objeto", "Dato Obejto");
+            dtgTriplos.Columns.Add("Columna Dato Fuente", "Dato Fuente");
+            dtgTriplos.Columns.Add("Columna Operador", "Operador");
         }
         private void btnPasarALexico_Click(object sender, EventArgs e)
         {
@@ -299,7 +308,7 @@ namespace PruebaDeArreglosEnUnaLinea
             }
 
             btnCargarVariables_Click(sender, e);
-            btnSinctatcio2_Click(sender,e);
+            ComprobarVariable(ListaDeVariables, auxCadenaTK, CodigoLimpio);
         }
         private void btnSintactico_Click(object sender, EventArgs e)
         {
@@ -1339,7 +1348,7 @@ namespace PruebaDeArreglosEnUnaLinea
                 }
                 //este for es para atrapar la cantidad de variables y marcarlas en el objeto linea
                 for (int j = 0; j < auxiliarVar.Length; j++)
-                { 
+                {
                     if (j == 0)
                     {
                         if (auxiliarVar[j] == "int" || auxiliarVar[j] == "flt" || auxiliarVar[j] == "str" || auxiliarVar[j] == "nul")
@@ -1388,38 +1397,79 @@ namespace PruebaDeArreglosEnUnaLinea
             ArregloDeConstantesEnteras = ArregloDeNumEnteros(ArregloDeConstantesEnteras);
             //Aqui creamos el arreglo de constante reales
             Variable[] ArregloDeConstantesReales = new Variable[contadorConstReal];
-
-            ArregloDeConstantesReales = ArregloDeNumEnteros(ArregloDeConstantesReales,ArregloDeConstantesEnteras);//puede que funcione?
+            ArregloDeConstantesReales = ArregloDeNumEnteros(ArregloDeConstantesReales, ArregloDeConstantesEnteras);//puede que funcione? no funciona como quiero D: .
 
 
 
             //Eliminamos los espacios vacios del arreglo
             int ArregloConstReales = EliminarNulls(ArregloDeConstantesReales);
             int ArregloConstEnteras = EliminarNulls(ArregloDeConstantesEnteras);
-            int maxArreglo = ArregloDeVariables.Length + ArregloConstEnteras + ArregloConstReales;
 
+            int maxArreglo = 0;
+             maxArreglo = ArregloDeVariables.Length + ArregloConstEnteras + ArregloConstReales;
+            //List<Variable> ListaFinalDeVar = new List<Variable>();
             //inicializamos el arreglo global para poder usarlo 
+
             ArregloVarEpico = new Variable[maxArreglo];
             for (int i = 0; i < ArregloDeVariables.Length; i++)
             {
+
                 ArregloVarEpico[i] = ArregloDeVariables[i];
+                ListaDeVariables.Add(ArregloDeVariables[i]);
             }
-            int calmao = 0;
-            for (int i = ArregloDeVariables.Length; i < ArregloDeVariables.Length+ ArregloDeConstantesEnteras.Length; i++)
+            for (int i = 0; i < ArregloDeConstantesEnteras.Length; i++)
             {
-                ArregloVarEpico[i] = ArregloDeConstantesEnteras[calmao];
-                calmao++;
+                if (!(ArregloDeConstantesEnteras[i] == null))
+                {
+                    ListaDeVariables.Add(ArregloDeConstantesEnteras[i]);
+
+                }
             }
-            int calmao2 = 0;
-            for (int i = ArregloDeVariables.Length + ArregloDeConstantesEnteras.Length-1; i < ArregloVarEpico.Length; i++)
+            for (int i = 0; i < ArregloDeConstantesReales.Length; i++)
             {
-                ArregloVarEpico[i] = ArregloDeConstantesReales[calmao2];
-                calmao2++;
+                if (!(ArregloDeConstantesReales[i] == null))
+                {
+                    ListaDeVariables.Add(ArregloDeConstantesReales[i]);
+
+                }
             }
+            //if (!(ArregloConstEnteras==0))
+            //{
+            //    int calmao = 0;
+            //    for (int i = ArregloDeVariables.Length; i < ArregloDeVariables.Length + ArregloDeConstantesEnteras.Length; i++)
+            //    {
+            //        ArregloVarEpico[i] = ArregloDeConstantesEnteras[calmao];
+            //        calmao++;
+            //    }
+            //}
+            //if (!(ArregloConstReales == 0))
+            //{
+            //    int DondeTerminoCNE = ArregloDeVariables.Length + ArregloDeConstantesEnteras.Length;
+            //    int calmao2 = 0;
+            //    //ni idea dee porque le habia puesto mas 1
+            //    if (DondeTerminoCNE == ArregloVarEpico.Length)
+            //    {
+            //        for (int i = DondeTerminoCNE; i < ArregloVarEpico.Length; i++)
+            //        {
+            //            ArregloVarEpico[i] = ArregloDeConstantesReales[calmao2];
+            //            calmao2++;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        for (int i = DondeTerminoCNE- 1; i < ArregloVarEpico.Length; i++)
+            //        {
+            //            ArregloVarEpico[i] = ArregloDeConstantesReales[calmao2];
+            //            calmao2++;
+            //        }
+            //    }
+            //}
+
+
 
             //ArregloVarEpico = ArregloDeVariables + ArregloDeConstantesEnteras;
             dtgVariables.Rows.Clear();
-            foreach (Variable v in ArregloVarEpico)
+            foreach (Variable v in ListaDeVariables)
             {
                 if (!(v == null))
                 {
@@ -1428,7 +1478,7 @@ namespace PruebaDeArreglosEnUnaLinea
                 }
             }
         }
-        private void ComprobarVariable(Variable[] ArregloDelMetodo, Linea[] ArregloDeTokens, Linea[] ArregloCodigoLimpio)
+        private void ComprobarVariable(List<Variable> ArregloDelMetodo, Linea[] ArregloDeTokens, Linea[] ArregloCodigoLimpio)
         {
 
 
@@ -1446,7 +1496,7 @@ namespace PruebaDeArreglosEnUnaLinea
 
                 auxTok = ArregloDeTokens[i].ContenidoDeLinea.Split(' ', '\r');
                 auxTok = auxTok.Skip(1).ToArray();
-                for (int j = 0; j < ArregloDelMetodo.Length; j++)
+                for (int j = 0; j < ArregloDelMetodo.Count; j++)
                 {
                     for (int k = 0; k < auxLim.Length; k++)
                     {
@@ -1498,14 +1548,7 @@ namespace PruebaDeArreglosEnUnaLinea
                     break;
                 }
             }
-            if (banderita)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return banderita;
         }
         private int EliminarNulls(Variable[] ArregloNoNulls)
         {
@@ -1519,14 +1562,14 @@ namespace PruebaDeArreglosEnUnaLinea
             }
             return LonigutudReal;
         }
-        private Variable[] ArregloDeNumEnteros(Variable[] ArregloDeConstantesEnteras)
+        private Variable[] ArregloDeNumEnteros(Variable[] ADCNE)
         {
             int contaCN = 0;
             int cnparaArrreglo = 0;
             for (int i = 0; i < CodigoLimpio.Length; i++)
             {
                 //Variable[] ConstE = new Variable[contadorConstNum];
-                Variable Num = new Variable();
+
                 string[] auxiliarVar;
                 auxiliarVar = CodigoLimpio[i].ContenidoDeLinea.Split(' ');
                 for (int j = 0; j < auxiliarVar.Length; j++)
@@ -1536,12 +1579,13 @@ namespace PruebaDeArreglosEnUnaLinea
                 }
                 for (int j = 0; j < auxiliarVar.Length; j++)
                 {
+                    Variable Num = new Variable();
                     string aver = auxiliarVar[j];
                     int n = 0;
                     bool result = Int32.TryParse(auxiliarVar[j], out n);
                     if (result)
                     {
-                        if (!ExisteAqui(ArregloDeConstantesEnteras, aver))
+                        if (!ExisteAqui(ADCNE, aver))
                         {
                             contaCN++;
                             if (contaCN < 10)
@@ -1558,14 +1602,14 @@ namespace PruebaDeArreglosEnUnaLinea
                                 Num.Valor = aver;
                                 Num.TipoDeDato = "Num. Entero";
                             }
-                            ArregloDeConstantesEnteras[cnparaArrreglo] = Num;
+                            ADCNE[cnparaArrreglo] = Num;
                             cnparaArrreglo++;
                         }
                     }
 
                 }
             }
-            return ArregloDeConstantesEnteras;
+            return ADCNE;
         }
         private Variable[] ArregloDeNumEnteros(Variable[] ArregloDeConstantesReales, Variable[] ArregloDeConstantesEnteras)
         {
@@ -1574,7 +1618,7 @@ namespace PruebaDeArreglosEnUnaLinea
             for (int i = 0; i < CodigoLimpio.Length; i++)
             {
                 //Variable[] ConstE = new Variable[contadorConstNum];
-                Variable Num = new Variable();
+
                 string[] auxiliarVar;
                 auxiliarVar = CodigoLimpio[i].ContenidoDeLinea.Split(' ');
                 for (int j = 0; j < auxiliarVar.Length; j++)
@@ -1584,33 +1628,37 @@ namespace PruebaDeArreglosEnUnaLinea
                 }
                 for (int j = 0; j < auxiliarVar.Length; j++)
                 {
+                    Variable Num = new Variable();
                     string aver = auxiliarVar[j];
                     float n = 0;
                     bool result = float.TryParse(auxiliarVar[j], out n);
                     if (result)
                     {
-                        if (!ExisteAqui(ArregloDeConstantesReales, aver) && !(ExisteAqui(ArregloDeConstantesEnteras, aver)))
+                        if (!(ExisteAqui(ArregloDeConstantesEnteras, aver)))
                         {
-                            contaCN++;
-                            if (contaCN < 10)
+                            if (!(ExisteAqui(ArregloDeConstantesReales, aver)))
                             {
-                                Num.Identidicador = aver;
-                                Num.Token = "CR0" + contaCN;
-                                Num.Valor = aver;
-                                Num.TipoDeDato = "Num. Real";
+                                contaCN++;
+                                if (contaCN < 10)
+                                {
+                                    Num.Identidicador = aver;
+                                    Num.Token = "CR0" + contaCN;
+                                    Num.Valor = aver;
+                                    Num.TipoDeDato = "Num. Real";
+                                }
+                                else
+                                {
+                                    Num.Identidicador = aver;
+                                    Num.Token = "CR" + contaCN;
+                                    Num.Valor = aver;
+                                    Num.TipoDeDato = "Num. Real";
+                                }
+                                int X = 0;
+                                ArregloDeConstantesReales[cnparaArrreglo] = Num;
+                                cnparaArrreglo++;
                             }
-                            else
-                            {
-                                Num.Identidicador = aver;
-                                Num.Token = "CR" + contaCN;
-                                Num.Valor = aver;
-                                Num.TipoDeDato = "Num. Real";
-                            }
-                            ArregloDeConstantesReales[cnparaArrreglo] = Num;
-                            cnparaArrreglo++;
                         }
                     }
-
                 }
             }
             return ArregloDeConstantesReales;
@@ -1651,7 +1699,357 @@ namespace PruebaDeArreglosEnUnaLinea
         }
         private void btnSinctatcio2_Click(object sender, EventArgs e)
         {
-            ComprobarVariable(ArregloVarEpico,auxCadenaTK,CodigoLimpio);
+            //tenemos que usar el arreglo auxCadenaTK ahora como lo haremos ? XD
+            //primero recoremos el arreglo de tokens
+            for (int m = 0; m < auxCadenaTK.Length; m++)
+            {
+                if (auxCadenaTK[m].EsVariable)
+                {
+                    string cadenainfija = auxCadenaTK[m].ContenidoDeLinea;
+
+                    string[] CambioOPA = cadenainfija.Split(' ');
+                    string aux = "";
+                    for (int i = 0; i < CambioOPA.Length; i++)
+                    {
+                        CambioOPA[i] = CambioOPA[i].Trim();
+                        aux = aux + CambioOPA[i];
+                    }
+                    string aux2 = OPA_TK(CambioOPA);
+                    cadenainfija = cadenainfija.Replace(" ", "");
+                    aux2 = aux2.Replace(" ", "");
+                    string PostFijaFinal = InfixToPostfix(aux2);
+                    List<string> ListaDePostFija = new List<string>();
+
+                    string AuxP = PostFijaFinal;
+                    AuxP = AuxP.Replace("+", "OA01");
+                    AuxP = AuxP.Replace("-", "OA02");
+                    AuxP = AuxP.Replace("/", "OA03");
+                    AuxP = AuxP.Replace("*", "OA04");
+                    AuxP = AuxP.Replace("=", "PR09");
+
+                    char[] ArregloEpic = new char[AuxP.Length];
+
+                    for (int pm = 0; pm < AuxP.Length; pm++)
+                    {
+                        ArregloEpic[pm] = AuxP[pm];
+                    }
+
+                    //for (int i = 0; i < ArregloEpic.Length; i += 4)
+                    //{
+                    //    if (i + 3 < ArregloEpic.Length)
+                    //    {
+                    //        ListaDePostFija.Add(new string(ArregloEpic, i, 4));
+                    //    }
+                    //    else
+                    //    {
+                    //        ListaDePostFija.Add(new string(ArregloEpic, i, ArregloEpic.Length - i));
+                    //    }
+                    //}
+                    string OwO = "";
+                    for (int i = 0; i < ArregloEpic.Length; i++)
+                    {
+
+                        OwO = OwO + ArregloEpic[i];
+                        if (OwO.Length == 4)
+                        {
+                            ListaDePostFija.Add(OwO);
+
+                            OwO = "";
+                        }
+                    }
+                    AuxP = "";
+                    for (int i = 0; i < ListaDePostFija.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            AuxP = ListaDePostFija[i];
+                        }
+                        else
+                        {
+                            AuxP = AuxP + " " + ListaDePostFija[i];
+                        }
+                    }
+                    int T_T = 0;
+                    auxCadenaTK[m].ContenidoDeLinea = AuxP;
+                }
+
+                //auxCadenaTK[i].ContenidoDeLinea = auxCadenaTK[i].ContenidoDeLinea.Replace(" ","");
+                //string[] TokenLinea = auxCadenaTK[i].ContenidoDeLinea.Split(' ');
+                //string[] CambioOPA = cadenainfija.Split(' ');
+                //for (int p = 0; p < TokenLinea.Length; p++)
+                //{
+                //    TokenLinea[p] = TokenLinea[p].Trim();
+                //}
+                //for (int p = 0; p < TokenLinea.Length; p++)
+                //{
+
+                //}
+                //for (int j = 0; i < TokenLinea.Length; j++)
+                //{
+
+                //}
+
+                string UwU = "";
+
+            }
+
+            for (int q = 0; q < auxCadenaTK.Length; q++)
+            {
+                //MessageBox.Show("Token es: " + CadenaTK[q].ContenidoDeLinea);
+                if (q == 0)
+                {
+                    txtCodigoIntermedio.Text = auxCadenaTK[q].ContenidoDeLinea;
+                }
+                else
+                {
+
+                    txtCodigoIntermedio.Text = txtCodigoIntermedio.Text + Environment.NewLine + auxCadenaTK[q].ContenidoDeLinea;
+                }
+            }
+
+            //Ahora si viene lo chido los poderosismos "triplos"
+            int contadorTemps = 1;
+            List<Triplo> TriplosEpicos = new List<Triplo>();
+            for (int i = 0; i < auxCadenaTK.Length; i++)
+            {
+                if (auxCadenaTK[i].EsVariable)
+                {
+
+                    string cadenainfija = auxCadenaTK[i].ContenidoDeLinea;
+                    string[] CambioOPA = cadenainfija.Split(' ');
+                    CambioOPA = CambioOPA.Skip(1).ToArray();
+                    List<string> ListaEpicaAux = new List<string>();
+                    for (int p = 0; p < CambioOPA.Length; p++)
+                    {
+                        ListaEpicaAux.Add(CambioOPA[p]);
+                    }
+                    for (int p = 0; p < ListaEpicaAux.Count; p++)
+                    {
+
+                        if (EsOperadorTK(ListaEpicaAux[p]))
+                        {
+                            string temp = "TE0" + contadorTemps;
+                            Stack<string> PilaEpica = new Stack<string>();
+                            ;
+                            //Como chetto le digo los pasos en esta parte??
+                            //la idea es agarrar los 2 numeros y el operador
+                            //Aqui pondremos si la operacion no se hace con Temporales haga una nueva
+                            //si no que continue:
+                            if (ListaEpicaAux[p] == "PR09")
+                            {
+                                Triplo T = new Triplo(contadorTemps);
+
+                                //
+                                PilaEpica.Push(ListaEpicaAux[p]);
+                                PilaEpica.Push(ListaEpicaAux[p - 1]);
+                                PilaEpica.Push(ListaEpicaAux[p - 2]);
+
+                                T.DatoObjeto = PilaEpica.Pop();
+                                T.DatoFuente = PilaEpica.Pop();
+                                T.Operador = PilaEpica.Pop();
+                                //
+                                ListaEpicaAux.RemoveAt(p);
+                                ListaEpicaAux.RemoveAt(p - 1);
+                                ListaEpicaAux[p - 2] = T.DatoObjeto;
+                                TriplosEpicos.Add(T);
+                                //contadorTemps++;
+                                p = 0;
+                            }
+                            else
+                            {
+                                if (temp == ListaEpicaAux[p - 2])
+                                {
+                                    if (ListaEpicaAux[p] == "PR09")
+                                    {
+                                        Triplo T = new Triplo(contadorTemps);
+
+                                        //
+                                        PilaEpica.Push(ListaEpicaAux[p]);
+                                        PilaEpica.Push(ListaEpicaAux[p - 1]);
+                                        PilaEpica.Push(ListaEpicaAux[p - 2]);
+
+                                        T.DatoFuente = PilaEpica.Pop();
+                                        T.DatoObjeto = PilaEpica.Pop();
+
+                                        T.Operador = PilaEpica.Pop();
+                                        //
+                                        //ListaEpicaAux.RemoveAt(i);
+                                        //ListaEpicaAux.RemoveAt(i - 1);
+                                        //ListaEpicaAux[i - 2] = T.DatoObjeto;
+                                        TriplosEpicos.Add(T);
+                                    }
+                                    else
+                                    {
+                                        Triplo T = new Triplo(contadorTemps);
+                                        Triplo T1 = new Triplo(contadorTemps);
+
+                                        PilaEpica.Push(ListaEpicaAux[p]);
+                                        PilaEpica.Push(ListaEpicaAux[p - 1]);
+                                        PilaEpica.Push(ListaEpicaAux[p - 2]);
+                                        T.Operador = "PR09";
+                                        T.DatoObjeto = temp;
+                                        T.DatoFuente = PilaEpica.Pop();
+
+                                        T1.DatoObjeto = temp;
+                                        T1.DatoFuente = PilaEpica.Pop();
+                                        T1.Operador = PilaEpica.Pop();
+                                        ListaEpicaAux.RemoveAt(p);
+                                        ListaEpicaAux.RemoveAt(p - 1);
+                                        ListaEpicaAux[p - 2] = T1.DatoObjeto;
+                                        TriplosEpicos.Add(T);
+                                        TriplosEpicos.Add(T1);
+                                        p = 0;
+                                    }
+                                }
+                                else
+                                {
+                                    Triplo T = new Triplo(contadorTemps);
+                                    Triplo T1 = new Triplo(contadorTemps);
+                                    T.Operador = "PR09";
+                                    T.DatoObjeto = temp;
+                                    PilaEpica.Push(ListaEpicaAux[p]);
+                                    PilaEpica.Push(ListaEpicaAux[p - 1]);
+                                    PilaEpica.Push(ListaEpicaAux[p - 2]);
+
+                                    T.DatoFuente = PilaEpica.Pop();
+
+                                    T1.DatoObjeto = temp;
+                                    T1.DatoFuente = PilaEpica.Pop();
+                                    T1.Operador = PilaEpica.Pop();
+
+                                    ListaEpicaAux.RemoveAt(p);
+                                    ListaEpicaAux.RemoveAt(p - 1);
+                                    ListaEpicaAux[p - 2] = T1.DatoObjeto;
+                                    TriplosEpicos.Add(T);
+                                    TriplosEpicos.Add(T1);
+                                    contadorTemps++;
+                                    p = 0;
+                                }
+                            }
+
+                        }
+                    }
+                    int OwO = 10;
+                }
+            }
+            dtgTriplos.Rows.Clear();
+            foreach (Triplo triplo in TriplosEpicos)
+            {
+                dtgTriplos.Rows.Add(triplo.DatoObjeto, triplo.DatoFuente, triplo.Operador);
+            }
+
+
+
+        }
+        public static string InfixToPostfix(string infix)
+        {
+            // Eliminar espacios en blanco de la cadena de entrada
+            infix = infix.Replace(" ", "");
+
+            // Definir la precedencia de los operadores
+            Dictionary<char, int> precedence = new Dictionary<char, int>()
+            {
+                {'+', 1},
+                {'-', 1},
+                {'*', 2},
+                {'/', 2},
+                {'^', 3}
+            };
+
+            // Crear una pila para los operadores
+            Stack<char> operators = new Stack<char>();
+
+            // Crear una cadena para la salida postfija
+            StringBuilder postfix = new StringBuilder();
+
+            // Iterar por cada carácter de la cadena de entrada
+            for (int i = 0; i < infix.Length; i++)
+            {
+                char c = infix[i];
+
+                // Si el carácter es un operando, agregarlo a la salida
+                if (Char.IsLetterOrDigit(c))
+                {
+                    postfix.Append(c);
+                }
+                // Si el carácter es un paréntesis izquierdo, agregarlo a la pila de operadores
+                else if (c == '(')
+                {
+                    operators.Push(c);
+                }
+                // Si el carácter es un paréntesis derecho, desapilar los operadores hasta encontrar el paréntesis izquierdo correspondiente
+                else if (c == ')')
+                {
+                    while (operators.Peek() != '(')
+                    {
+                        postfix.Append(operators.Pop());
+                    }
+                    operators.Pop(); // desapilar el paréntesis izquierdo
+                }
+                // Si el carácter es un operador, desapilar los operadores con mayor o igual precedencia y agregarlos a la salida
+                // Luego agregar el operador a la pila de operadores
+                else if (precedence.ContainsKey(c))
+                {
+                    while (operators.Count > 0 && operators.Peek() != '(' && precedence[operators.Peek()] >= precedence[c])
+                    {
+                        postfix.Append(operators.Pop());
+                    }
+                    operators.Push(c);
+                }
+            }
+
+            // Desapilar todos los operadores restantes y agregarlos a la salida
+            while (operators.Count > 0)
+            {
+                postfix.Append(operators.Pop());
+            }
+            // Agregar el igual al final del string
+            if (infix.Contains("="))
+            {
+                postfix.Append("=");
+            }
+            // Retornar la cadena de salida postfija
+            return postfix.ToString();
+        }
+        private string OPA_TK(string[] OPA)
+        {
+            string resultado = "";
+            for (int i = 0; i < OPA.Length; i++)
+            {
+                if (OPA[i] == "OA01")
+                {
+                    OPA[i] = "+";
+                }
+                else if (OPA[i] == "OA02")
+                {
+                    OPA[i] = "-";
+                }
+                else if (OPA[i] == "OA03")
+                {
+                    OPA[i] = "/";
+                }
+                else if (OPA[i] == "OA04")
+                {
+                    OPA[i] = "*";
+                }
+                else if (OPA[i] == "PR09")
+                {
+                    OPA[i] = "=";
+                }
+                resultado = resultado + OPA[i];
+            }
+            return resultado;
+        }
+        private bool EsOperadorTK(string Operador)
+        {
+            if (Operador == "OA01" || Operador == "OA02" || Operador == "OA03" || Operador == "OA04" || Operador == "PR09")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

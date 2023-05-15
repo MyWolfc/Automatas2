@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtCodigo = new System.Windows.Forms.TextBox();
@@ -43,7 +45,12 @@
             this.btnCargar = new System.Windows.Forms.Button();
             this.btnCargarVariables = new System.Windows.Forms.Button();
             this.btnSinctatcio2 = new System.Windows.Forms.Button();
+            this.txtCodigoIntermedio = new System.Windows.Forms.TextBox();
+            this.lblCodigoIntermedio = new System.Windows.Forms.Label();
+            this.dtgTriplos = new System.Windows.Forms.DataGridView();
+            this.lblTriplos = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dtgVariables)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgTriplos)).BeginInit();
             this.SuspendLayout();
             // 
             // txtCodigo
@@ -65,7 +72,7 @@
             this.txtLexico.Location = new System.Drawing.Point(460, 26);
             this.txtLexico.Multiline = true;
             this.txtLexico.Name = "txtLexico";
-            this.txtLexico.Size = new System.Drawing.Size(327, 362);
+            this.txtLexico.Size = new System.Drawing.Size(410, 362);
             this.txtLexico.TabIndex = 3;
             // 
             // btnPasarALexico
@@ -80,7 +87,7 @@
             // 
             // btnSintactico
             // 
-            this.btnSintactico.Location = new System.Drawing.Point(798, 164);
+            this.btnSintactico.Location = new System.Drawing.Point(876, 162);
             this.btnSintactico.Name = "btnSintactico";
             this.btnSintactico.Size = new System.Drawing.Size(78, 56);
             this.btnSintactico.TabIndex = 8;
@@ -91,23 +98,23 @@
             // dtgVariables
             // 
             this.dtgVariables.BackgroundColor = System.Drawing.SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Lime;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Desktop;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dtgVariables.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Lime;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Desktop;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dtgVariables.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dtgVariables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgVariables.GridColor = System.Drawing.Color.Lime;
             this.dtgVariables.Location = new System.Drawing.Point(12, 426);
             this.dtgVariables.Name = "dtgVariables";
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.dtgVariables.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.dtgVariables.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dtgVariables.Size = new System.Drawing.Size(437, 150);
             this.dtgVariables.TabIndex = 9;
             // 
@@ -183,20 +190,78 @@
             // 
             // btnSinctatcio2
             // 
-            this.btnSinctatcio2.Location = new System.Drawing.Point(801, 226);
+            this.btnSinctatcio2.Location = new System.Drawing.Point(876, 224);
             this.btnSinctatcio2.Name = "btnSinctatcio2";
             this.btnSinctatcio2.Size = new System.Drawing.Size(75, 56);
             this.btnSinctatcio2.TabIndex = 17;
-            this.btnSinctatcio2.Text = "Prueba";
+            this.btnSinctatcio2.Text = "Codigo Intermedio";
             this.btnSinctatcio2.UseVisualStyleBackColor = true;
             this.btnSinctatcio2.Click += new System.EventHandler(this.btnSinctatcio2_Click);
+            // 
+            // txtCodigoIntermedio
+            // 
+            this.txtCodigoIntermedio.BackColor = System.Drawing.SystemColors.MenuText;
+            this.txtCodigoIntermedio.Font = new System.Drawing.Font("Cascadia Code", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCodigoIntermedio.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.txtCodigoIntermedio.Location = new System.Drawing.Point(957, 26);
+            this.txtCodigoIntermedio.Multiline = true;
+            this.txtCodigoIntermedio.Name = "txtCodigoIntermedio";
+            this.txtCodigoIntermedio.Size = new System.Drawing.Size(401, 362);
+            this.txtCodigoIntermedio.TabIndex = 18;
+            // 
+            // lblCodigoIntermedio
+            // 
+            this.lblCodigoIntermedio.AutoSize = true;
+            this.lblCodigoIntermedio.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCodigoIntermedio.Location = new System.Drawing.Point(953, 3);
+            this.lblCodigoIntermedio.Name = "lblCodigoIntermedio";
+            this.lblCodigoIntermedio.Size = new System.Drawing.Size(153, 20);
+            this.lblCodigoIntermedio.TabIndex = 19;
+            this.lblCodigoIntermedio.Text = "CodigoIntermedio";
+            // 
+            // dtgTriplos
+            // 
+            this.dtgTriplos.BackgroundColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Lime;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Desktop;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dtgTriplos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dtgTriplos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgTriplos.GridColor = System.Drawing.Color.Lime;
+            this.dtgTriplos.Location = new System.Drawing.Point(637, 426);
+            this.dtgTriplos.Name = "dtgTriplos";
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.dtgTriplos.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            this.dtgTriplos.Size = new System.Drawing.Size(437, 150);
+            this.dtgTriplos.TabIndex = 20;
+            // 
+            // lblTriplos
+            // 
+            this.lblTriplos.AutoSize = true;
+            this.lblTriplos.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTriplos.Location = new System.Drawing.Point(633, 403);
+            this.lblTriplos.Name = "lblTriplos";
+            this.lblTriplos.Size = new System.Drawing.Size(72, 20);
+            this.lblTriplos.TabIndex = 21;
+            this.lblTriplos.Text = "Triplos";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.ClientSize = new System.Drawing.Size(1362, 625);
+            this.ClientSize = new System.Drawing.Size(1370, 625);
+            this.Controls.Add(this.lblTriplos);
+            this.Controls.Add(this.dtgTriplos);
+            this.Controls.Add(this.lblCodigoIntermedio);
+            this.Controls.Add(this.txtCodigoIntermedio);
             this.Controls.Add(this.btnSinctatcio2);
             this.Controls.Add(this.btnCargarVariables);
             this.Controls.Add(this.btnCargar);
@@ -213,6 +278,7 @@
             this.Name = "Form1";
             this.Text = "Analizador Increible";
             ((System.ComponentModel.ISupportInitialize)(this.dtgVariables)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgTriplos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -233,6 +299,10 @@
         private System.Windows.Forms.Button btnCargar;
         private System.Windows.Forms.Button btnCargarVariables;
         private System.Windows.Forms.Button btnSinctatcio2;
+        private System.Windows.Forms.TextBox txtCodigoIntermedio;
+        private System.Windows.Forms.Label lblCodigoIntermedio;
+        private System.Windows.Forms.DataGridView dtgTriplos;
+        private System.Windows.Forms.Label lblTriplos;
     }
 }
 
