@@ -8,6 +8,15 @@ namespace PruebaDeArreglosEnUnaLinea
 {
     internal class Triplo
     {
+		private int intid;
+
+		public int id
+		{
+			get { return intid; }
+			set { intid = value; }
+		}
+
+
 		private string strDatoObjeto;
 
 		public string DatoObjeto
@@ -36,6 +45,10 @@ namespace PruebaDeArreglosEnUnaLinea
 		{
 			get { return intCantidadDeTemps; }
 			set { intCantidadDeTemps = value; }
+		}
+		public Triplo()
+		{
+
 		}
 		public Triplo(int i)
 		{

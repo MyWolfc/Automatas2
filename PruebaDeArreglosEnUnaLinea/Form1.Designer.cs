@@ -32,6 +32,10 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.txtLexico = new System.Windows.Forms.TextBox();
             this.btnPasarALexico = new System.Windows.Forms.Button();
@@ -49,8 +53,15 @@
             this.lblCodigoIntermedio = new System.Windows.Forms.Label();
             this.dtgTriplos = new System.Windows.Forms.DataGridView();
             this.lblTriplos = new System.Windows.Forms.Label();
+            this.btnEnsamblador = new System.Windows.Forms.Button();
+            this.dtgLadoVerdadero = new System.Windows.Forms.DataGridView();
+            this.dtgLadoFalso = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dtgVariables)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgTriplos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgLadoVerdadero)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgLadoFalso)).BeginInit();
             this.SuspendLayout();
             // 
             // txtCodigo
@@ -108,14 +119,14 @@
             this.dtgVariables.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dtgVariables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgVariables.GridColor = System.Drawing.Color.Lime;
-            this.dtgVariables.Location = new System.Drawing.Point(12, 426);
+            this.dtgVariables.Location = new System.Drawing.Point(12, 412);
             this.dtgVariables.Name = "dtgVariables";
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.dtgVariables.RowsDefaultCellStyle = dataGridViewCellStyle2;
-            this.dtgVariables.Size = new System.Drawing.Size(437, 150);
+            this.dtgVariables.Size = new System.Drawing.Size(335, 258);
             this.dtgVariables.TabIndex = 9;
             // 
             // lblCodigo
@@ -142,7 +153,7 @@
             // 
             this.lblVariables.AutoSize = true;
             this.lblVariables.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVariables.Location = new System.Drawing.Point(8, 403);
+            this.lblVariables.Location = new System.Drawing.Point(8, 389);
             this.lblVariables.Name = "lblVariables";
             this.lblVariables.Size = new System.Drawing.Size(90, 20);
             this.lblVariables.TabIndex = 12;
@@ -150,7 +161,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(542, 463);
+            this.button1.Location = new System.Drawing.Point(441, 490);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 13;
@@ -160,7 +171,7 @@
             // 
             // btnSalir
             // 
-            this.btnSalir.Location = new System.Drawing.Point(542, 521);
+            this.btnSalir.Location = new System.Drawing.Point(441, 548);
             this.btnSalir.Name = "btnSalir";
             this.btnSalir.Size = new System.Drawing.Size(75, 23);
             this.btnSalir.TabIndex = 14;
@@ -170,7 +181,7 @@
             // 
             // btnCargar
             // 
-            this.btnCargar.Location = new System.Drawing.Point(542, 492);
+            this.btnCargar.Location = new System.Drawing.Point(441, 519);
             this.btnCargar.Name = "btnCargar";
             this.btnCargar.Size = new System.Drawing.Size(75, 23);
             this.btnCargar.TabIndex = 15;
@@ -180,7 +191,7 @@
             // 
             // btnCargarVariables
             // 
-            this.btnCargarVariables.Location = new System.Drawing.Point(460, 484);
+            this.btnCargarVariables.Location = new System.Drawing.Point(359, 516);
             this.btnCargarVariables.Name = "btnCargarVariables";
             this.btnCargarVariables.Size = new System.Drawing.Size(75, 36);
             this.btnCargarVariables.TabIndex = 16;
@@ -232,32 +243,114 @@
             this.dtgTriplos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dtgTriplos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgTriplos.GridColor = System.Drawing.Color.Lime;
-            this.dtgTriplos.Location = new System.Drawing.Point(637, 426);
+            this.dtgTriplos.Location = new System.Drawing.Point(522, 412);
             this.dtgTriplos.Name = "dtgTriplos";
             dataGridViewCellStyle4.BackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.dtgTriplos.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.dtgTriplos.Size = new System.Drawing.Size(437, 150);
+            this.dtgTriplos.Size = new System.Drawing.Size(364, 293);
             this.dtgTriplos.TabIndex = 20;
             // 
             // lblTriplos
             // 
             this.lblTriplos.AutoSize = true;
             this.lblTriplos.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTriplos.Location = new System.Drawing.Point(633, 403);
+            this.lblTriplos.Location = new System.Drawing.Point(518, 388);
             this.lblTriplos.Name = "lblTriplos";
             this.lblTriplos.Size = new System.Drawing.Size(72, 20);
             this.lblTriplos.TabIndex = 21;
             this.lblTriplos.Text = "Triplos";
+            // 
+            // btnEnsamblador
+            // 
+            this.btnEnsamblador.Location = new System.Drawing.Point(876, 286);
+            this.btnEnsamblador.Name = "btnEnsamblador";
+            this.btnEnsamblador.Size = new System.Drawing.Size(75, 40);
+            this.btnEnsamblador.TabIndex = 22;
+            this.btnEnsamblador.Text = "Codigo en ensamblador";
+            this.btnEnsamblador.UseVisualStyleBackColor = true;
+            this.btnEnsamblador.Click += new System.EventHandler(this.btnEnsamblador_Click);
+            // 
+            // dtgLadoVerdadero
+            // 
+            this.dtgLadoVerdadero.BackgroundColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Lime;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Desktop;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dtgLadoVerdadero.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            this.dtgLadoVerdadero.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgLadoVerdadero.GridColor = System.Drawing.Color.Lime;
+            this.dtgLadoVerdadero.Location = new System.Drawing.Point(904, 411);
+            this.dtgLadoVerdadero.Name = "dtgLadoVerdadero";
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.dtgLadoVerdadero.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            this.dtgLadoVerdadero.Size = new System.Drawing.Size(221, 134);
+            this.dtgLadoVerdadero.TabIndex = 23;
+            // 
+            // dtgLadoFalso
+            // 
+            this.dtgLadoFalso.BackgroundColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Lime;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Desktop;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dtgLadoFalso.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            this.dtgLadoFalso.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgLadoFalso.GridColor = System.Drawing.Color.Lime;
+            this.dtgLadoFalso.Location = new System.Drawing.Point(904, 571);
+            this.dtgLadoFalso.Name = "dtgLadoFalso";
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.dtgLadoFalso.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            this.dtgLadoFalso.Size = new System.Drawing.Size(221, 134);
+            this.dtgLadoFalso.TabIndex = 24;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(900, 389);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(63, 20);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "TRTRUE";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(900, 551);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(72, 20);
+            this.label2.TabIndex = 26;
+            this.label2.Text = "TRFALSE";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.ClientSize = new System.Drawing.Size(1370, 625);
+            this.ClientSize = new System.Drawing.Size(1370, 726);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.dtgLadoFalso);
+            this.Controls.Add(this.dtgLadoVerdadero);
+            this.Controls.Add(this.btnEnsamblador);
             this.Controls.Add(this.lblTriplos);
             this.Controls.Add(this.dtgTriplos);
             this.Controls.Add(this.lblCodigoIntermedio);
@@ -279,6 +372,8 @@
             this.Text = "Analizador Increible";
             ((System.ComponentModel.ISupportInitialize)(this.dtgVariables)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgTriplos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgLadoVerdadero)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgLadoFalso)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -303,6 +398,11 @@
         private System.Windows.Forms.Label lblCodigoIntermedio;
         private System.Windows.Forms.DataGridView dtgTriplos;
         private System.Windows.Forms.Label lblTriplos;
+        private System.Windows.Forms.Button btnEnsamblador;
+        private System.Windows.Forms.DataGridView dtgLadoVerdadero;
+        private System.Windows.Forms.DataGridView dtgLadoFalso;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
 

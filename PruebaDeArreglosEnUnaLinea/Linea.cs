@@ -33,6 +33,28 @@ namespace PruebaDeArreglosEnUnaLinea
 		}
 		private string intTokenVar;
 
+		private bool blnEsDesicion;
+
+		public bool EsDesicion
+		{
+			get { return blnEsDesicion; }
+			set { blnEsDesicion = value; }
+		}
+		private string strLadoDesicion;
+
+		public string LadoDesicion
+		{
+			get { return strLadoDesicion; }
+			set { strLadoDesicion = value; }
+		}
+
+		private bool blnEsCiclo;
+
+		public bool EsCiclo
+		{
+			get { return blnEsCiclo; }
+			set { blnEsCiclo = value; }
+		}
 		public string TokenVar
 		{
 			get { return intTokenVar; }

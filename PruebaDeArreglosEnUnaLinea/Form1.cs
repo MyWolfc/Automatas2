@@ -13,6 +13,7 @@ using MySql.Data.MySqlClient;
 using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace PruebaDeArreglosEnUnaLinea
 {
@@ -21,6 +22,8 @@ namespace PruebaDeArreglosEnUnaLinea
         string[,] Cadena;
         Linea[] CadenaTK;
         Linea[] auxCadenaTK;
+        Linea[] ParaSinctatico;
+        List<Linea> ParaSinctatico2;
         Linea[] CodigoLimpio;
         string RutaEpic = "Server=localhost;Database=pruebalex;Uid=root;Pwd=Juan@20";
         int Estado = 0;
@@ -42,9 +45,29 @@ namespace PruebaDeArreglosEnUnaLinea
             dtgTriplos.AllowUserToAddRows = false;
             dtgTriplos.AllowUserToDeleteRows = false;
             dtgTriplos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgTriplos.Columns.Add("Columna Id", "id");
             dtgTriplos.Columns.Add("Columna Dato Objeto", "Dato Obejto");
             dtgTriplos.Columns.Add("Columna Dato Fuente", "Dato Fuente");
             dtgTriplos.Columns.Add("Columna Operador", "Operador");
+
+            dtgLadoVerdadero.ReadOnly = true;
+            dtgLadoVerdadero.AllowUserToAddRows = false;
+            dtgLadoVerdadero.AllowUserToDeleteRows = false;
+            dtgLadoVerdadero.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgLadoVerdadero.Columns.Add("Columna Id", "id");
+            dtgLadoVerdadero.Columns.Add("Columna Dato Objeto", "Dato Obejto");
+            dtgLadoVerdadero.Columns.Add("Columna Dato Fuente", "Dato Fuente");
+            dtgLadoVerdadero.Columns.Add("Columna Operador", "Operador");
+
+            dtgLadoFalso.ReadOnly = true;
+            dtgLadoFalso.AllowUserToAddRows = false;
+            dtgLadoFalso.AllowUserToDeleteRows = false;
+            dtgLadoFalso.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgLadoFalso.Columns.Add("Columna Id", "id");
+            dtgLadoFalso.Columns.Add("Columna Dato Objeto", "Dato Obejto");
+            dtgLadoFalso.Columns.Add("Columna Dato Fuente", "Dato Fuente");
+            dtgLadoFalso.Columns.Add("Columna Operador", "Operador");
+
         }
         private void btnPasarALexico_Click(object sender, EventArgs e)
         {
@@ -87,6 +110,7 @@ namespace PruebaDeArreglosEnUnaLinea
 
             //Creamos un arreglo de objetos linea como limite los saltos de linea
             CadenaTK = new Linea[SaltosLinea.Length];
+            ParaSinctatico = new Linea[SaltosLinea.Length];
             //CodigoLimpio = new Linea[SaltosLinea.Length];
             for (int i = 0; i < SaltosLinea.Length; i++)
             {
@@ -96,6 +120,7 @@ namespace PruebaDeArreglosEnUnaLinea
                 MiLinea.NumeroDeLinea = i;
                 MiLinea.ContenidoDeLinea = SaltosLinea[i];
                 CadenaTK[i] = MiLinea;
+                ParaSinctatico[i] = MiLinea;
                 //CodigoLimpio[i] = MiLinea;
             }
             auxCadenaTK = CadenaTK;
@@ -118,7 +143,7 @@ namespace PruebaDeArreglosEnUnaLinea
                 try
                 {
                     cmd = Conexion.CreateCommand();
-                    cmd.CommandText = "Select * From pruebam";
+                    cmd.CommandText = "Select * From tablafinatk";
                     MySqlDataAdapter miAdaptador = new MySqlDataAdapter(cmd);
                     DataSet misDatos = new DataSet();
                     miAdaptador.Fill(misDatos);
@@ -237,6 +262,7 @@ namespace PruebaDeArreglosEnUnaLinea
 
                         }
                         CadenaTK[x].ContenidoDeLinea = AUXTOK;
+                        ParaSinctatico[x].ContenidoDeLinea = AUXTOK;
                         AUXTOK = "";
                         /*
                                                              _              _        _                  
@@ -293,22 +319,69 @@ namespace PruebaDeArreglosEnUnaLinea
 
                 string[] auxiliarVar;
                 auxiliarVar = auxCadenaTK[i].ContenidoDeLinea.Split(' ');
-                for (int j = 1; j < auxiliarVar.Length; j++)
+                if (!(i == 0))
                 {
-                    if (j == 1)
+                    for (int j = 1; j < auxiliarVar.Length; j++)
                     {
-                        if (auxiliarVar[j] == "TD01" || auxiliarVar[j] == "TD02" || auxiliarVar[j] == "TD03" || auxiliarVar[j] == "TD04")
+                        if (j == 1)
                         {
 
-                            auxCadenaTK[i].EsVariable = true;
-                            break;
+                            if (auxiliarVar[j] == "TD01" || auxiliarVar[j] == "TD02" || auxiliarVar[j] == "TD03" || auxiliarVar[j] == "TD04")
+                            {
+
+                                auxCadenaTK[i].EsVariable = true;
+                                //break; //porque?
+                            }
+                            //si es un if es lado verdadeero
+                            if (auxiliarVar[j] == "PR04" || auxiliarVar[j] == "PR05" )
+                            {
+                                auxCadenaTK[i].EsDesicion = true;
+                                auxCadenaTK[i + 1].EsDesicion = true;
+                                auxCadenaTK[i].LadoDesicion = "Verdadero";
+                                auxCadenaTK[i + 1].LadoDesicion = "Verdadero";
+                            }
+                            //si es un else es lado falso (mayor mente)
+                            else if(auxiliarVar[j] == "PR06")
+                            {
+                                auxCadenaTK[i].EsDesicion = true;
+                                auxCadenaTK[i + 1].EsDesicion = true;
+                                auxCadenaTK[i].LadoDesicion = "Falso";
+                                auxCadenaTK[i + 1].LadoDesicion = "Falso";
+
+                            }
+                            //aqui buscamos separar el lado True y False para hacer los triplos individuales.
+                            if ((auxCadenaTK[i - 1].LadoDesicion == "Verdadero" && !(auxiliarVar[j] == "LL02")))
+                            {
+                                auxCadenaTK[i].LadoDesicion = "Verdadero";
+                            }
+                            else if ((auxCadenaTK[i - 1].LadoDesicion == "Falso" && !(auxiliarVar[j] == "LL02")))
+                            {
+                                auxCadenaTK[i].LadoDesicion = "Falso";
+                            }
+                            //en este punto queremos saber hasta donde abarca la desicion delimitando
+                            if ((auxCadenaTK[i - 1].EsDesicion && !(auxiliarVar[j] == "LL02")))
+                            {
+                                auxCadenaTK[i].EsDesicion = true;
+                                auxCadenaTK[i].EsVariable = false;
+                            }
+
+
                         }
                     }
                 }
+                
             }
-
+            
+            Linea[] auxlinea = new Linea[CadenaTK.Length];
+            //Array.Copy(auxlinea, CadenaTK, CadenaTK.Length);
+            //ParaSinctatico = new Linea[auxlinea.Length];
+            //Array.Copy(ParaSinctatico,auxlinea,auxlinea.Length);
+            //ParaSinctatico2 = new List<Linea>(auxCadenaTK);
+            //btnSintactico_Click(sender,e);
+            int u_u = 0;
             btnCargarVariables_Click(sender, e);
             ComprobarVariable(ListaDeVariables, auxCadenaTK, CodigoLimpio);
+            int o_o = 0;
         }
         private void btnSintactico_Click(object sender, EventArgs e)
         {
@@ -332,13 +405,10 @@ namespace PruebaDeArreglosEnUnaLinea
             try
             {
                 cmd = Conexion.CreateCommand();
-                cmd.CommandText = "select TOKEN from pruebam WHERE TOKEN != ''";
+                cmd.CommandText = "select TOKEN from tablafinatk WHERE TOKEN != ''";
                 MySqlDataAdapter miAdaptador = new MySqlDataAdapter(cmd);
                 DataSet misDatos = new DataSet();
                 miAdaptador.Fill(misDatos);
-
-
-
                 foreach (DataRow row in misDatos.Tables[0].Rows)
                 {
                     //Console.WriteLine(row["EmpID"] + ", " + row["EmpName"] + ", " + row["EmpMobile"]);
@@ -1285,6 +1355,7 @@ namespace PruebaDeArreglosEnUnaLinea
             }
             Abrir.Dispose();
         }
+        //Boton para cagar las variables
         private void btnCargarVariables_Click(object sender, EventArgs e)
         {
             string CODIGO = txtCodigo.Text;
@@ -1360,6 +1431,32 @@ namespace PruebaDeArreglosEnUnaLinea
                     }
                 }
             }
+            for (int i = 0; i < CodigoLimpio.Length; i++)
+            {
+                string[] auxiliarVar;
+                string auxcontenido = CodigoLimpio[i].ContenidoDeLinea;
+                auxcontenido = auxcontenido.Replace('\r',' ');
+                auxiliarVar = auxcontenido.Split(' ');
+                if (i==0)
+                {
+
+                }
+                else
+                {
+                    if (auxiliarVar[0] == "si" || auxiliarVar[0] == "sino" || auxiliarVar[0] == "sinova")
+                    {
+                        CodigoLimpio[i].EsDesicion = true;
+                    }
+                   
+                    if ((CodigoLimpio[i-1].EsDesicion && !(auxiliarVar[0] == "}")))
+                    {
+                        
+                            CodigoLimpio[i].EsDesicion = true;
+                    }
+                    
+                }
+            }
+
             //Todo epico aqui importante aqui captamos cual es la linea que declara una variable
             string var = "";
             int ContadorDeVariables = 0;
@@ -1388,6 +1485,7 @@ namespace PruebaDeArreglosEnUnaLinea
 
                 }
             }
+
             //Usamos un contador de variables para crear el arreglo
             Variable[] ArregloDeVariables = new Variable[ContadorDeVariables];
             ArregloDeVariables = ArregloIdentificador(ArregloDeVariables);
@@ -1409,7 +1507,7 @@ namespace PruebaDeArreglosEnUnaLinea
              maxArreglo = ArregloDeVariables.Length + ArregloConstEnteras + ArregloConstReales;
             //List<Variable> ListaFinalDeVar = new List<Variable>();
             //inicializamos el arreglo global para poder usarlo 
-
+            ListaDeVariables.Clear();
             ArregloVarEpico = new Variable[maxArreglo];
             for (int i = 0; i < ArregloDeVariables.Length; i++)
             {
@@ -1481,7 +1579,7 @@ namespace PruebaDeArreglosEnUnaLinea
         private void ComprobarVariable(List<Variable> ArregloDelMetodo, Linea[] ArregloDeTokens, Linea[] ArregloCodigoLimpio)
         {
 
-
+            //comprobar variables
             for (int i = 0; i < ArregloCodigoLimpio.Length; i++)
             {
                 string[] auxLim = new string[ArregloCodigoLimpio[i].ContenidoDeLinea.Length];
@@ -1727,6 +1825,99 @@ namespace PruebaDeArreglosEnUnaLinea
                     AuxP = AuxP.Replace("*", "OA04");
                     AuxP = AuxP.Replace("=", "PR09");
 
+                    AuxP = AuxP.Replace("<", "OR01");
+                    AuxP = AuxP.Replace(">", "OR02");
+                    AuxP = AuxP.Replace("<=", "OR03");
+                    AuxP = AuxP.Replace(">=", "OR04");
+                    AuxP = AuxP.Replace("==", "OR05");
+                    
+                    AuxP = AuxP.Replace("&", "OL01");
+                    AuxP = AuxP.Replace("||", "OL02");
+                    AuxP = AuxP.Replace("!", "OL03");
+                    //AuxP = AuxP.Replace("(", "PAR1");
+                    //AuxP = AuxP.Replace(")", "PAR2");
+
+                    char[] ArregloEpic = new char[AuxP.Length];
+
+                    for (int pm = 0; pm < AuxP.Length; pm++)
+                    {
+                        ArregloEpic[pm] = AuxP[pm];
+                    }
+
+                    //for (int i = 0; i < ArregloEpic.Length; i += 4)
+                    //{
+                    //    if (i + 3 < ArregloEpic.Length)
+                    //    {
+                    //        ListaDePostFija.Add(new string(ArregloEpic, i, 4));
+                    //    }
+                    //    else
+                    //    {
+                    //        ListaDePostFija.Add(new string(ArregloEpic, i, ArregloEpic.Length - i));
+                    //    }
+                    //}
+                    string OwO = "";
+                    for (int i = 0; i < ArregloEpic.Length; i++)
+                    {
+
+                        OwO = OwO + ArregloEpic[i];
+                        if (OwO.Length == 4)
+                        {
+                            ListaDePostFija.Add(OwO);
+
+                            OwO = "";
+                        }
+                    }
+                    AuxP = "";
+                    for (int i = 0; i < ListaDePostFija.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            AuxP = ListaDePostFija[i];
+                        }
+                        else
+                        {
+                            AuxP = AuxP + " " + ListaDePostFija[i];
+                        }
+                    }
+                    int T_T = 0;
+                    auxCadenaTK[m].ContenidoDeLinea = AuxP;
+                }
+                if (auxCadenaTK[m].EsDesicion)
+                {
+                    string cadenainfija = auxCadenaTK[m].ContenidoDeLinea;
+
+                    string[] CambioOPA = cadenainfija.Split(' ');
+                    string aux = "";
+                    for (int i = 0; i < CambioOPA.Length; i++)
+                    {
+                        CambioOPA[i] = CambioOPA[i].Trim();
+                        aux = aux + CambioOPA[i];
+                    }
+                    string aux2 = OPA_TK(CambioOPA);
+                    cadenainfija = cadenainfija.Replace(" ", "");
+                    aux2 = aux2.Replace(" ", "");
+                    string PostFijaFinal = InfixToPostfix(aux2);
+                    List<string> ListaDePostFija = new List<string>();
+
+                    string AuxP = PostFijaFinal;
+                    AuxP = AuxP.Replace("+", "OA01");
+                    AuxP = AuxP.Replace("-", "OA02");
+                    AuxP = AuxP.Replace("/", "OA03");
+                    AuxP = AuxP.Replace("*", "OA04");
+                    AuxP = AuxP.Replace("=", "PR09");
+
+                    AuxP = AuxP.Replace("<", "OR01");
+                    AuxP = AuxP.Replace(">", "OR02");
+                    AuxP = AuxP.Replace("<=", "OR03");
+                    AuxP = AuxP.Replace(">=", "OR04");
+                    AuxP = AuxP.Replace("==", "OR05");
+
+                    AuxP = AuxP.Replace("&", "OL01");
+                    AuxP = AuxP.Replace("||", "OL02");
+                    AuxP = AuxP.Replace("!", "OL03");
+                    //AuxP = AuxP.Replace("(", "PAR1");
+                    //AuxP = AuxP.Replace(")", "PAR2");
+
                     char[] ArregloEpic = new char[AuxP.Length];
 
                     for (int pm = 0; pm < AuxP.Length; pm++)
@@ -1773,22 +1964,6 @@ namespace PruebaDeArreglosEnUnaLinea
                     auxCadenaTK[m].ContenidoDeLinea = AuxP;
                 }
 
-                //auxCadenaTK[i].ContenidoDeLinea = auxCadenaTK[i].ContenidoDeLinea.Replace(" ","");
-                //string[] TokenLinea = auxCadenaTK[i].ContenidoDeLinea.Split(' ');
-                //string[] CambioOPA = cadenainfija.Split(' ');
-                //for (int p = 0; p < TokenLinea.Length; p++)
-                //{
-                //    TokenLinea[p] = TokenLinea[p].Trim();
-                //}
-                //for (int p = 0; p < TokenLinea.Length; p++)
-                //{
-
-                //}
-                //for (int j = 0; i < TokenLinea.Length; j++)
-                //{
-
-                //}
-
                 string UwU = "";
 
             }
@@ -1807,14 +1982,15 @@ namespace PruebaDeArreglosEnUnaLinea
                 }
             }
 
-            //Ahora si viene lo chido los poderosismos "triplos"
+            //Ahora si viene lo chido los poderosismos "triplos".
+            //Estos triplos son para asignacion y operaciones ARIMETICAS.
             int contadorTemps = 1;
+            int idTriplos = 0;
             List<Triplo> TriplosEpicos = new List<Triplo>();
             for (int i = 0; i < auxCadenaTK.Length; i++)
             {
                 if (auxCadenaTK[i].EsVariable)
                 {
-
                     string cadenainfija = auxCadenaTK[i].ContenidoDeLinea;
                     string[] CambioOPA = cadenainfija.Split(' ');
                     CambioOPA = CambioOPA.Skip(1).ToArray();
@@ -1830,7 +2006,6 @@ namespace PruebaDeArreglosEnUnaLinea
                         {
                             string temp = "TE0" + contadorTemps;
                             Stack<string> PilaEpica = new Stack<string>();
-                            ;
                             //Como chetto le digo los pasos en esta parte??
                             //la idea es agarrar los 2 numeros y el operador
                             //Aqui pondremos si la operacion no se hace con Temporales haga una nueva
@@ -1838,7 +2013,6 @@ namespace PruebaDeArreglosEnUnaLinea
                             if (ListaEpicaAux[p] == "PR09")
                             {
                                 Triplo T = new Triplo(contadorTemps);
-
                                 //
                                 PilaEpica.Push(ListaEpicaAux[p]);
                                 PilaEpica.Push(ListaEpicaAux[p - 1]);
@@ -1851,6 +2025,8 @@ namespace PruebaDeArreglosEnUnaLinea
                                 ListaEpicaAux.RemoveAt(p);
                                 ListaEpicaAux.RemoveAt(p - 1);
                                 ListaEpicaAux[p - 2] = T.DatoObjeto;
+                                idTriplos++;
+                                T.id = idTriplos;
                                 TriplosEpicos.Add(T);
                                 //contadorTemps++;
                                 p = 0;
@@ -1862,7 +2038,6 @@ namespace PruebaDeArreglosEnUnaLinea
                                     if (ListaEpicaAux[p] == "PR09")
                                     {
                                         Triplo T = new Triplo(contadorTemps);
-
                                         //
                                         PilaEpica.Push(ListaEpicaAux[p]);
                                         PilaEpica.Push(ListaEpicaAux[p - 1]);
@@ -1870,12 +2045,13 @@ namespace PruebaDeArreglosEnUnaLinea
 
                                         T.DatoFuente = PilaEpica.Pop();
                                         T.DatoObjeto = PilaEpica.Pop();
-
                                         T.Operador = PilaEpica.Pop();
                                         //
                                         //ListaEpicaAux.RemoveAt(i);
                                         //ListaEpicaAux.RemoveAt(i - 1);
                                         //ListaEpicaAux[i - 2] = T.DatoObjeto;
+                                        idTriplos++;
+                                        T.id = idTriplos;
                                         TriplosEpicos.Add(T);
                                     }
                                     else
@@ -1893,10 +2069,15 @@ namespace PruebaDeArreglosEnUnaLinea
                                         T1.DatoObjeto = temp;
                                         T1.DatoFuente = PilaEpica.Pop();
                                         T1.Operador = PilaEpica.Pop();
+
                                         ListaEpicaAux.RemoveAt(p);
                                         ListaEpicaAux.RemoveAt(p - 1);
                                         ListaEpicaAux[p - 2] = T1.DatoObjeto;
+                                        idTriplos++;
+                                        T.id = idTriplos;
                                         TriplosEpicos.Add(T);
+                                        idTriplos++;
+                                        T1.id = idTriplos;
                                         TriplosEpicos.Add(T1);
                                         p = 0;
                                     }
@@ -1916,30 +2097,359 @@ namespace PruebaDeArreglosEnUnaLinea
                                     T1.DatoObjeto = temp;
                                     T1.DatoFuente = PilaEpica.Pop();
                                     T1.Operador = PilaEpica.Pop();
-
+                                    idTriplos++;
+                                    T.id = idTriplos;
+                                    
                                     ListaEpicaAux.RemoveAt(p);
                                     ListaEpicaAux.RemoveAt(p - 1);
                                     ListaEpicaAux[p - 2] = T1.DatoObjeto;
                                     TriplosEpicos.Add(T);
+                                    idTriplos++;
+                                    T1.id = idTriplos;
                                     TriplosEpicos.Add(T1);
                                     contadorTemps++;
                                     p = 0;
                                 }
                             }
-
                         }
                     }
-                    int OwO = 10;
                 }
             }
+
+
+            //Triplos de decisión.
+            //estas usando banderas en la linea, que tienes, problema que haras si dos banderas se prenden?! en caso lo que nunca pero nunca es que
+            //se prendan lass banderas de ciclo y de desicion.
+            List<Triplo> EstadoVerdadero = new List<Triplo>();
+            List<Triplo> Estado_Falso = new List<Triplo>();
+            int idVerdadero = 0;
+            int idFalso = 0;
+            for (int i = 0; i < auxCadenaTK.Length; i++)
+            {
+                if (auxCadenaTK[i].EsDesicion)
+                {
+                    if (!(auxCadenaTK[i].ContenidoDeLinea == "LL01"))
+                    {
+
+                        string cadenainfija = auxCadenaTK[i].ContenidoDeLinea;
+                        string[] CambioOPA = cadenainfija.Split(' ');
+                        //CambioOPA = CambioOPA.Skip(1).ToArray();
+                        List<string> ListaEpicaAux = new List<string>();
+                        for (int p = 0; p < CambioOPA.Length; p++)
+                        {
+                            ListaEpicaAux.Add(CambioOPA[p]);
+                        }
+                        for (int p = 0; p < ListaEpicaAux.Count; p++)
+                        {
+                            if (EsOperadorTK(ListaEpicaAux[p]))
+                            {
+                                Stack<string> PilaEpica = new Stack<string>();
+                                if (EsOperadorTKL(ListaEpicaAux[p]))
+                                {
+
+                                    string temp = "TE0" + contadorTemps;
+                                    Triplo T = new Triplo(contadorTemps);
+                                    contadorTemps++;
+
+                                    Triplo T1 = new Triplo(contadorTemps);
+                                    string temp1 = "TE0" + contadorTemps;
+                                   
+
+                                    PilaEpica.Push(ListaEpicaAux[p]);
+                                    PilaEpica.Push(ListaEpicaAux[p - 1]);
+                                    PilaEpica.Push(ListaEpicaAux[p - 2]);
+
+                                    T.Operador = "PR09";
+                                    T.DatoObjeto = temp;
+                                    T.DatoFuente = PilaEpica.Pop();
+                                    idTriplos++;
+                                    T.id = idTriplos;
+                                    TriplosEpicos.Add(T);
+
+                                    T1.Operador = "PR09";
+                                    T1.DatoObjeto = temp1;
+                                    T1.DatoFuente = PilaEpica.Pop();
+                                    idTriplos++;
+                                    T1.id = idTriplos;
+                                    TriplosEpicos.Add(T1);
+
+                                    Triplo Comparacion = new Triplo();
+                                    Comparacion.Operador = PilaEpica.Pop();
+                                    Comparacion.DatoFuente = T1.DatoObjeto;
+                                    Comparacion.DatoObjeto = T.DatoObjeto;
+                                    idTriplos++;
+                                    Comparacion.id = idTriplos;
+                                    TriplosEpicos.Add(Comparacion);
+
+                                    Triplo EstadoTrue = new Triplo();
+                                    idTriplos++;
+                                    EstadoTrue.id = idTriplos;
+                                    EstadoTrue.DatoObjeto = "TR1";
+                                    EstadoTrue.DatoFuente = "TRUE";
+                                    int positivo = idTriplos + 2;
+                                    EstadoTrue.Operador = positivo.ToString();
+                                    TriplosEpicos.Add(EstadoTrue);
+                                    Triplo EstadoFalso = new Triplo();
+                                    idTriplos++;
+                                    EstadoFalso.id = idTriplos;
+                                    EstadoFalso.DatoObjeto = "TR1";
+                                    EstadoFalso.DatoFuente = "FALSE";
+                                    int negativo = idTriplos + 2;
+                                    EstadoFalso.Operador = negativo.ToString();
+                                    TriplosEpicos.Add(EstadoFalso);
+
+                                    Triplo ET = new Triplo();
+                                    idTriplos++;
+                                    ET.id = idTriplos;
+                                    ET.DatoObjeto = "ET";
+                                    ET.DatoFuente = "TRTRUE";
+                                    int True_= idTriplos + 2;
+                                    ET.Operador = True_.ToString();
+                                    TriplosEpicos.Add(ET);
+                                    Triplo EF = new Triplo();
+                                    idTriplos++;
+                                    EF.id = idTriplos;
+                                    EF.DatoObjeto = "EF";
+                                    EF.DatoFuente = "TRFALSE";
+                                    int False_ = idTriplos + 2;
+                                    EF.Operador = False_.ToString();
+                                    TriplosEpicos.Add(EF);
+
+                                    //Triplo FIN = new Triplo();
+                                    //idTriplos++;
+                                    //FIN.id = idTriplos;
+                                    //FIN.DatoObjeto = "FIN";
+                                    //TriplosEpicos.Add(FIN);
+
+                                }
+                                else
+                                {
+                                    string temp = "TE0" + contadorTemps;
+
+                                    if (auxCadenaTK[i].LadoDesicion == "Verdadero")
+                                    {
+                                        if (ListaEpicaAux[p] == "PR09")
+                                        {
+                                            Triplo T = new Triplo(contadorTemps);
+                                            //
+                                            PilaEpica.Push(ListaEpicaAux[p]);
+                                            PilaEpica.Push(ListaEpicaAux[p - 1]);
+                                            PilaEpica.Push(ListaEpicaAux[p - 2]);
+
+                                            T.DatoObjeto = PilaEpica.Pop();
+                                            T.DatoFuente = PilaEpica.Pop();
+                                            T.Operador = PilaEpica.Pop();
+                                            //
+                                            //ListaEpicaAux.RemoveAt(i);
+                                            //ListaEpicaAux.RemoveAt(i - 1);
+                                            //ListaEpicaAux[i - 2] = T.DatoObjeto;
+                                            idVerdadero++;
+                                            T.id = idVerdadero;
+                                            EstadoVerdadero.Add(T);
+                                            //if (i == auxCadenaTK.Length) 
+                                            //{
+                                            //    Triplo FIN = new Triplo();
+                                            //    idTriplos++;
+                                            //    FIN.id = idTriplos;
+                                            //    FIN.DatoObjeto = "FIN";
+                                            //    TriplosEpicos.Add(FIN);
+                                            //}
+                                        }
+                                        else
+                                        {
+                                            Triplo T = new Triplo(contadorTemps);
+                                            Triplo T1 = new Triplo(contadorTemps);
+
+                                            PilaEpica.Push(ListaEpicaAux[p]);
+                                            PilaEpica.Push(ListaEpicaAux[p - 1]);
+                                            PilaEpica.Push(ListaEpicaAux[p - 2]);
+                                            T.Operador = "PR09";
+                                            T.DatoObjeto = temp;
+                                            T.DatoFuente = PilaEpica.Pop();
+
+                                            T1.DatoObjeto = temp;
+                                            T1.DatoFuente = PilaEpica.Pop();
+                                            T1.Operador = PilaEpica.Pop();
+
+                                            ListaEpicaAux.RemoveAt(p);
+                                            ListaEpicaAux.RemoveAt(p - 1);
+                                            ListaEpicaAux[p - 2] = T1.DatoObjeto;
+                                            idVerdadero++;
+                                            T.id = idVerdadero;
+                                            EstadoVerdadero.Add(T);
+                                            idVerdadero++;
+                                            T1.id = idVerdadero;
+                                            EstadoVerdadero.Add(T1);
+                                            p = 0;
+                                            //if (i == auxCadenaTK.Length )
+                                            //{
+                                            //    Triplo FIN = new Triplo();
+                                            //    idTriplos++;
+                                            //    FIN.id = idTriplos;
+                                            //    FIN.DatoObjeto = "FIN";
+                                            //    TriplosEpicos.Add(FIN);
+                                            //}
+
+                                        }
+
+                                    }
+                                    else if (auxCadenaTK[i].LadoDesicion == "Falso")
+                                    {
+                                        if (ListaEpicaAux[p] == "PR09")
+                                        {
+                                            Triplo T = new Triplo(contadorTemps);
+                                            //
+                                            PilaEpica.Push(ListaEpicaAux[p]);
+                                            PilaEpica.Push(ListaEpicaAux[p - 1]);
+                                            PilaEpica.Push(ListaEpicaAux[p - 2]);
+
+                                            T.DatoObjeto = PilaEpica.Pop();
+                                            T.DatoFuente = PilaEpica.Pop();
+                                            T.Operador = PilaEpica.Pop();
+                                            //
+                                            //ListaEpicaAux.RemoveAt(i);
+                                            //ListaEpicaAux.RemoveAt(i - 1);
+                                            //ListaEpicaAux[i - 2] = T.DatoObjeto;
+                                            idFalso++;
+                                            T.id = idFalso;
+                                            Estado_Falso.Add(T);
+                                            //if (i == auxCadenaTK.Length) 
+                                            //{
+                                            //    Triplo FIN = new Triplo();
+                                            //    idTriplos++;
+                                            //    FIN.id = idTriplos;
+                                            //    FIN.DatoObjeto = "FIN";
+                                            //    TriplosEpicos.Add(FIN);
+                                            //}
+                                        }
+                                        else
+                                        {
+                                            Triplo T = new Triplo(contadorTemps);
+                                            Triplo T1 = new Triplo(contadorTemps);
+
+                                            PilaEpica.Push(ListaEpicaAux[p]);
+                                            PilaEpica.Push(ListaEpicaAux[p - 1]);
+                                            PilaEpica.Push(ListaEpicaAux[p - 2]);
+                                            T.Operador = "PR09";
+                                            T.DatoObjeto = temp;
+                                            T.DatoFuente = PilaEpica.Pop();
+
+                                            T1.DatoObjeto = temp;
+                                            T1.DatoFuente = PilaEpica.Pop();
+                                            T1.Operador = PilaEpica.Pop();
+
+                                            ListaEpicaAux.RemoveAt(p);
+                                            ListaEpicaAux.RemoveAt(p - 1);
+                                            ListaEpicaAux[p - 2] = T1.DatoObjeto;
+                                            idFalso++;
+                                            T.id = idFalso;
+                                            Estado_Falso.Add(T);
+                                            idFalso++;
+                                            T1.id = idFalso;
+                                            Estado_Falso.Add(T1);
+                                            p = 0;
+                                            //if (i == auxCadenaTK.Length )
+                                            //{
+                                            //    Triplo FIN = new Triplo();
+                                            //    idTriplos++;
+                                            //    FIN.id = idTriplos;
+                                            //    FIN.DatoObjeto = "FIN";
+                                            //    TriplosEpicos.Add(FIN);
+                                            //}
+
+                                        }
+                                    }
+                                    //if (ListaEpicaAux[p] == "PR09")
+                                    //{
+                                    //    Triplo T = new Triplo(contadorTemps);
+                                    //    //
+                                    //    PilaEpica.Push(ListaEpicaAux[p]);
+                                    //    PilaEpica.Push(ListaEpicaAux[p - 1]);
+                                    //    PilaEpica.Push(ListaEpicaAux[p - 2]);
+
+                                    //    T.DatoFuente = PilaEpica.Pop();
+                                    //    T.DatoObjeto = PilaEpica.Pop();
+                                    //    T.Operador = PilaEpica.Pop();
+                                    //    //
+                                    //    //ListaEpicaAux.RemoveAt(i);
+                                    //    //ListaEpicaAux.RemoveAt(i - 1);
+                                    //    //ListaEpicaAux[i - 2] = T.DatoObjeto;
+                                    //    idTriplos++;
+                                    //    T.id = idTriplos;
+                                    //    TriplosEpicos.Add(T);
+                                    //    //if (i == auxCadenaTK.Length) 
+                                    //    //{
+                                    //    //    Triplo FIN = new Triplo();
+                                    //    //    idTriplos++;
+                                    //    //    FIN.id = idTriplos;
+                                    //    //    FIN.DatoObjeto = "FIN";
+                                    //    //    TriplosEpicos.Add(FIN);
+                                    //    //}
+                                    //}
+                                    //else
+                                    //{
+                                    //    Triplo T = new Triplo(contadorTemps);
+                                    //    Triplo T1 = new Triplo(contadorTemps);
+
+                                    //    PilaEpica.Push(ListaEpicaAux[p]);
+                                    //    PilaEpica.Push(ListaEpicaAux[p - 1]);
+                                    //    PilaEpica.Push(ListaEpicaAux[p - 2]);
+                                    //    T.Operador = "PR09";
+                                    //    T.DatoObjeto = temp;
+                                    //    T.DatoFuente = PilaEpica.Pop();
+
+                                    //    T1.DatoObjeto = temp;
+                                    //    T1.DatoFuente = PilaEpica.Pop();
+                                    //    T1.Operador = PilaEpica.Pop();
+
+                                    //    ListaEpicaAux.RemoveAt(p);
+                                    //    ListaEpicaAux.RemoveAt(p - 1);
+                                    //    ListaEpicaAux[p - 2] = T1.DatoObjeto;
+                                    //    idTriplos++;
+                                    //    T.id = idTriplos;
+                                    //    TriplosEpicos.Add(T);
+                                    //    idTriplos++;
+                                    //    T1.id = idTriplos;
+                                    //    TriplosEpicos.Add(T1);
+                                    //    p = 0;
+                                    //    //if (i == auxCadenaTK.Length )
+                                    //    //{
+                                    //    //    Triplo FIN = new Triplo();
+                                    //    //    idTriplos++;
+                                    //    //    FIN.id = idTriplos;
+                                    //    //    FIN.DatoObjeto = "FIN";
+                                    //    //    TriplosEpicos.Add(FIN);
+                                    //    //}
+
+                                    //}
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            Triplo FIN = new Triplo();
+            idTriplos++;
+            FIN.id = idTriplos;
+            FIN.DatoObjeto = "FIN";
+            TriplosEpicos.Add(FIN);
+            //Triplos de ciclo.
+
             dtgTriplos.Rows.Clear();
             foreach (Triplo triplo in TriplosEpicos)
             {
-                dtgTriplos.Rows.Add(triplo.DatoObjeto, triplo.DatoFuente, triplo.Operador);
+                dtgTriplos.Rows.Add(triplo.id, triplo.DatoObjeto, triplo.DatoFuente, triplo.Operador);
             }
-
-
-
+            dtgLadoVerdadero.Rows.Clear();
+            foreach (Triplo triplo in EstadoVerdadero)
+            {
+                dtgLadoVerdadero.Rows.Add(triplo.id, triplo.DatoObjeto, triplo.DatoFuente, triplo.Operador);
+            }
+            dtgLadoFalso.Rows.Clear();
+            foreach (Triplo triplo in Estado_Falso)
+            {
+                dtgLadoFalso.Rows.Add(triplo.id, triplo.DatoObjeto, triplo.DatoFuente, triplo.Operador);
+            }
         }
         public static string InfixToPostfix(string infix)
         {
@@ -1949,11 +2459,16 @@ namespace PruebaDeArreglosEnUnaLinea
             // Definir la precedencia de los operadores
             Dictionary<char, int> precedence = new Dictionary<char, int>()
             {
-                {'+', 1},
-                {'-', 1},
-                {'*', 2},
-                {'/', 2},
-                {'^', 3}
+                 {'+', 1},
+                 {'-', 1},
+                 {'*', 2},
+                 {'/', 2},
+                 {'^', 3},
+                 {'>', 4},
+                 {'<', 4},
+                 {'!', 4},
+                 {'&', 5},
+                 {'|', 6}
             };
 
             // Crear una pila para los operadores
@@ -2003,12 +2518,12 @@ namespace PruebaDeArreglosEnUnaLinea
             {
                 postfix.Append(operators.Pop());
             }
-            // Agregar el igual al final del string
+            //Agregar el igual al final del string
             if (infix.Contains("="))
             {
                 postfix.Append("=");
             }
-            // Retornar la cadena de salida postfija
+            //Retornar la cadena de salida postfija
             return postfix.ToString();
         }
         private string OPA_TK(string[] OPA)
@@ -2036,13 +2551,46 @@ namespace PruebaDeArreglosEnUnaLinea
                 {
                     OPA[i] = "=";
                 }
+                else if (OPA[i] == "PAR1")
+                {
+                    OPA[i] = "(";
+                }
+                else if (OPA[i] == "PAR2")
+                {
+                    OPA[i] = ")";
+                }
+                else if (OPA[i]== "OL01")
+                {
+                    OPA[i] = "&";
+                }
+                else if (OPA[i] == "OL02")
+                {
+                    OPA[i] = "|";
+                }
+                else if (OPA[i] == "OL03")
+                {
+                    OPA[i] = "!";
+                }
+                else if (OPA[i] == "OR01")
+                {
+                    OPA[i] = "<";
+                }
+                else if (OPA[i] == "OR02")
+                {
+                    OPA[i] = ">";
+                }
+                else if (OPA[i] == "OR06")
+                {
+                    OPA[i] = "!";
+                }
                 resultado = resultado + OPA[i];
             }
             return resultado;
         }
         private bool EsOperadorTK(string Operador)
         {
-            if (Operador == "OA01" || Operador == "OA02" || Operador == "OA03" || Operador == "OA04" || Operador == "PR09")
+            if (Operador == "OA01" || Operador == "OA02" || Operador == "OA03" || Operador == "OA04" || Operador == "PR09"||Operador=="OL01"|| 
+                Operador == "OL02"|| Operador == "OL03" || Operador == "OR01"|| Operador == "OR02"|| Operador == "OR06")
             {
                 return true;
             }
@@ -2050,6 +2598,27 @@ namespace PruebaDeArreglosEnUnaLinea
             {
                 return false;
             }
+        }
+        private bool EsOperadorTKL(string Operador)
+        {
+            if ( Operador == "OL01" || Operador == "OL02" || Operador == "OL03" || Operador == "OR01" || Operador == "OR02" || Operador == "OR06")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void btnEnsamblador_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
