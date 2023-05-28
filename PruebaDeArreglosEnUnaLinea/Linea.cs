@@ -55,6 +55,14 @@ namespace PruebaDeArreglosEnUnaLinea
 			get { return blnEsCiclo; }
 			set { blnEsCiclo = value; }
 		}
+		private bool blnParteDelCiclo;
+
+		public bool ParteDeCiclo
+		{
+			get { return blnParteDelCiclo; }
+			set { blnParteDelCiclo = value; }
+		}
+
 		public string TokenVar
 		{
 			get { return intTokenVar; }

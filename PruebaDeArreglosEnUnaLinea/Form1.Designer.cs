@@ -36,6 +36,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.txtLexico = new System.Windows.Forms.TextBox();
             this.btnPasarALexico = new System.Windows.Forms.Button();
@@ -58,10 +60,13 @@
             this.dtgLadoFalso = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.dtgLoop = new System.Windows.Forms.DataGridView();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dtgVariables)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgTriplos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgLadoVerdadero)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgLadoFalso)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgLoop)).BeginInit();
             this.SuspendLayout();
             // 
             // txtCodigo
@@ -340,12 +345,47 @@
             this.label2.TabIndex = 26;
             this.label2.Text = "TRFALSE";
             // 
+            // dtgLoop
+            // 
+            this.dtgLoop.BackgroundColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Lime;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Desktop;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dtgLoop.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            this.dtgLoop.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgLoop.GridColor = System.Drawing.Color.Lime;
+            this.dtgLoop.Location = new System.Drawing.Point(1137, 412);
+            this.dtgLoop.Name = "dtgLoop";
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.dtgLoop.RowsDefaultCellStyle = dataGridViewCellStyle10;
+            this.dtgLoop.Size = new System.Drawing.Size(221, 134);
+            this.dtgLoop.TabIndex = 27;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(1133, 391);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(45, 20);
+            this.label3.TabIndex = 28;
+            this.label3.Text = "LOOP";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.ClientSize = new System.Drawing.Size(1370, 726);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.dtgLoop);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dtgLadoFalso);
@@ -374,6 +414,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dtgTriplos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgLadoVerdadero)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgLadoFalso)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgLoop)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -403,6 +444,8 @@
         private System.Windows.Forms.DataGridView dtgLadoFalso;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridView dtgLoop;
+        private System.Windows.Forms.Label label3;
     }
 }
 
