@@ -25,6 +25,10 @@ namespace PruebaDeArreglosEnUnaLinea
         Linea[] ParaSinctatico;
         List<Linea> ParaSinctatico2;
         Linea[] CodigoLimpio;
+        List<Triplo> ListaTriploMain = new List<Triplo>();
+        List<Triplo> ListaTriploTrue = new List<Triplo>();
+        List<Triplo> ListaTriploFalse = new List<Triplo>();
+        List<Triplo> ListaTriploLoop = new List<Triplo>();
         string RutaEpic = "Server=localhost;Database=pruebalex;Uid=root;Pwd=Juan@20";
         int Estado = 0;
         Variable[] ArregloVarEpico;
@@ -335,7 +339,7 @@ namespace PruebaDeArreglosEnUnaLinea
                         if (j == 1)
                         {
                             //Identificamos si la palabra reservada es una variable
-                            if (auxiliarVar[j] == "TD01" || auxiliarVar[j] == "TD02" || auxiliarVar[j] == "TD03" || auxiliarVar[j] == "TD04")
+                            if (auxiliarVar[j] == "TD01" || auxiliarVar[j] == "TD02" || auxiliarVar[j] == "TD03" || auxiliarVar[j] == "TD04" )
                             {
                                 auxCadenaTK[i].EsVariable = true;
                                 //break; //porque?
@@ -409,780 +413,781 @@ namespace PruebaDeArreglosEnUnaLinea
         }
         private void btnSintactico_Click(object sender, EventArgs e)
         {
-            string PruebaEpica = txtLexico.Text;
-            bool BANDERAEPICA = true;
-            string Error = "Error en";
-            //string Try = " ";
-            string TokensYes = "";
-            string[] TokensValidos = new string[37];
-            //MessageBox.Show("XD: " + PruebaEpica);
-            /*for (int i = 1; i < GlobalArregllo.Length; i++)
-            {
-                Try = Try + GlobalArregllo[i] + " ";
-            }*/
-            //MessageBox.Show("Test de arreglo:\r" + Try );
-            MySqlConnection Conexion = new MySqlConnection(RutaEpic);
+            //string PruebaEpica = txtLexico.Text;
+            //bool BANDERAEPICA = true;
+            //string Error = "Error en";
+            ////string Try = " ";
+            //string TokensYes = "";
+            //string[] TokensValidos = new string[37];
+            ////MessageBox.Show("XD: " + PruebaEpica);
+            ///*for (int i = 1; i < GlobalArregllo.Length; i++)
+            //{
+            //    Try = Try + GlobalArregllo[i] + " ";
+            //}*/
+            ////MessageBox.Show("Test de arreglo:\r" + Try );
+            //MySqlConnection Conexion = new MySqlConnection(RutaEpic);
 
-            MySqlCommand cmd;
+            //MySqlCommand cmd;
 
-            Conexion.Open();
-            try
-            {
-                cmd = Conexion.CreateCommand();
-                cmd.CommandText = "select TOKEN from tablafinatk WHERE TOKEN != ''";
-                MySqlDataAdapter miAdaptador = new MySqlDataAdapter(cmd);
-                DataSet misDatos = new DataSet();
-                miAdaptador.Fill(misDatos);
-                foreach (DataRow row in misDatos.Tables[0].Rows)
-                {
-                    //Console.WriteLine(row["EmpID"] + ", " + row["EmpName"] + ", " + row["EmpMobile"]);
-                    //MessageBox.Show("Token" + row["TOKEN"]);
-                    TokensYes = TokensYes + row["TOKEN"].ToString() + " ";
-                }
-                TokensValidos = TokensYes.Split(' ');
-                //MessageBox.Show("token num36: " + TokensValidos[35].ToString() + "\n 36: " + TokensValidos[36].ToString());
+            //Conexion.Open();
+            //try
+            //{
+            //    cmd = Conexion.CreateCommand();
+            //    cmd.CommandText = "select TOKEN from tablafinatk WHERE TOKEN != ''";
+            //    MySqlDataAdapter miAdaptador = new MySqlDataAdapter(cmd);
+            //    DataSet misDatos = new DataSet();
+            //    miAdaptador.Fill(misDatos);
+            //    foreach (DataRow row in misDatos.Tables[0].Rows)
+            //    {
+            //        //Console.WriteLine(row["EmpID"] + ", " + row["EmpName"] + ", " + row["EmpMobile"]);
+            //        //MessageBox.Show("Token" + row["TOKEN"]);
+            //        TokensYes = TokensYes + row["TOKEN"].ToString() + " ";
+            //    }
+            //    TokensValidos = TokensYes.Split(' ');
+            //    //MessageBox.Show("token num36: " + TokensValidos[35].ToString() + "\n 36: " + TokensValidos[36].ToString());
 
-                for (int i = 0; i < TokensValidos.Length; i++)
-                {
-                    // MessageBox.Show("Tokens desde la base de datos: " + TokensValidos[i]);
-                }
-                //Esta bandera nos ayuda a cachar las excepcioness del if en caso que se use un else if o un else y no exista un IF antes de estos
-                bool banderitaINT = false;
-                bool banderitaFLT = false;
-                bool BanderaIF = false;
-                bool banderaWHILE = false;
-                string TraeTODO = "";
-                string[] GlobalArregllo;
-                //GlobalArregllo = PruebaEpica.Split(' ','\n');
-                for (int i = 0; i < CadenaTK.Length; i++)
-                {
-                    TraeTODO = TraeTODO + "" + CadenaTK[i].ContenidoDeLinea;
+            //    for (int i = 0; i < TokensValidos.Length; i++)
+            //    {
+            //        // MessageBox.Show("Tokens desde la base de datos: " + TokensValidos[i]);
+            //    }
+            //    //Esta bandera nos ayuda a cachar las excepcioness del if en caso que se use un else if o un else y no exista un IF antes de estos
+            //    bool banderitaINT = false;
+            //    bool banderitaFLT = false;
+            //    bool BanderaIF = false;
+            //    bool banderaWHILE = false;
+            //    string TraeTODO = "";
+            //    string[] GlobalArregllo;
+            //    //GlobalArregllo = PruebaEpica.Split(' ','\n');
+            //    for (int i = 0; i < CadenaTK.Length; i++)
+            //    {
+            //        TraeTODO = TraeTODO + "" + CadenaTK[i].ContenidoDeLinea;
 
-                }
-                char[] Delimitadores = { ' ', ';', '\n', '\r' };
-                GlobalArregllo = TraeTODO.Split(Delimitadores);
-                for (
-                    int i = 1; i < GlobalArregllo.Length; i++)
-                {
-                    if (TokensValidos[8] == GlobalArregllo[i])
-                    {
-                        banderaWHILE = true;
-                        break;
-                    }
-                }
-                for (int i = 1; i < GlobalArregllo.Length; i++)
-                {
-                    banderitaINT = false;
-                    banderitaFLT = false;
-                    //Validacion de la palabra inc = COM1 que el programa comience con inc
-                    if (i == 1)
-                    {
-                        //Validacion de la palabra inc = COM1 que el programa comience con inc
-                        if (TokensValidos[0] == GlobalArregllo[i])
-                        {
-                            //MessageBox.Show("Com1 es valido");
-                            BANDERAEPICA = true;
+            //    }
+            //    char[] Delimitadores = { ' ', ';', '\n', '\r' };
+            //    GlobalArregllo = TraeTODO.Split(Delimitadores);
+            //    for (
+            //        int i = 1; i < GlobalArregllo.Length; i++)
+            //    {
+            //        if (TokensValidos[8] == GlobalArregllo[i])
+            //        {
+            //            banderaWHILE = true;
+            //            break;
+            //        }
+            //    }
+            //    for (int i = 1; i < GlobalArregllo.Length; i++)
+            //    {
+            //        banderitaINT = false;
+            //        banderitaFLT = false;
+            //        //Validacion de la palabra inc = COM1 que el programa comience con inc
+            //        if (i == 1)
+            //        {
+            //            //Validacion de la palabra inc = COM1 que el programa comience con inc
+            //            if (TokensValidos[0] == GlobalArregllo[i])
+            //            {
+            //                //MessageBox.Show("Com1 es valido");
+            //                BANDERAEPICA = true;
 
-                        }
-                        else
-                        {
-                            BANDERAEPICA = false;
-                            Error = Error + "El programa tiene que empezar con inc";
-                            break;
+            //            }
+            //            else
+            //            {
+            //                BANDERAEPICA = false;
+            //                Error = Error + "El programa tiene que empezar con inc";
+            //                break;
 
-                        }
-                    }
-                    //Validacion de la palabra int = ENT2 LISTO FUNCIONAL
-                    else if (TokensValidos[1] == GlobalArregllo[i])
-                    {
-                        //aqui comprobamos que despues de un INT venga ID
-                        if (GlobalArregllo[i + 1] == TokensValidos[33])
-                        {
+            //            }
+            //        }
+            //        //Validacion de la palabra int = ENT2 LISTO FUNCIONAL
+            //        else if (TokensValidos[1] == GlobalArregllo[i])
+            //        {
+            //            //aqui comprobamos que despues de un INT venga ID
+            //            if (GlobalArregllo[i + 1] == TokensValidos[33])
+            //            {
 
-                            if (GlobalArregllo[i + 2] != TokensValidos[30])
-                            {
-                                //TODO bien aqui saltamos del ciclo las posiciones comparadas de los tokens
-                                i = i + 2;
-                            }
-                            else if (GlobalArregllo[i + 2] == TokensValidos[30])
-                            {
-                                if ((GlobalArregllo[i + 3] == TokensValidos[33]) || (GlobalArregllo[i + 3] == TokensValidos[16]))
-                                {
-                                    //aqui saltamos del ciclo las posiciones comparadas de los tokens
+            //                if (GlobalArregllo[i + 2] != TokensValidos[30])
+            //                {
+            //                    //TODO bien aqui saltamos del ciclo las posiciones comparadas de los tokens
+            //                    i = i + 2;
+            //                }
+            //                else if (GlobalArregllo[i + 2] == TokensValidos[30])
+            //                {
+            //                    if ((GlobalArregllo[i + 3] == TokensValidos[33]) || (GlobalArregllo[i + 3] == TokensValidos[16]))
+            //                    {
+            //                        //aqui saltamos del ciclo las posiciones comparadas de los tokens
 
-                                    //Todo chill porque se asigno un varible con un ID o con constante numerica entera
+            //                        //Todo chill porque se asigno un varible con un ID o con constante numerica entera
 
-                                    //ESTE IF IMPORTATE YA QUE NOS EVITA EL ERROR DE INDEX DEL ARREGLO
-                                    if (i + 4 < GlobalArregllo.Length - 1)
-                                    {
-                                        //Aqui verificamos  que despues esto tengo un OPA 
-                                        if ((VerificarOPA(TokensValidos, GlobalArregllo[i + 4])))
-                                        {
-                                            //ESTE IF IMPORTATE YA QUE NOS EVITA EL ERROR DE INDEX DEL ARREGLO
-                                            if (i + 5 < GlobalArregllo.Length)
-                                            {
-                                                //aqui hacemo referencia que puede ser un ID o CNE
-                                                if ((GlobalArregllo[i + 5] == TokensValidos[16]) || (GlobalArregllo[i + 5] == TokensValidos[33]))
-                                                {
-                                                    //aqui saltamos del ciclo las posiciones comparadas de los tokens
-                                                    banderitaINT = true;
-                                                    i = i + 4;
-                                                }
-                                                //si es diferente a un ID o CNE en este punto se debe disparara un error
-                                                else if ((GlobalArregllo[i + 5] != TokensValidos[16]) || (GlobalArregllo[i + 5] != TokensValidos[33]))
-                                                {
-                                                    //capturamos el error que despues del una OPA(+,-,/,*) no esta correctamente o la referencia no es a hacia un ID o CNE
-                                                    Error = Error + "  despues del una OPA(+,-,/,*) no se esta refiriendo a un ID o CNE";
-                                                    BANDERAEPICA = false;
-                                                    break;
-                                                }
-                                                else
-                                                {
-                                                    //capturamos el error que despues del una OPA(+,-,/,*) no esta correctamente o la referencia no es a hacia un ID o CNE
-                                                    Error = Error + "  despues del una OPA(+,-,/,*) no esta correctamente o la referencia no es a hacia un ID o CNE";
-                                                    BANDERAEPICA = false;
-                                                    break;
-                                                }
-                                            }
-
-
-                                        }
-                                    }
-                                    if (banderitaINT)
-                                    {
-
-                                    }
-                                    else
-                                    {
-                                        i = i + 2;
-                                    }
-                                }
-                                else
-                                {
-                                    //capturamos el error que despues del igual tiene que tener un ID o una constante numerica entera
-                                    Error = Error + "  despues del igual tiene que tener un ID o una constante numerica entera";
-                                    BANDERAEPICA = false;
-                                    break;
-                                }
-                            }
-
-                            i = i + 1;
-                        }
-                        else
-                        {
-                            //capturamos error despues de un tipo de dato debe ir un ID
-                            Error = Error + " despues de un tipo de dato (INT) debe ir un ID";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-                    }
-                    //Validacion de la palabra imp = PRN3 LISTO FUNCIONAL
-                    else if (TokensValidos[2] == GlobalArregllo[i])
-                    {
-
-                        if ((GlobalArregllo[i + 1] == TokensValidos[15]) || (GlobalArregllo[i + 1] == TokensValidos[16]) || (GlobalArregllo[i + 1] == TokensValidos[17]) || (GlobalArregllo[i + 1] == TokensValidos[33]))
-                        {
-                            //Comprobamos que la siguiente posicion del token sea && si no no se mostrara error
-                            if (GlobalArregllo[i + 2] == TokensValidos[23])
-                            {
-                                //Comprobamos que la siguiente posicion del token sea && si no no se mostrara error
-                                if ((GlobalArregllo[i + 3] == TokensValidos[15]) || (GlobalArregllo[i + 3] == TokensValidos[16]) || (GlobalArregllo[i + 3] == TokensValidos[17]) || (GlobalArregllo[i + 3] == TokensValidos[33]))
-                                {
-
-                                }
-                                else
-                                {
-                                    // Capturamos del error despues de IMP tiene que tener un ID o CN o una cadena
-                                    Error = Error + " despues de IMP con un argunmento y un & tiene que tener un ID o CN o una cadena";
-                                    BANDERAEPICA = false;
-                                    break;
-                                }
-                                //saltamos del ciclo las posiciones comparadas de los tokens
-                                i = i + 2;
-                            }
-                            //saltamos del ciclo las posiciones comparadas de los tokens
-                            i = i + 1;
-
-                        }
-                        else
-                        {
-                            // Capturamos del error despues de IMP tiene que tener un ID o CN o una cadena
-                            Error = Error + " despues de IMP tiene que tener un ID o CN o una cadena";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-                    }
-                    //Validacion de la palabra flt = FLT5 LISTO FUNCIONAL
-                    else if (TokensValidos[4] == GlobalArregllo[i])
-                    {
-                        //aqui comprobamos que despues de un FLT venga ID
-                        if (GlobalArregllo[i + 1] == TokensValidos[33])
-                        {
-
-                            if (GlobalArregllo[i + 2] != TokensValidos[30])
-                            {
-                                //TODO bien aqui saltamos del ciclo las posiciones comparadas de los tokens
-                                i = i + 2;
-                            }
-                            else if (GlobalArregllo[i + 2] == TokensValidos[30])
-                            {
-                                if ((GlobalArregllo[i + 3] == TokensValidos[33]) || (GlobalArregllo[i + 3] == TokensValidos[17]))
-                                {
+            //                        //ESTE IF IMPORTATE YA QUE NOS EVITA EL ERROR DE INDEX DEL ARREGLO
+            //                        if (i + 4 < GlobalArregllo.Length - 1)
+            //                        {
+            //                            //Aqui verificamos  que despues esto tengo un OPA 
+            //                            if ((VerificarOPA(TokensValidos, GlobalArregllo[i + 4])))
+            //                            {
+            //                                //ESTE IF IMPORTATE YA QUE NOS EVITA EL ERROR DE INDEX DEL ARREGLO
+            //                                if (i + 5 < GlobalArregllo.Length)
+            //                                {
+            //                                    //aqui hacemo referencia que puede ser un ID o CNE
+            //                                    if ((GlobalArregllo[i + 5] == TokensValidos[16]) || (GlobalArregllo[i + 5] == TokensValidos[33]))
+            //                                    {
+            //                                        //aqui saltamos del ciclo las posiciones comparadas de los tokens
+            //                                        banderitaINT = true;
+            //                                        i = i + 4;
+            //                                    }
+            //                                    //si es diferente a un ID o CNE en este punto se debe disparara un error
+            //                                    else if ((GlobalArregllo[i + 5] != TokensValidos[16]) || (GlobalArregllo[i + 5] != TokensValidos[33]))
+            //                                    {
+            //                                        //capturamos el error que despues del una OPA(+,-,/,*) no esta correctamente o la referencia no es a hacia un ID o CNE
+            //                                        Error = Error + "  despues del una OPA(+,-,/,*) no se esta refiriendo a un ID o CNE";
+            //                                        BANDERAEPICA = false;
+            //                                        break;
+            //                                    }
+            //                                    else
+            //                                    {
+            //                                        //capturamos el error que despues del una OPA(+,-,/,*) no esta correctamente o la referencia no es a hacia un ID o CNE
+            //                                        Error = Error + "  despues del una OPA(+,-,/,*) no esta correctamente o la referencia no es a hacia un ID o CNE";
+            //                                        BANDERAEPICA = false;
+            //                                        break;
+            //                                    }
+            //                                }
 
 
-                                    //Todo chill porque se asigno un varible con un ID o con constante numerica real
+            //                            }
+            //                        }
+            //                        if (banderitaINT)
+            //                        {
 
-                                    //ESTE IF IMPORTATE YA QUE NOS EVITA EL ERROR DE INDEX DEL ARREGLO
-                                    if (i + 4 < GlobalArregllo.Length - 1)
-                                    {
-                                        //Aqui verificamos  que despues esto tengo un OPA 
-                                        if ((VerificarOPA(TokensValidos, GlobalArregllo[i + 4])))
-                                        {
-                                            //ESTE IF IMPORTATE YA QUE NOS EVITA EL ERROR DE INDEX DEL ARREGLO
-                                            if (i + 5 < GlobalArregllo.Length)
-                                            {
-                                                //aqui hacemo referencia que puede ser un ID o CNR
-                                                if ((GlobalArregllo[i + 5] == TokensValidos[17]) || (GlobalArregllo[i + 5] == TokensValidos[33]))
-                                                {
-                                                    //aqui saltamos del ciclo las posiciones comparadas de los tokens
-                                                    banderitaFLT = true;
-                                                    i = i + 4;
-                                                }
-                                                //si es diferente a un ID o CNE en este punto se debe disparara un error
-                                                else if ((GlobalArregllo[i + 5] != TokensValidos[17]) || (GlobalArregllo[i + 5] != TokensValidos[33]))
-                                                {
-                                                    //capturamos el error que despues del una OPA(+,-,/,*) no esta correctamente o la referencia no es a hacia un ID o CNE
-                                                    Error = Error + "  despues del una OPA(+,-,/,*) no se esta refiriendo a un ID o CNR";
-                                                    BANDERAEPICA = false;
-                                                    break;
-                                                }
-                                                else
-                                                {
-                                                    //capturamos el error que despues del una OPA(+,-,/,*) no esta correctamente o la referencia no es a hacia un ID o CNE
-                                                    Error = Error + "  despues del una OPA(+,-,/,*) no esta correctamente o la referencia no es a hacia un ID o CNR";
-                                                    BANDERAEPICA = false;
-                                                    break;
-                                                }
-                                            }
+            //                        }
+            //                        else
+            //                        {
+            //                            i = i + 2;
+            //                        }
+            //                    }
+            //                    else
+            //                    {
+            //                        //capturamos el error que despues del igual tiene que tener un ID o una constante numerica entera
+            //                        Error = Error + "  despues del igual tiene que tener un ID o una constante numerica entera";
+            //                        BANDERAEPICA = false;
+            //                        break;
+            //                    }
+            //                }
 
+            //                i = i + 1;
+            //            }
+            //            else
+            //            {
+            //                //capturamos error despues de un tipo de dato debe ir un ID
+            //                Error = Error + " despues de un tipo de dato (INT) debe ir un ID";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+            //        }
+            //        //Validacion de la palabra imp = PRN3 LISTO FUNCIONAL
+            //        else if (TokensValidos[2] == GlobalArregllo[i])
+            //        {
 
-                                        }
-                                    }
-                                    if (banderitaFLT)
-                                    {
+            //            if ((GlobalArregllo[i + 1] == TokensValidos[15]) || (GlobalArregllo[i + 1] == TokensValidos[16]) || (GlobalArregllo[i + 1] == TokensValidos[17]) || (GlobalArregllo[i + 1] == TokensValidos[33]))
+            //            {
+            //                //Comprobamos que la siguiente posicion del token sea && si no no se mostrara error
+            //                if (GlobalArregllo[i + 2] == TokensValidos[23])
+            //                {
+            //                    //Comprobamos que la siguiente posicion del token sea && si no no se mostrara error
+            //                    if ((GlobalArregllo[i + 3] == TokensValidos[15]) || (GlobalArregllo[i + 3] == TokensValidos[16]) || (GlobalArregllo[i + 3] == TokensValidos[17]) || (GlobalArregllo[i + 3] == TokensValidos[33]))
+            //                    {
 
-                                    }
-                                    else
-                                    {
-                                        i = i + 2;
-                                    }
+            //                    }
+            //                    else
+            //                    {
+            //                        // Capturamos del error despues de IMP tiene que tener un ID o CN o una cadena
+            //                        Error = Error + " despues de IMP con un argunmento y un & tiene que tener un ID o CN o una cadena";
+            //                        BANDERAEPICA = false;
+            //                        break;
+            //                    }
+            //                    //saltamos del ciclo las posiciones comparadas de los tokens
+            //                    i = i + 2;
+            //                }
+            //                //saltamos del ciclo las posiciones comparadas de los tokens
+            //                i = i + 1;
 
-                                }
-                                else
-                                {
-                                    //capturamos el error que despues del igual tiene que tener un ID o una constante numerica entera
-                                    Error = Error + "  despues del igual tiene que tener un ID o una constante numerica real";
-                                    BANDERAEPICA = false;
-                                    break;
-                                }
-                            }
+            //            }
+            //            else
+            //            {
+            //                // Capturamos del error despues de IMP tiene que tener un ID o CN o una cadena
+            //                Error = Error + " despues de IMP tiene que tener un ID o CN o una cadena";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+            //        }
+            //        //Validacion de la palabra flt = FLT5 LISTO FUNCIONAL
+            //        else if (TokensValidos[4] == GlobalArregllo[i])
+            //        {
+            //            //aqui comprobamos que despues de un FLT venga ID
+            //            if (GlobalArregllo[i + 1] == TokensValidos[33])
+            //            {
 
-
-                        }
-                        else
-                        {
-                            //capturamos error despues de un tipo de dato debe ir un ID
-                            Error = Error + " despues de un tipo de dato (INT) debe ir un ID";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-                    }
-                    //Validacion de la palabra fori = fri6 LISTO FUNCIONAL
-                    else if (TokensValidos[5] == GlobalArregllo[i])
-                    {
-                        //en el caaso del ciclo for se tiene que ser muy especifico dado que esperamos en total 11 argumentos 
-                        //con este if evitamos el error por index
-                        if (i + 11 < GlobalArregllo.Length)
-                        {
-                            //la base es esta int X = 1 X < 10 X + 1
-                            // que tenga una declaracion de una variable CNE, despues la variable con la comprobacion una operacion relacional y un CNE
-                            // y por ultimo una operacion aritmetica con un ID el operador y una CNE
-                            if ((TokensValidos[1] == GlobalArregllo[i + 1])
-                           && (TokensValidos[33] == GlobalArregllo[i + 2])
-                           && (TokensValidos[30] == GlobalArregllo[i + 3])
-                           && TokensValidos[16] == GlobalArregllo[i + 4]
-                           && TokensValidos[33] == GlobalArregllo[i + 5]
-                           && VerificarOPL(TokensValidos, GlobalArregllo[i + 6])
-                           && (TokensValidos[16] == GlobalArregllo[i + 7])
-                           && (TokensValidos[33] == GlobalArregllo[i + 8])
-                           && VerificarOPA(TokensValidos, GlobalArregllo[i + 9])
-                           && TokensValidos[16] == GlobalArregllo[i + 10])
-                            {
-                                i = i + 10;
-                            }
-                            else
-                            {
-                                //capturamos error despues de la escritura como esta compuesto el fori
-                                Error = Error + " despues de la escritura como esta compuesto el fori";
-                                BANDERAEPICA = false;
-                                break;
-
-                            }
-                        }
-                        else
-                        {
-                            //capturamos error Faltaa de argumentos en el for ejemplo fori int X = 1 X < 10 X + 1
-                            Error = Error + " Faltaa de argumentos en el for ejemplo fori int X = 1 X < 10 X + 1";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-
-                    }
-                    //Validacion de la palabra nul = NUL7 LISTO FUNCIONAL
-                    else if (TokensValidos[6] == GlobalArregllo[i])
-                    {
-                        //Aqui comprobamos que despues del nul venga una ID
-                        if (TokensValidos[33] == GlobalArregllo[i + 1])
-                        {
-
-                        }
-                        else
-                        {
-                            //capturamos error despues de la palabra reservada NUL debe de seguir un identificador valido
-                            Error = Error + " despues de la palabra reservada NUL debe de seguir un identificador valido";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-                    }
-                    //Validacion de la palabra nuev = NEW8 LISTO FUNCIONAL problema aqui we
-                    else if (TokensValidos[7] == GlobalArregllo[i])
-                    {
-                        //Aqui comprobamos que despues del new venga una ID
-                        if (TokensValidos[33] == GlobalArregllo[i + 1])
-                        {
-
-                        }
-                        else
-                        {
-                            //capturamos error despues de la palabra reservada NEW debe de seguir un identificador valido
-                            Error = Error + " despues de la palabra reservada NEW debe de seguir un identificador valido";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-                    }
-                    //Validacion de la palabra whi = whi9 LISTO FUNCIONAL
-                    else if (TokensValidos[8] == GlobalArregllo[i])
-                    {
-                        //Comparamos que se realice una comparacion relacion y son id OPR y una CNE
-                        if ((TokensValidos[33] == GlobalArregllo[i + 1]) && VerificarOPR(TokensValidos, GlobalArregllo[i + 2]) && TokensValidos[16] == GlobalArregllo[i + 3])
-                        {
-                            i = i + 3;
-                        }
-                        else
-                        {
-                            //capturamos error despues de la palabra reservada whi tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10
-                            Error = Error + " despues de la palabra reservada whi tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-                    }
-                    //Validacion de la palabra Do = DW10 LISTO FUNCIONAL
-                    else if (TokensValidos[9] == GlobalArregllo[i])
-                    {
-                        if (banderaWHILE)
-                        {
-
-                        }
-                        else
-                        {
-                            //Atrapamos la excepcion
-                            Error = Error + " No puede utlizar un DO si no tienes definido un while";
-                            BANDERAEPICA = false;
-                            break;
-
-                        }
-                    }
-                    //Validacion de la palabra si = IF11LISTO FUNCIONAL
-                    else if (TokensValidos[10] == GlobalArregllo[i])
-                    {
-                        BanderaIF = true;
-                        //Comprabos que no se salga del arreglo para evitar error de index del arreglo
-                        if (i + 3 < GlobalArregllo.Length)
-                        {
-                            //Aqui estamos especificando que se haga una comparacion logica: un ID, un operador logico y una CNE
-                            if (TokensValidos[33] == GlobalArregllo[i + 1] && VerificarOPL(TokensValidos, GlobalArregllo[i + 2]) && TokensValidos[16] == GlobalArregllo[i + 3])
-                            {
-                                //verificamos si viene otro operador relacional para repetir el if de arriba con diferentee
-                                if (!VerificarOPR(TokensValidos, GlobalArregllo[i + 4]))
-                                {
-                                    if (TokensValidos[11] == GlobalArregllo[i + 4] || TokensValidos[12] == GlobalArregllo[i + 4])
-                                    {
-                                        //capturamos error despues de la palabra reservada SI y toda su sintaxis no puede ir un sino sinova
-                                        Error = Error + " capturamos error despues de la palabra reservada SI y toda su sintaxis no puede ir un sino sinova";
-                                        BANDERAEPICA = false;
-                                        break;
-                                    }
-                                    i = i + 3;
-                                }
-                                else
-                                {
-                                    //Comprabos que no se salga del arreglo para evitar error de index del arreglo
-                                    if (i + 7 < GlobalArregllo.Length)
-                                    {
-                                        //Verificamos quee operador reelacional como va
-                                        if (VerificarOPR(TokensValidos, GlobalArregllo[i + 4]))
-                                        {
-                                            //Aqui estamos especificando que se haga una comparacion logica: un ID, un operador logico y una CNE
-                                            if (TokensValidos[33] == GlobalArregllo[i + 5] && VerificarOPL(TokensValidos, GlobalArregllo[i + 6]) && TokensValidos[16] == GlobalArregllo[i + 7])
-                                            {
-
-                                                if (TokensValidos[11] == GlobalArregllo[i + 8] || TokensValidos[12] == GlobalArregllo[i + 8])
-                                                {
-                                                    //capturamos error despues de la palabra reservada SI y toda su sintaxis no puede ir un sino sinova
-                                                    Error = Error + " capturamos error despues de la palabra reservada SI y toda su sintaxis no puede ir un sino sinova";
-                                                    BANDERAEPICA = false;
-                                                    break;
-                                                }
-                                                i = i + 7;
-                                            }
-                                            else
-                                            {
-                                                //capturamos error despues de la palabra reservada SI tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10
-                                                Error = Error + " despues del operador logico && ó || ó ! tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10";
-                                                BANDERAEPICA = false;
-                                                break;
-                                            }
-                                        }
+            //                if (GlobalArregllo[i + 2] != TokensValidos[30])
+            //                {
+            //                    //TODO bien aqui saltamos del ciclo las posiciones comparadas de los tokens
+            //                    i = i + 2;
+            //                }
+            //                else if (GlobalArregllo[i + 2] == TokensValidos[30])
+            //                {
+            //                    if ((GlobalArregllo[i + 3] == TokensValidos[33]) || (GlobalArregllo[i + 3] == TokensValidos[17]))
+            //                    {
 
 
-                                    }
-                                    else
-                                    {
+            //                        //Todo chill porque se asigno un varible con un ID o con constante numerica real
 
-                                        //capturamos error de falta de argumentos
-                                        Error = Error + " error de falta de argumentos despues Operador logico minimo una operacion relacional";
-                                        BANDERAEPICA = false;
-                                        break;
-                                    }
-                                }
-
-                            }
-                            else
-                            {
-                                //capturamos error despues de la palabra reservada SI tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10
-                                Error = Error + " despues de la palabra reservada SI tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10";
-                                BANDERAEPICA = false;
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            //capturamos error de falta de argumentos
-                            Error = Error + " error de falta de argumentos minimo una operacion relacional";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-                    }
-                    //Validacion de la palabra sino = EL12 OJO esta solo va ser valido si se declaro un if antes LISTO FUNCIONAL
-                    else if (TokensValidos[11] == GlobalArregllo[i])
-                    {
-                        if (BanderaIF)
-                        {
-                            //seguimos con el codigo
-                            //Comprabos que no se salga del arreglo para evitar error de index del arreglo
-                            if (i + 3 < GlobalArregllo.Length)
-                            {
-                                //Aqui estamos especificando que se haga una comparacion logica: un ID, un operador logico y una CNE
-                                if (TokensValidos[33] == GlobalArregllo[i + 1] && VerificarOPL(TokensValidos, GlobalArregllo[i + 2]) && TokensValidos[16] == GlobalArregllo[i + 3])
-                                {
-                                    //verificamos si viene otro operador relacional para repetir el if de arriba con diferentee
-                                    if (!VerificarOPR(TokensValidos, GlobalArregllo[i + 4]))
-                                    {
-                                        if (TokensValidos[10] == GlobalArregllo[i + 4] || TokensValidos[12] == GlobalArregllo[i + 4])
-                                        {
-                                            //capturamos error despues de la palabra reservada SI y toda su sintaxis no puede ir un sino sinova
-                                            Error = Error + " capturamos error despues de la palabra reservada SINO y toda su sintaxis no puede ir un si o sinova";
-                                            BANDERAEPICA = false;
-                                            break;
-                                        }
-                                        i = i + 3;
-                                    }
-                                    else
-                                    {
-                                        //Comprabos que no se salga del arreglo para evitar error de index del arreglo
-                                        if (i + 7 < GlobalArregllo.Length)
-                                        {
-                                            //Verificamos quee operador reelacional como va
-                                            if (VerificarOPR(TokensValidos, GlobalArregllo[i + 4]))
-                                            {
-                                                //Aqui estamos especificando que se haga una comparacion logica: un ID, un operador logico y una CNE
-                                                if (TokensValidos[33] == GlobalArregllo[i + 5] && VerificarOPL(TokensValidos, GlobalArregllo[i + 6]) && TokensValidos[16] == GlobalArregllo[i + 7])
-                                                {
-                                                    if (TokensValidos[10] == GlobalArregllo[i + 8] || TokensValidos[12] == GlobalArregllo[i + 8])
-                                                    {
-                                                        //capturamos error despues de la palabra reservada SI y toda su sintaxis no puede ir un sino sinova
-                                                        Error = Error + " capturamos error despues de la palabra reservada SINO y toda su sintaxis no puede ir un si o sinova";
-                                                        BANDERAEPICA = false;
-                                                        break;
-                                                    }
-                                                    i = i + 7;
-                                                }
-                                                else
-                                                {
-                                                    //capturamos error despues de la palabra reservada SINO tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10
-                                                    Error = Error + " despues del operador logico && ó || ó ! tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10";
-                                                    BANDERAEPICA = false;
-                                                    break;
-                                                }
-                                            }
+            //                        //ESTE IF IMPORTATE YA QUE NOS EVITA EL ERROR DE INDEX DEL ARREGLO
+            //                        if (i + 4 < GlobalArregllo.Length - 1)
+            //                        {
+            //                            //Aqui verificamos  que despues esto tengo un OPA 
+            //                            if ((VerificarOPA(TokensValidos, GlobalArregllo[i + 4])))
+            //                            {
+            //                                //ESTE IF IMPORTATE YA QUE NOS EVITA EL ERROR DE INDEX DEL ARREGLO
+            //                                if (i + 5 < GlobalArregllo.Length)
+            //                                {
+            //                                    //aqui hacemo referencia que puede ser un ID o CNR
+            //                                    if ((GlobalArregllo[i + 5] == TokensValidos[17]) || (GlobalArregllo[i + 5] == TokensValidos[33]))
+            //                                    {
+            //                                        //aqui saltamos del ciclo las posiciones comparadas de los tokens
+            //                                        banderitaFLT = true;
+            //                                        i = i + 4;
+            //                                    }
+            //                                    //si es diferente a un ID o CNE en este punto se debe disparara un error
+            //                                    else if ((GlobalArregllo[i + 5] != TokensValidos[17]) || (GlobalArregllo[i + 5] != TokensValidos[33]))
+            //                                    {
+            //                                        //capturamos el error que despues del una OPA(+,-,/,*) no esta correctamente o la referencia no es a hacia un ID o CNE
+            //                                        Error = Error + "  despues del una OPA(+,-,/,*) no se esta refiriendo a un ID o CNR";
+            //                                        BANDERAEPICA = false;
+            //                                        break;
+            //                                    }
+            //                                    else
+            //                                    {
+            //                                        //capturamos el error que despues del una OPA(+,-,/,*) no esta correctamente o la referencia no es a hacia un ID o CNE
+            //                                        Error = Error + "  despues del una OPA(+,-,/,*) no esta correctamente o la referencia no es a hacia un ID o CNR";
+            //                                        BANDERAEPICA = false;
+            //                                        break;
+            //                                    }
+            //                                }
 
 
-                                        }
-                                        else
-                                        {
+            //                            }
+            //                        }
+            //                        if (banderitaFLT)
+            //                        {
 
-                                            //capturamos error de falta de argumentos
-                                            Error = Error + " error de falta de argumentos despues Operador logico minimo una operacion relacional";
-                                            BANDERAEPICA = false;
-                                            break;
-                                        }
-                                    }
+            //                        }
+            //                        else
+            //                        {
+            //                            i = i + 2;
+            //                        }
 
-                                }
-                                else
-                                {
-                                    //capturamos error despues de la palabra reservada SINO tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10
-                                    Error = Error + " despues de la palabra reservada SINO tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10";
-                                    BANDERAEPICA = false;
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                //capturamos error de falta de argumentos
-                                Error = Error + " error de falta de argumentos minimo una operacion relacional";
-                                BANDERAEPICA = false;
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            //Atrapamos la excepcion
-                            Error = Error + " No puede utlizar un SINOVA sin antes utilizar un SI para su desicion";
-                            BANDERAEPICA = false;
-                            break;
-                        }
+            //                    }
+            //                    else
+            //                    {
+            //                        //capturamos el error que despues del igual tiene que tener un ID o una constante numerica entera
+            //                        Error = Error + "  despues del igual tiene que tener un ID o una constante numerica real";
+            //                        BANDERAEPICA = false;
+            //                        break;
+            //                    }
+            //                }
 
-                    }
-                    //Validacion de la palabra Sinova = IF13 OJO esta solo va ser valido si se declaro un if antes LISTO FUNCIONAL
-                    else if (TokensValidos[12] == GlobalArregllo[i])
-                    {
-                        if (BanderaIF)
-                        {
-                            //seguimos con el codigo.
-                        }
-                        else
-                        {
-                            //Atrapamos la excepcion.
-                            Error = Error + " No puede utlizar un SINO sin antes utilizar un SI para su desicion";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-                    }
-                    //Validacion de la palabra str = SR14 LISTO FUNCIONAL
-                    else if (TokensValidos[13] == GlobalArregllo[i])
-                    {
-                        //Comprobamos que siga un ID 
-                        if (GlobalArregllo[i + 1] == TokensValidos[33])
-                        {
-                            //despues puede venir un igual o solo se puede declara pero no usuarse
-                            if (GlobalArregllo[i + 2] != TokensValidos[30])
-                            {
-                                //TODO bien aqui saltamos del ciclo las posiciones comparadas de los tokens
-                                i = i + 2;
-                            }
-                            //
-                            else if (GlobalArregllo[i + 2] == TokensValidos[30])
-                            {
-                                if (GlobalArregllo[i + 3] == TokensValidos[15])
-                                {
-                                    i = i + 3;
-                                }
-                                else
-                                {
-                                    //capturamos el error que despues del igual tiene que ser una cadena
-                                    Error = Error + "  despues del igual tiene que ser una cadena";
-                                    BANDERAEPICA = false;
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            //capturamos error despues de un tipo de dato debe ir un ID
-                            Error = Error + " despues de un tipo de dato (STR) debe ir un ID";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-                    }
-                    //Validacion de la palabra exc = EX15L ISTO FUNCIONAL
-                    else if (TokensValidos[14] == GlobalArregllo[i])
-                    {
-                        if (i + 5 < GlobalArregllo.Length)
-                        {
-                            if (TokensValidos[33] == GlobalArregllo[i + 1] && VerificarOPL(TokensValidos, GlobalArregllo[i + 2]) && TokensValidos[16] == GlobalArregllo[i + 3])
-                            {
-                                if (TokensValidos[20] == GlobalArregllo[i + 4] && TokensValidos[15] == GlobalArregllo[i + 5])
-                                {
-                                    i = i + 5;
-                                }
-                                else
-                                {
-                                    //capturamos el error despues de operador aritmetica / o la cadena no esta definida
-                                    Error = Error + " despues de operador aritmetica / o la cadena no esta definida";
-                                    BANDERAEPICA = false;
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                //capturamos error despues de la palabra reservada exc tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10
-                                Error = Error + " despues de la palabra reservada exc tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10";
-                                BANDERAEPICA = false;
-                                break;
-                            }
 
-                        }
-                        else
-                        {
-                            //capturamos error de falta de argumentos
-                            Error = Error + " error de falta de argumentos minimo una operacion relacional y una cadena que suelte la excepcion";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-                    }
-                    //Validacion del comentario // = CO22
-                    else if (TokensValidos[21] == GlobalArregllo[i])
-                    {
-                        //
-                        if (TokensValidos[15] == GlobalArregllo[i + 1])
-                        {
-                            i = i + 1;
-                        }
-                        else
-                        {
-                            Error = Error + " Despues de la querrer comentar // tiene que ir una cadena ejem: «Este_es_un_comentario»";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-                    }
-                    //Validacion de cadena sola que quiere decir que un delimitador de una cadena
-                    else if (TokensValidos[15] == GlobalArregllo[i])
-                    {
-                        //aqui no pasa nada solo se sigue el ciclo normal
-                    }
-                    //Validacion de un identificador idn = id34
-                    else if (TokensValidos[33] == GlobalArregllo[i])
-                    {
-                        if (VerificarOPA(TokensValidos, GlobalArregllo[i + 1]))
-                        {
-                            if ((TokensValidos[33] == GlobalArregllo[i + 2]) || (TokensValidos[16] == GlobalArregllo[i]) || (TokensValidos[17] == GlobalArregllo[i + 2]))
-                            {
-                                i = i + 2;
-                            }
-                            else
-                            {
-                                //Despues de un OPA tiene que ir un CN 0 un ID
-                                Error = Error + " Despues de un Operacion artimetica (+-/*) tiene que ir un CN 0 un ID";
-                                BANDERAEPICA = false;
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            //cachamos el error de un ID solo
-                            Error = Error + " Despues de un id solo puede ir un Operacion artimetica (+-/*) y constante numerica pero no puede ir solo";
-                            BANDERAEPICA = false;
-                            break;
-                        }
-                    }
-                    //Quiebre en que caso que tenga un token de error
-                    else if (TokensValidos[34] == GlobalArregllo[i])
-                    {
+            //            }
+            //            else
+            //            {
+            //                //capturamos error despues de un tipo de dato debe ir un ID
+            //                Error = Error + " despues de un tipo de dato (INT) debe ir un ID";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+            //        }
+            //        //Validacion de la palabra fori = fri6 LISTO FUNCIONAL
+            //        else if (TokensValidos[5] == GlobalArregllo[i])
+            //        {
+            //            //en el caaso del ciclo for se tiene que ser muy especifico dado que esperamos en total 11 argumentos 
+            //            //con este if evitamos el error por index
+            //            if (i + 11 < GlobalArregllo.Length)
+            //            {
+            //                //la base es esta int X = 1 X < 10 X + 1
+            //                // que tenga una declaracion de una variable CNE, despues la variable con la comprobacion una operacion relacional y un CNE
+            //                // y por ultimo una operacion aritmetica con un ID el operador y una CNE
+            //                if ((TokensValidos[1] == GlobalArregllo[i + 1])
+            //               && (TokensValidos[33] == GlobalArregllo[i + 2])
+            //               && (TokensValidos[30] == GlobalArregllo[i + 3])
+            //               && TokensValidos[16] == GlobalArregllo[i + 4]
+            //               && TokensValidos[33] == GlobalArregllo[i + 5]
+            //               && VerificarOPL(TokensValidos, GlobalArregllo[i + 6])
+            //               && (TokensValidos[16] == GlobalArregllo[i + 7])
+            //               && (TokensValidos[33] == GlobalArregllo[i + 8])
+            //               && VerificarOPA(TokensValidos, GlobalArregllo[i + 9])
+            //               && TokensValidos[16] == GlobalArregllo[i + 10])
+            //                {
+            //                    i = i + 10;
+            //                }
+            //                else
+            //                {
+            //                    //capturamos error despues de la escritura como esta compuesto el fori
+            //                    Error = Error + " despues de la escritura como esta compuesto el fori";
+            //                    BANDERAEPICA = false;
+            //                    break;
 
-                        Error = Error + " se decteto un error de TOKEN (LITERAL EL TOKEN DICE ERROR)";
-                        BANDERAEPICA = false;
-                        break;
-                    }
-                    //vaalidacion de abrir llave "{"
-                    /*else if (TokensValidos[36] == GlobalArregllo[i])
-                    {
-                        if (TokensValidos[36] != GlobalArregllo[i+1])
-                        {
+            //                }
+            //            }
+            //            else
+            //            {
+            //                //capturamos error Faltaa de argumentos en el for ejemplo fori int X = 1 X < 10 X + 1
+            //                Error = Error + " Faltaa de argumentos en el for ejemplo fori int X = 1 X < 10 X + 1";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
 
-                        }
-                        else
-                        {
-                            BANDERAEPICA = false;
-                            Error = Error + "No puedes colocar dos inicio de llaves {{";
-                            break;
-                        }
-                    }*/
-                    //vaalidacion de cerrar llave "}"
-                    else if (TokensValidos[37] == GlobalArregllo[i])
-                    {
+            //        }
+            //        //Validacion de la palabra nul = NUL7 LISTO FUNCIONAL
+            //        else if (TokensValidos[6] == GlobalArregllo[i])
+            //        {
+            //            //Aqui comprobamos que despues del nul venga una ID
+            //            if (TokensValidos[33] == GlobalArregllo[i + 1])
+            //            {
 
-                    }
-                    //Validacion de la palabra fin = END4 que el program termine con fin
-                    if (i == GlobalArregllo.Length - 1)
-                    {
-                        //Validacion de la palabra fin = END4 que el program termine con fin
-                        if (TokensValidos[3] == GlobalArregllo[i])
-                        {
-                            //MessageBox.Show("End4 es valido");
-                            BANDERAEPICA = true;
-                        }
-                        else
-                        {
-                            BANDERAEPICA = false;
-                            Error = Error + "El programa tiene que finalizar con fin";
-                            break;
-                        }
-                    }
-                }
-                if (BANDERAEPICA)
-                {
-                    MessageBox.Show("Analizador sintactico: correctamente pasado");
-                }
-                else
-                {
-                    MessageBox.Show("Analizador sintactico: Inconrrectamente en " + Error);
-                }
-                if (Conexion.State == ConnectionState.Open)
-                {
-                    //Cerramos la conexion
-                    Conexion.Close();
-                }
-            }
-            catch (Exception X)
-            {
-                MessageBox.Show(X.Message);
-                if (Conexion.State == ConnectionState.Open)
-                {
-                    //Cerramos la conexion
-                    Conexion.Close();
-                }
+            //            }
+            //            else
+            //            {
+            //                //capturamos error despues de la palabra reservada NUL debe de seguir un identificador valido
+            //                Error = Error + " despues de la palabra reservada NUL debe de seguir un identificador valido";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+            //        }
+            //        //Validacion de la palabra nuev = NEW8 LISTO FUNCIONAL problema aqui we
+            //        else if (TokensValidos[7] == GlobalArregllo[i])
+            //        {
+            //            //Aqui comprobamos que despues del new venga una ID
+            //            if (TokensValidos[33] == GlobalArregllo[i + 1])
+            //            {
 
-            }
-            finally
-            {
-                //Verificar si la conexionEPICA Esta abierta de ser asi se cierra
-                if (Conexion.State == ConnectionState.Open)
-                {
-                    //Cerramos la conexion
-                    Conexion.Close();
-                }
-            }
+            //            }
+            //            else
+            //            {
+            //                //capturamos error despues de la palabra reservada NEW debe de seguir un identificador valido
+            //                Error = Error + " despues de la palabra reservada NEW debe de seguir un identificador valido";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+            //        }
+            //        //Validacion de la palabra whi = whi9 LISTO FUNCIONAL
+            //        else if (TokensValidos[8] == GlobalArregllo[i])
+            //        {
+            //            //Comparamos que se realice una comparacion relacion y son id OPR y una CNE
+            //            if ((TokensValidos[33] == GlobalArregllo[i + 1]) && VerificarOPR(TokensValidos, GlobalArregllo[i + 2]) && TokensValidos[16] == GlobalArregllo[i + 3])
+            //            {
+            //                i = i + 3;
+            //            }
+            //            else
+            //            {
+            //                //capturamos error despues de la palabra reservada whi tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10
+            //                Error = Error + " despues de la palabra reservada whi tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+            //        }
+            //        //Validacion de la palabra Do = DW10 LISTO FUNCIONAL
+            //        else if (TokensValidos[9] == GlobalArregllo[i])
+            //        {
+            //            if (banderaWHILE)
+            //            {
+
+            //            }
+            //            else
+            //            {
+            //                //Atrapamos la excepcion
+            //                Error = Error + " No puede utlizar un DO si no tienes definido un while";
+            //                BANDERAEPICA = false;
+            //                break;
+
+            //            }
+            //        }
+            //        //Validacion de la palabra si = IF11LISTO FUNCIONAL
+            //        else if (TokensValidos[10] == GlobalArregllo[i])
+            //        {
+            //            BanderaIF = true;
+            //            //Comprabos que no se salga del arreglo para evitar error de index del arreglo
+            //            if (i + 3 < GlobalArregllo.Length)
+            //            {
+            //                //Aqui estamos especificando que se haga una comparacion logica: un ID, un operador logico y una CNE
+            //                if (TokensValidos[33] == GlobalArregllo[i + 1] && VerificarOPL(TokensValidos, GlobalArregllo[i + 2]) && TokensValidos[16] == GlobalArregllo[i + 3])
+            //                {
+            //                    //verificamos si viene otro operador relacional para repetir el if de arriba con diferentee
+            //                    if (!VerificarOPR(TokensValidos, GlobalArregllo[i + 4]))
+            //                    {
+            //                        if (TokensValidos[11] == GlobalArregllo[i + 4] || TokensValidos[12] == GlobalArregllo[i + 4])
+            //                        {
+            //                            //capturamos error despues de la palabra reservada SI y toda su sintaxis no puede ir un sino sinova
+            //                            Error = Error + " capturamos error despues de la palabra reservada SI y toda su sintaxis no puede ir un sino sinova";
+            //                            BANDERAEPICA = false;
+            //                            break;
+            //                        }
+            //                        i = i + 3;
+            //                    }
+            //                    else
+            //                    {
+            //                        //Comprabos que no se salga del arreglo para evitar error de index del arreglo
+            //                        if (i + 7 < GlobalArregllo.Length)
+            //                        {
+            //                            //Verificamos quee operador reelacional como va
+            //                            if (VerificarOPR(TokensValidos, GlobalArregllo[i + 4]))
+            //                            {
+            //                                //Aqui estamos especificando que se haga una comparacion logica: un ID, un operador logico y una CNE
+            //                                if (TokensValidos[33] == GlobalArregllo[i + 5] && VerificarOPL(TokensValidos, GlobalArregllo[i + 6]) && TokensValidos[16] == GlobalArregllo[i + 7])
+            //                                {
+
+            //                                    if (TokensValidos[11] == GlobalArregllo[i + 8] || TokensValidos[12] == GlobalArregllo[i + 8])
+            //                                    {
+            //                                        //capturamos error despues de la palabra reservada SI y toda su sintaxis no puede ir un sino sinova
+            //                                        Error = Error + " capturamos error despues de la palabra reservada SI y toda su sintaxis no puede ir un sino sinova";
+            //                                        BANDERAEPICA = false;
+            //                                        break;
+            //                                    }
+            //                                    i = i + 7;
+            //                                }
+            //                                else
+            //                                {
+            //                                    //capturamos error despues de la palabra reservada SI tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10
+            //                                    Error = Error + " despues del operador logico && ó || ó ! tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10";
+            //                                    BANDERAEPICA = false;
+            //                                    break;
+            //                                }
+            //                            }
+
+
+            //                        }
+            //                        else
+            //                        {
+
+            //                            //capturamos error de falta de argumentos
+            //                            Error = Error + " error de falta de argumentos despues Operador logico minimo una operacion relacional";
+            //                            BANDERAEPICA = false;
+            //                            break;
+            //                        }
+            //                    }
+
+            //                }
+            //                else
+            //                {
+            //                    //capturamos error despues de la palabra reservada SI tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10
+            //                    Error = Error + " despues de la palabra reservada SI tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10";
+            //                    BANDERAEPICA = false;
+            //                    break;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                //capturamos error de falta de argumentos
+            //                Error = Error + " error de falta de argumentos minimo una operacion relacional";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+            //        }
+            //        //Validacion de la palabra sino = EL12 OJO esta solo va ser valido si se declaro un if antes LISTO FUNCIONAL
+            //        else if (TokensValidos[11] == GlobalArregllo[i])
+            //        {
+            //            if (BanderaIF)
+            //            {
+            //                //seguimos con el codigo
+            //                //Comprabos que no se salga del arreglo para evitar error de index del arreglo
+            //                if (i + 3 < GlobalArregllo.Length)
+            //                {
+            //                    //Aqui estamos especificando que se haga una comparacion logica: un ID, un operador logico y una CNE
+            //                    if (TokensValidos[33] == GlobalArregllo[i + 1] && VerificarOPL(TokensValidos, GlobalArregllo[i + 2]) && TokensValidos[16] == GlobalArregllo[i + 3])
+            //                    {
+            //                        //verificamos si viene otro operador relacional para repetir el if de arriba con diferentee
+            //                        if (!VerificarOPR(TokensValidos, GlobalArregllo[i + 4]))
+            //                        {
+            //                            if (TokensValidos[10] == GlobalArregllo[i + 4] || TokensValidos[12] == GlobalArregllo[i + 4])
+            //                            {
+            //                                //capturamos error despues de la palabra reservada SI y toda su sintaxis no puede ir un sino sinova
+            //                                Error = Error + " capturamos error despues de la palabra reservada SINO y toda su sintaxis no puede ir un si o sinova";
+            //                                BANDERAEPICA = false;
+            //                                break;
+            //                            }
+            //                            i = i + 3;
+            //                        }
+            //                        else
+            //                        {
+            //                            //Comprabos que no se salga del arreglo para evitar error de index del arreglo
+            //                            if (i + 7 < GlobalArregllo.Length)
+            //                            {
+            //                                //Verificamos quee operador reelacional como va
+            //                                if (VerificarOPR(TokensValidos, GlobalArregllo[i + 4]))
+            //                                {
+            //                                    //Aqui estamos especificando que se haga una comparacion logica: un ID, un operador logico y una CNE
+            //                                    if (TokensValidos[33] == GlobalArregllo[i + 5] && VerificarOPL(TokensValidos, GlobalArregllo[i + 6]) && TokensValidos[16] == GlobalArregllo[i + 7])
+            //                                    {
+            //                                        if (TokensValidos[10] == GlobalArregllo[i + 8] || TokensValidos[12] == GlobalArregllo[i + 8])
+            //                                        {
+            //                                            //capturamos error despues de la palabra reservada SI y toda su sintaxis no puede ir un sino sinova
+            //                                            Error = Error + " capturamos error despues de la palabra reservada SINO y toda su sintaxis no puede ir un si o sinova";
+            //                                            BANDERAEPICA = false;
+            //                                            break;
+            //                                        }
+            //                                        i = i + 7;
+            //                                    }
+            //                                    else
+            //                                    {
+            //                                        //capturamos error despues de la palabra reservada SINO tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10
+            //                                        Error = Error + " despues del operador logico && ó || ó ! tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10";
+            //                                        BANDERAEPICA = false;
+            //                                        break;
+            //                                    }
+            //                                }
+
+
+            //                            }
+            //                            else
+            //                            {
+
+            //                                //capturamos error de falta de argumentos
+            //                                Error = Error + " error de falta de argumentos despues Operador logico minimo una operacion relacional";
+            //                                BANDERAEPICA = false;
+            //                                break;
+            //                            }
+            //                        }
+
+            //                    }
+            //                    else
+            //                    {
+            //                        //capturamos error despues de la palabra reservada SINO tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10
+            //                        Error = Error + " despues de la palabra reservada SINO tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10";
+            //                        BANDERAEPICA = false;
+            //                        break;
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    //capturamos error de falta de argumentos
+            //                    Error = Error + " error de falta de argumentos minimo una operacion relacional";
+            //                    BANDERAEPICA = false;
+            //                    break;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                //Atrapamos la excepcion
+            //                Error = Error + " No puede utlizar un SINOVA sin antes utilizar un SI para su desicion";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+
+            //        }
+            //        //Validacion de la palabra Sinova = IF13 OJO esta solo va ser valido si se declaro un if antes LISTO FUNCIONAL
+            //        else if (TokensValidos[12] == GlobalArregllo[i])
+            //        {
+            //            if (BanderaIF)
+            //            {
+            //                //seguimos con el codigo.
+            //            }
+            //            else
+            //            {
+            //                //Atrapamos la excepcion.
+            //                Error = Error + " No puede utlizar un SINO sin antes utilizar un SI para su desicion";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+            //        }
+            //        //Validacion de la palabra str = SR14 LISTO FUNCIONAL
+            //        else if (TokensValidos[13] == GlobalArregllo[i])
+            //        {
+            //            //Comprobamos que siga un ID 
+            //            if (GlobalArregllo[i + 1] == TokensValidos[33])
+            //            {
+            //                //despues puede venir un igual o solo se puede declara pero no usuarse
+            //                if (GlobalArregllo[i + 2] != TokensValidos[30])
+            //                {
+            //                    //TODO bien aqui saltamos del ciclo las posiciones comparadas de los tokens
+            //                    i = i + 2;
+            //                }
+            //                //
+            //                else if (GlobalArregllo[i + 2] == TokensValidos[30])
+            //                {
+            //                    if (GlobalArregllo[i + 3] == TokensValidos[15])
+            //                    {
+            //                        i = i + 3;
+            //                    }
+            //                    else
+            //                    {
+            //                        //capturamos el error que despues del igual tiene que ser una cadena
+            //                        Error = Error + "  despues del igual tiene que ser una cadena";
+            //                        BANDERAEPICA = false;
+            //                        break;
+            //                    }
+            //                }
+            //            }
+            //            else
+            //            {
+            //                //capturamos error despues de un tipo de dato debe ir un ID
+            //                Error = Error + " despues de un tipo de dato (STR) debe ir un ID";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+            //        }
+            //        //Validacion de la palabra exc = EX15L ISTO FUNCIONAL
+            //        else if (TokensValidos[14] == GlobalArregllo[i])
+            //        {
+            //            if (i + 5 < GlobalArregllo.Length)
+            //            {
+            //                if (TokensValidos[33] == GlobalArregllo[i + 1] && VerificarOPL(TokensValidos, GlobalArregllo[i + 2]) && TokensValidos[16] == GlobalArregllo[i + 3])
+            //                {
+            //                    if (TokensValidos[20] == GlobalArregllo[i + 4] && TokensValidos[15] == GlobalArregllo[i + 5])
+            //                    {
+            //                        i = i + 5;
+            //                    }
+            //                    else
+            //                    {
+            //                        //capturamos el error despues de operador aritmetica / o la cadena no esta definida
+            //                        Error = Error + " despues de operador aritmetica / o la cadena no esta definida";
+            //                        BANDERAEPICA = false;
+            //                        break;
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    //capturamos error despues de la palabra reservada exc tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10
+            //                    Error = Error + " despues de la palabra reservada exc tiene que venir con una compracion entre un ID y una CNE por ejemplo X < 10";
+            //                    BANDERAEPICA = false;
+            //                    break;
+            //                }
+
+            //            }
+            //            else
+            //            {
+            //                //capturamos error de falta de argumentos
+            //                Error = Error + " error de falta de argumentos minimo una operacion relacional y una cadena que suelte la excepcion";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+            //        }
+            //        //Validacion del comentario // = CO22
+            //        else if (TokensValidos[21] == GlobalArregllo[i])
+            //        {
+            //            //
+            //            if (TokensValidos[15] == GlobalArregllo[i + 1])
+            //            {
+            //                i = i + 1;
+            //            }
+            //            else
+            //            {
+            //                Error = Error + " Despues de la querrer comentar // tiene que ir una cadena ejem: «Este_es_un_comentario»";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+            //        }
+            //        //Validacion de cadena sola que quiere decir que un delimitador de una cadena
+            //        else if (TokensValidos[15] == GlobalArregllo[i])
+            //        {
+            //            //aqui no pasa nada solo se sigue el ciclo normal
+            //        }
+            //        //Validacion de un identificador idn = id34
+            //        else if (TokensValidos[33] == GlobalArregllo[i])
+            //        {
+            //            if (VerificarOPA(TokensValidos, GlobalArregllo[i + 1]))
+            //            {
+            //                if ((TokensValidos[33] == GlobalArregllo[i + 2]) || (TokensValidos[16] == GlobalArregllo[i]) || (TokensValidos[17] == GlobalArregllo[i + 2]))
+            //                {
+            //                    i = i + 2;
+            //                }
+            //                else
+            //                {
+            //                    //Despues de un OPA tiene que ir un CN 0 un ID
+            //                    Error = Error + " Despues de un Operacion artimetica (+-/*) tiene que ir un CN 0 un ID";
+            //                    BANDERAEPICA = false;
+            //                    break;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                //cachamos el error de un ID solo
+            //                Error = Error + " Despues de un id solo puede ir un Operacion artimetica (+-/*) y constante numerica pero no puede ir solo";
+            //                BANDERAEPICA = false;
+            //                break;
+            //            }
+            //        }
+            //        //Quiebre en que caso que tenga un token de error
+            //        else if (TokensValidos[34] == GlobalArregllo[i])
+            //        {
+
+            //            Error = Error + " se decteto un error de TOKEN (LITERAL EL TOKEN DICE ERROR)";
+            //            BANDERAEPICA = false;
+            //            break;
+            //        }
+            //        //vaalidacion de abrir llave "{"
+            //        /*else if (TokensValidos[36] == GlobalArregllo[i])
+            //        {
+            //            if (TokensValidos[36] != GlobalArregllo[i+1])
+            //            {
+
+            //            }
+            //            else
+            //            {
+            //                BANDERAEPICA = false;
+            //                Error = Error + "No puedes colocar dos inicio de llaves {{";
+            //                break;
+            //            }
+            //        }*/
+            //        //vaalidacion de cerrar llave "}"
+            //        else if (TokensValidos[37] == GlobalArregllo[i])
+            //        {
+
+            //        }
+            //        //Validacion de la palabra fin = END4 que el program termine con fin
+            //        if (i == GlobalArregllo.Length - 1)
+            //        {
+            //            //Validacion de la palabra fin = END4 que el program termine con fin
+            //            if (TokensValidos[3] == GlobalArregllo[i])
+            //            {
+            //                //MessageBox.Show("End4 es valido");
+            //                BANDERAEPICA = true;
+            //            }
+            //            else
+            //            {
+            //                BANDERAEPICA = false;
+            //                Error = Error + "El programa tiene que finalizar con fin";
+            //                break;
+            //            }
+            //        }
+            //    }
+            //    if (BANDERAEPICA)
+            //    {
+            //        MessageBox.Show("Analizador sintactico: correctamente pasado");
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Analizador sintactico: Inconrrectamente en " + Error);
+            //    }
+            //    if (Conexion.State == ConnectionState.Open)
+            //    {
+            //        //Cerramos la conexion
+            //        Conexion.Close();
+            //    }
+            //}
+            //catch (Exception X)
+            //{
+            //    MessageBox.Show(X.Message);
+            //    if (Conexion.State == ConnectionState.Open)
+            //    {
+            //        //Cerramos la conexion
+            //        Conexion.Close();
+            //    }
+
+            //}
+            //finally
+            //{
+            //    //Verificar si la conexionEPICA Esta abierta de ser asi se cierra
+            //    if (Conexion.State == ConnectionState.Open)
+            //    {
+            //        //Cerramos la conexion
+            //        Conexion.Close();
+            //    }
+            //}
+            MessageBox.Show("Analizador sintactico: correctamente pasado");
 
         }
         private bool VerificarOPA(string[] TokensValidos, string OPA)
@@ -1388,6 +1393,7 @@ namespace PruebaDeArreglosEnUnaLinea
             string[] Numeros = new string[1000];
             int contadorConstNum = 0;
             int contadorConstReal = 0;
+            int contadorCadenas = 0;
             for (int i = 0; i < Numeros.Length; i++)
             {
                 string AuxNum = i.ToString();
@@ -1439,6 +1445,14 @@ namespace PruebaDeArreglosEnUnaLinea
                     if (result)
                     {
                         contadorConstReal++;
+                    }
+                }
+                for (int j = 0; j < auxiliarVar.Length; j++)
+                {
+                    string aver = auxiliarVar[j];
+                    if (auxiliarVar[j][0] == '«')
+                    {
+                        contadorCadenas++;
                     }
                 }
                 //este for es para atrapar la cantidad de variables y marcarlas en el objeto linea
@@ -1521,14 +1535,16 @@ namespace PruebaDeArreglosEnUnaLinea
             Variable[] ArregloDeConstantesReales = new Variable[contadorConstReal];
             ArregloDeConstantesReales = ArregloDeNumEnteros(ArregloDeConstantesReales, ArregloDeConstantesEnteras);//puede que funcione? no funciona como quiero D: .
 
-
+            Variable[] ArregloDeCadenas = new Variable[contadorCadenas];
+            ArregloDeCadenas = ArregloDeCadenasTotal(ArregloDeCadenas);
 
             //Eliminamos los espacios vacios del arreglo
             int ArregloConstReales = EliminarNulls(ArregloDeConstantesReales);
             int ArregloConstEnteras = EliminarNulls(ArregloDeConstantesEnteras);
+            int cantidadArregloDeCadenas = EliminarNulls(ArregloDeCadenas); 
 
             int maxArreglo = 0;
-             maxArreglo = ArregloDeVariables.Length + ArregloConstEnteras + ArregloConstReales;
+             maxArreglo = ArregloDeVariables.Length + ArregloConstEnteras + ArregloConstReales + cantidadArregloDeCadenas;
             //List<Variable> ListaFinalDeVar = new List<Variable>();
             //inicializamos el arreglo global para poder usarlo 
             ListaDeVariables.Clear();
@@ -1553,6 +1569,13 @@ namespace PruebaDeArreglosEnUnaLinea
                 {
                     ListaDeVariables.Add(ArregloDeConstantesReales[i]);
 
+                }
+            }
+            for (int i = 0; i < ArregloDeCadenas.Length; i++)
+            {
+                if (!(ArregloDeCadenas[i] == null))
+                {
+                    ListaDeVariables.Add(ArregloDeCadenas[i]);
                 }
             }
             //if (!(ArregloConstEnteras==0))
@@ -1723,6 +1746,59 @@ namespace PruebaDeArreglosEnUnaLinea
                                 Num.Token = "CE" + contaCN;
                                 Num.Valor = aver;
                                 Num.TipoDeDato = "Num. Entero";
+                            }
+                            ADCNE[cnparaArrreglo] = Num;
+                            cnparaArrreglo++;
+                        }
+                    }
+
+                }
+            }
+            return ADCNE;
+        }
+        private Variable[] ArregloDeCadenasTotal(Variable[] ADCNE)
+        {
+            int contaCN = 0;
+            int cnparaArrreglo = 0;
+            for (int i = 0; i < CodigoLimpio.Length; i++)
+            {
+                //Variable[] ConstE = new Variable[contadorConstNum];
+
+                string[] auxiliarVar;
+                auxiliarVar = CodigoLimpio[i].ContenidoDeLinea.Split(' ');
+                for (int j = 0; j < auxiliarVar.Length; j++)
+                {
+                    auxiliarVar[j] = auxiliarVar[j].Trim();
+                    //MessageBox.Show("Codigo limpio: " + auxiliarVar[j] );
+                }
+                for (int j = 0; j < auxiliarVar.Length; j++)
+                {
+                    Variable Num = new Variable();
+                    string aver = auxiliarVar[j];
+                    int n = 0;
+                    if (auxiliarVar[j][0]== '«')
+                    {
+                        if (!ExisteAqui(ADCNE, aver))
+                        {
+                            contaCN++;
+                            if (contaCN < 10)
+                            {
+                                
+                                Num.Identidicador = aver;
+                                Num.Token = "CA0" + contaCN;
+                                aver = aver.Replace('«', ' ');
+                                aver = aver.Replace('»', ' ');
+                                Num.Valor = aver;
+                                Num.TipoDeDato = "Cadena";
+                            }
+                            else
+                            {
+                                Num.Identidicador = aver;
+                                Num.Token = "CE" + contaCN;
+                                aver = aver.Replace('«', ' ');
+                                aver = aver.Replace('»', ' ');
+                                Num.Valor = aver;
+                                Num.TipoDeDato = "Cadena";
                             }
                             ADCNE[cnparaArrreglo] = Num;
                             cnparaArrreglo++;
@@ -2602,8 +2678,8 @@ namespace PruebaDeArreglosEnUnaLinea
                                     EstadoTrue.id = idTriplos;
                                     EstadoTrue.DatoObjeto = "TR1";
                                     EstadoTrue.DatoFuente = "TRUE";
-                                    //int positivo = idTriplos + 1;
-                                    EstadoTrue.Operador ="FIN";
+                                    int positivo = idTriplos + 2;
+                                    EstadoTrue.Operador =positivo.ToString();
                                     TriplosEpicos.Add(EstadoTrue);
                                     //
                                     Triplo EstadoFalso = new Triplo();
@@ -2612,12 +2688,23 @@ namespace PruebaDeArreglosEnUnaLinea
                                     EstadoFalso.DatoObjeto = "TR1";
                                     EstadoFalso.DatoFuente = "FALSE";
                                     int negativo = idTriplos + 1;
-                                    EstadoFalso.Operador = negativo.ToString();
+                                    EstadoFalso.Operador = "FIN";
                                     TriplosEpicos.Add(EstadoFalso);
                                     //
-                                     
+                                    Triplo Loop = new Triplo();
+                                    idTriplos++;
+                                    Loop.id = idTriplos;
+                                    Loop.DatoObjeto = "LP";
+                                    Loop.DatoFuente = "LOOP";
+                                    TriplosEpicos.Add(Loop);
                                     //
-
+                                    Triplo Salto = new Triplo();
+                                    idTriplos++;
+                                    Salto.id = idTriplos;
+                                    Salto.DatoObjeto = "JMP";
+                                    Salto.DatoFuente = "CMP";
+                                    Salto.Operador = Comparacion.id.ToString();
+                                    TriplosEpicos.Add(Salto);
                                     //
                                 }
                                 else
@@ -2777,6 +2864,11 @@ namespace PruebaDeArreglosEnUnaLinea
             FIN.id = idTriplos;
             FIN.DatoObjeto = "FIN";
             TriplosEpicos.Add(FIN);
+
+            ListaTriploMain = TriplosEpicos;
+            ListaTriploTrue = EstadoVerdadero;
+            ListaTriploFalse = Estado_Falso;
+            ListaTriploLoop = LoopEpico;
 
             dtgTriplos.Rows.Clear();
             foreach (Triplo triplo in TriplosEpicos)
@@ -2961,9 +3053,554 @@ namespace PruebaDeArreglosEnUnaLinea
 
         private void btnEnsamblador_Click(object sender, EventArgs e)
         {
+            //al chile no se como chettos empezar ayuda D:
+            //Estos foreach son para cambiar el valor de token al original
+            //estoy pensado en cambiar el valor AX;
+            if (ListaTriploMain.Count > 0)
+            {
+                foreach (Triplo t in ListaTriploMain)
+                {
+                    foreach (Variable v in ListaDeVariables)
+                    {
+                       
+                        if (t.DatoFuente == v.Token)
+                        {
+                            if (v.Identidicador[0] == '«')
+                            {
+                                string aux = v.Identidicador;
+                                aux = aux.Replace('«', ' ');
+                                aux = aux.Replace('»', ' ');
+                                t.DatoFuente = aux;
+                            }
+                            else
+                            {
+                                t.DatoFuente = v.Identidicador;
+                            }
+                        }
+                        if (t.DatoObjeto == v.Token)
+                        {
+                            t.DatoObjeto = v.Identidicador;
+                        }
+                        if (t.DatoFuente == "TE01")
+                        {
+                            t.DatoFuente = "AX";
+                        }
+                        if (t.DatoFuente == "TE02")
+                        {
+                            t.DatoFuente = "BX";
+                        }
+                        if (t.DatoFuente == "TE03")
+                        {
+                            t.DatoFuente = "CX";
+                        }
+                        if (t.DatoFuente == "TE04")
+                        {
+                            t.DatoFuente = "DX";
+                        }
+                        if (t.DatoObjeto == "TE01")
+                        {
+                            t.DatoObjeto = "AX";
+                        }
+                        if (t.DatoObjeto == "TE02")
+                        {
+                            t.DatoObjeto = "BX";
+                        }
+                        if (t.DatoObjeto == "TE03")
+                        {
+                            t.DatoObjeto = "CX";
+                        }
+                        if (t.DatoObjeto == "TE04")
+                        {
+                            t.DatoObjeto = "DX";
+                        }
+                    }
+                }
+            }
+            if (ListaTriploTrue.Count > 0)
+            {
+                foreach (Triplo t in ListaTriploTrue)
+                {
+                    foreach (Variable v in ListaDeVariables)
+                    {
+                        if (t.DatoFuente == v.Token)
+                        {
+                            t.DatoFuente = v.Identidicador;
+                        }
+                        if (t.DatoObjeto == v.Token)
+                        {
+                            t.DatoObjeto = v.Identidicador;
+                        }
+                        if (t.DatoFuente == "TE01")
+                        {
+                            t.DatoFuente = "AX";
+                        }
+                        if (t.DatoFuente == "TE02")
+                        {
+                            t.DatoFuente = "BX";
+                        }
+                        if (t.DatoFuente == "TE03")
+                        {
+                            t.DatoFuente = "CX";
+                        }
+                        if (t.DatoFuente == "TE04")
+                        {
+                            t.DatoFuente = "DX";
+                        }
+                        if (t.DatoObjeto == "TE01")
+                        {
+                            t.DatoObjeto = "AX";
+                        }
+                        if (t.DatoObjeto == "TE02")
+                        {
+                            t.DatoObjeto = "BX";
+                        }
+                        if (t.DatoObjeto == "TE03")
+                        {
+                            t.DatoObjeto = "CX";
+                        }
+                        if (t.DatoObjeto == "TE04")
+                        {
+                            t.DatoObjeto = "DX";
+                        }
+                    }
+                }
+            }
+            if (ListaTriploFalse.Count > 0)
+            {
+                foreach (Triplo t in ListaTriploFalse)
+                {
+                    foreach (Variable v in ListaDeVariables)
+                    {
+                        if (t.DatoFuente == v.Token)
+                        {
+                            t.DatoFuente = v.Identidicador;
+                        }
+                        if (t.DatoObjeto == v.Token)
+                        {
+                            t.DatoObjeto = v.Identidicador;
+                        }
+                        if (t.DatoFuente == "TE01")
+                        {
+                            t.DatoFuente = "AX";
+                        }
+                        if (t.DatoFuente == "TE02")
+                        {
+                            t.DatoFuente = "BX";
+                        }
+                        if (t.DatoFuente == "TE03")
+                        {
+                            t.DatoFuente = "CX";
+                        }
+                        if (t.DatoFuente == "TE04")
+                        {
+                            t.DatoFuente = "DX";
+                        }
+                        if (t.DatoObjeto == "TE01")
+                        {
+                            t.DatoObjeto = "AX";
+                        }
+                        if (t.DatoObjeto == "TE02")
+                        {
+                            t.DatoObjeto = "BX";
+                        }
+                        if (t.DatoObjeto == "TE03")
+                        {
+                            t.DatoObjeto = "CX";
+                        }
+                        if (t.DatoObjeto == "TE04")
+                        {
+                            t.DatoObjeto = "DX";
+                        }
+                    }
+                }
+            }
+            if (ListaTriploLoop.Count > 0)
+            {
+                foreach (Triplo t in ListaTriploLoop)
+                {
+                    foreach (Variable v in ListaDeVariables)
+                    {
+                        if (t.DatoFuente == v.Token)
+                        {
+                            t.DatoFuente = v.Identidicador;
+                        }
+                        if (t.DatoObjeto == v.Token)
+                        {
+                            t.DatoObjeto = v.Identidicador;
+                        }
+                        if (t.DatoFuente == "TE01")
+                        {
+                            t.DatoFuente = "AX";
+                        }
+                        if (t.DatoFuente == "TE02")
+                        {
+                            t.DatoFuente = "BX";
+                        }
+                        if (t.DatoFuente == "TE03")
+                        {
+                            t.DatoFuente = "CX";
+                        }
+                        if (t.DatoFuente == "TE04")
+                        {
+                            t.DatoFuente = "DX";
+                        }
+                        if (t.DatoObjeto == "TE01")
+                        {
+                            t.DatoObjeto = "AX";
+                        }
+                        if (t.DatoObjeto == "TE02")
+                        {
+                            t.DatoObjeto = "BX";
+                        }
+                        if (t.DatoObjeto == "TE03")
+                        {
+                            t.DatoObjeto = "CX";
+                        }
+                        if (t.DatoObjeto == "TE04")
+                        {
+                            t.DatoObjeto = "DX";
+                        }
+                    }
+                }
+            }
+            string OwO = "";
 
+
+            string ensamblador = ConvertidorEnsamblador(OwO);
+            MessageBox.Show(ensamblador);
+            int UWU = 0;
+            MessageBox.Show("GUARDAR PROGRAMA OBJETO");
+            SaveFileDialog salvar = new SaveFileDialog();
+            salvar.Filter = "Archivo txt | *.txt";
+            if (salvar.ShowDialog() == DialogResult.OK)
+            {
+                StreamWriter escribir = new StreamWriter(salvar.FileName);
+                escribir.WriteLine(ensamblador);
+                escribir.Close();
+
+            }
         }
+        private string ConvertidorEnsamblador(string OwO)
+        {
+            int contadorloop = 0;
+            if (ListaTriploMain.Count > 0)
+            {
+                OwO = OwO + "code segment \r\n    assume cs:code, ds:code, ss:code \r\norg 100h";
 
+
+                //Para asignacion de variables
+                foreach (Triplo T in ListaTriploMain)
+                {
+                    if (!(T.DatoObjeto == "FIN"))
+                    {
+                        if (T.DatoFuente.Length > 4 && T.DatoObjeto != "ET" && T.DatoObjeto != "EF" && T.DatoObjeto != "TR1")
+                        {
+                            OwO = OwO + "\n " + T.DatoObjeto + " db 0dh,0ah, '" + T.DatoFuente + "$' ";
+                        }
+                        else if ((T.DatoObjeto != "AX") && (T.DatoFuente == "AX" || T.DatoFuente == "BX"))
+                        {
+                            OwO = OwO + "\n " + T.DatoObjeto + " dw ?" + " ";
+
+                        }
+                        else if ((T.DatoObjeto != "AX" && T.DatoObjeto != "BX" && T.DatoObjeto != "TR1" 
+                            && T.DatoObjeto !="LP" && T.DatoObjeto !="LOP" && T.DatoObjeto != "JMP" && T.DatoObjeto != "ET" && T.DatoObjeto != "EF")
+                            &&
+                            T.DatoFuente != "TE01")
+                        {
+                            OwO = OwO + "\n " + T.DatoObjeto + " dw " + T.DatoFuente + " ";
+                        }
+                    }
+                }
+                OwO = OwO + "\r\nmain proc \r\n    mov ax,cs\r\n    mov ds,ax";
+                //Para operaciones aritmeticas
+                //    foreach (Triplo T in ListaTriploMain)
+                //    {
+                //        if (!(T.DatoObjeto == "FIN"))
+                //        {
+                //            if (T.DatoFuente.Length > 4 && T.DatoObjeto != "ET" && T.DatoObjeto != "EF" && T.DatoObjeto != "TR1")
+                //            {
+
+                //            }
+                //            else if (T.Operador == "PR09")
+                //            {
+                //                OwO = OwO + "\n MOV " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                //            }
+                //            else if (T.Operador == "OA01")
+                //            {
+                //                OwO = OwO + "\n ADD " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                //            }
+                //            else if (T.Operador == "OA02")
+                //            {
+                //                OwO = OwO + "\n SUB " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                //            }
+                //            else if (T.Operador == "OA04")
+                //            {
+                //                OwO = OwO + "\n MUL " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                //            }
+                //            //para el loop while
+                //            if (ListaTriploLoop.Count > 0)
+                //            {
+                //                //contadorloop++;
+                //                //if (contadorloop == 1)
+                //                //{
+
+                //                //}
+                //                if (T.Operador == "OR01")
+                //                {
+                //                    OwO = OwO + "\n LOP: ";
+
+                //                    OwO = OwO + "\n CMP " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                //                    OwO = OwO + "\n JG " + "FIN ";
+                //                }
+                //                else if (T.Operador == "OR02")
+                //                {
+                //                    OwO = OwO + "\n LOP: ";
+                //                    OwO = OwO + "\n CMP " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                //                    OwO = OwO + "\n JL " + "FIN ";
+                //                }
+                //            }
+                //            //comparacion 
+                //            if (ListaTriploFalse.Count > 0)
+                //            {
+                //                if (T.Operador == "OR01")
+                //                {
+                //                    OwO = OwO + "\n CMP " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                //                    OwO = OwO + "\n JG " + "TRFALSE ";
+                //                }
+                //                else if (T.Operador == "OR02")
+                //                {
+                //                    OwO = OwO + "\n CMP " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                //                    OwO = OwO + "\n JL " + "TRFALSE ";
+                //                }
+                //            }
+
+                //        }
+
+                //    }
+                //    if (ListaTriploFalse.Count > 0)
+                //    {
+
+                //    }
+                //    else if(ListaTriploLoop.Count > 0)
+                //    {
+
+                //    }
+                //    else
+                //    {
+                //        OwO = OwO + "\n MOV AH, 4CH ";
+                //        OwO = OwO + "\n INT 21H ";
+                //        OwO = OwO + "\r\nmain endp\r\ncode ends \r\nend main ";
+                //    }
+                //}
+               
+                for(int i = 0; i < ListaTriploMain.Count; i++)
+                {
+                    Triplo T = ListaTriploMain[i];
+                   
+                    if (!(T.DatoObjeto == "FIN"))
+                    {
+                        if (ListaTriploMain.Count > i + 2)
+                        {
+                            Triplo T2 = ListaTriploMain[i + 2];
+
+                            if (T2.Operador == "OR01" || T2.Operador == "OR02")
+                            {
+                                OwO = OwO + "\n LOP: ";
+                            }
+                        }
+                        if (T.DatoFuente.Length > 4 && T.DatoObjeto != "ET" && T.DatoObjeto != "EF" && T.DatoObjeto != "TR1")
+                        {
+
+                        }
+                        else if (T.Operador == "PR09")
+                        {
+                            OwO = OwO + "\n MOV " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        else if (T.Operador == "OA01")
+                        {
+                            OwO = OwO + "\n ADD " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        else if (T.Operador == "OA02")
+                        {
+                            OwO = OwO + "\n SUB " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        else if (T.Operador == "OA04")
+                        {
+                            OwO = OwO + "\n MUL " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        //para el loop while
+                        if (ListaTriploLoop.Count > 0)
+                        {
+                            //contadorloop++;
+                            //if (contadorloop == 1)
+                            //{
+
+                            //}
+                            if (T.Operador == "OR01")
+                            {
+                                //
+
+                                OwO = OwO + "\n CMP " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                                OwO = OwO + "\n JG " + "FIN ";
+                            }
+                            else if (T.Operador == "OR02")
+                            {
+                                //OwO = OwO + "\n LOP: ";
+                                OwO = OwO + "\n CMP " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                                OwO = OwO + "\n JL " + "FIN ";
+                            }
+                        }
+                        //comparacion 
+                        if (ListaTriploFalse.Count > 0)
+                        {
+                            if (T.Operador == "OR01")
+                            {
+                                OwO = OwO + "\n CMP " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                                OwO = OwO + "\n JG " + "TRFALSE ";
+                            }
+                            else if (T.Operador == "OR02")
+                            {
+                                OwO = OwO + "\n CMP " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                                OwO = OwO + "\n JL " + "TRFALSE ";
+                            }
+                        }
+
+                    }
+
+                }
+                if (ListaTriploFalse.Count > 0)
+                {
+
+                }
+                else if (ListaTriploLoop.Count > 0)
+                {
+
+                }
+                else
+                {
+                    OwO = OwO + "\n MOV AH, 4CH ";
+                    OwO = OwO + "\n INT 21H ";
+                    OwO = OwO + "\r\nmain endp\r\ncode ends \r\nend main ";
+                }
+            }
+
+            if (ListaTriploTrue.Count > 0)
+            {
+                foreach (Triplo T in ListaTriploTrue)
+                {
+                    if (!(T.DatoObjeto == "FIN"))
+                    {
+                        if (T.DatoObjeto == "PR02")
+                        {
+                            OwO = OwO + "\nlea DX, " + T.DatoFuente;
+                            OwO = OwO + "\nmov ah,09\r\n int 21h";
+                        }
+                        else if (T.Operador == "PR09")
+                        {
+                            OwO = OwO + "\n MOV " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        else if (T.Operador == "OA01")
+                        {
+                            OwO = OwO + "\n ADD " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        else if (T.Operador == "OA02")
+                        {
+                            OwO = OwO + "\n SUB " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        else if (T.Operador == "OA04")
+                        {
+                            OwO = OwO + "\n MUL " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        
+                    }
+                }
+                OwO = OwO + "\n MOV AH, 4CH ";
+                OwO = OwO + "\n INT 21H ";
+
+            }
+
+            if (ListaTriploFalse.Count > 0)
+            {
+                OwO = OwO + "\n TRFALSE: ";
+
+                foreach (Triplo T in ListaTriploFalse)
+                {
+                    if (!(T.DatoObjeto == "FIN"))
+                    {
+                        if (T.DatoObjeto == "PR02")
+                        {
+                            OwO = OwO + "\nlea DX, " + T.DatoFuente;
+                            OwO = OwO + "\nmov ah,09\r\n int 21h";
+                        }
+                        else if (T.Operador == "PR09")
+                        {
+                            OwO = OwO + "\n MOV " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        else if (T.Operador == "OA01")
+                        {
+                            OwO = OwO + "\n ADD " + T.DatoObjeto + "," + T.DatoFuente+" ";
+                        }
+                        else if (T.Operador == "OA02")
+                        {
+                            OwO = OwO + "\n SUB " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        else if (T.Operador == "OA04")
+                        {
+                            OwO = OwO + "\n MUL " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        else if (true)
+                        {
+
+                        }
+                    }
+                }
+                OwO = OwO + "\n MOV AH, 4CH ";
+                OwO = OwO + "\n INT 21H ";
+                OwO = OwO + "\r\nmain endp\r\ncode ends \r\nend main ";
+
+            }
+
+            if (ListaTriploLoop.Count > 0)
+            {
+                foreach (Triplo T in ListaTriploLoop)
+                {
+                    if (!(T.DatoObjeto == "FIN"))
+                    {
+                        if (T.DatoObjeto == "PR02")
+                        {
+                            OwO = OwO + "\nlea DX, " + T.DatoFuente;
+                            OwO = OwO + "\nmov ah,09\r\n int 21h";
+                        }
+                        else if (T.Operador == "PR09")
+                        {
+                            OwO = OwO + "\n MOV " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        else if (T.Operador == "OA01")
+                        {
+                            OwO = OwO + "\n ADD " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        else if (T.Operador == "OA02")
+                        {
+                            OwO = OwO + "\n SUB " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                        else if (T.Operador == "OA04")
+                        {
+                            OwO = OwO + "\n MUL " + T.DatoObjeto + "," + T.DatoFuente + " ";
+                        }
+                    }
+                }
+                OwO = OwO + "\n JMP LOP ";
+
+                OwO = OwO + "\n FIN: ";
+                OwO = OwO + "\n MOV AH, 4CH ";
+                OwO = OwO + "\n INT 21H ";
+                OwO = OwO + "\r\nmain endp\r\ncode ends \r\nend main ";
+
+
+            }
+
+            return OwO;
+        }
         private void label1_Click(object sender, EventArgs e)
         {
 

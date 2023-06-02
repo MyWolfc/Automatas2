@@ -166,7 +166,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(441, 490);
+            this.button1.Location = new System.Drawing.Point(429, 490);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 13;
@@ -176,7 +176,7 @@
             // 
             // btnSalir
             // 
-            this.btnSalir.Location = new System.Drawing.Point(441, 548);
+            this.btnSalir.Location = new System.Drawing.Point(429, 548);
             this.btnSalir.Name = "btnSalir";
             this.btnSalir.Size = new System.Drawing.Size(75, 23);
             this.btnSalir.TabIndex = 14;
@@ -186,7 +186,7 @@
             // 
             // btnCargar
             // 
-            this.btnCargar.Location = new System.Drawing.Point(441, 519);
+            this.btnCargar.Location = new System.Drawing.Point(429, 519);
             this.btnCargar.Name = "btnCargar";
             this.btnCargar.Size = new System.Drawing.Size(75, 23);
             this.btnCargar.TabIndex = 15;
@@ -196,7 +196,7 @@
             // 
             // btnCargarVariables
             // 
-            this.btnCargarVariables.Location = new System.Drawing.Point(359, 516);
+            this.btnCargarVariables.Location = new System.Drawing.Point(347, 516);
             this.btnCargarVariables.Name = "btnCargarVariables";
             this.btnCargarVariables.Size = new System.Drawing.Size(75, 36);
             this.btnCargarVariables.TabIndex = 16;
@@ -248,21 +248,21 @@
             this.dtgTriplos.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dtgTriplos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgTriplos.GridColor = System.Drawing.Color.Lime;
-            this.dtgTriplos.Location = new System.Drawing.Point(522, 412);
+            this.dtgTriplos.Location = new System.Drawing.Point(506, 412);
             this.dtgTriplos.Name = "dtgTriplos";
             dataGridViewCellStyle4.BackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.dtgTriplos.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.dtgTriplos.Size = new System.Drawing.Size(364, 293);
+            this.dtgTriplos.Size = new System.Drawing.Size(364, 266);
             this.dtgTriplos.TabIndex = 20;
             // 
             // lblTriplos
             // 
             this.lblTriplos.AutoSize = true;
             this.lblTriplos.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTriplos.Location = new System.Drawing.Point(518, 388);
+            this.lblTriplos.Location = new System.Drawing.Point(502, 389);
             this.lblTriplos.Name = "lblTriplos";
             this.lblTriplos.Size = new System.Drawing.Size(72, 20);
             this.lblTriplos.TabIndex = 21;
@@ -291,14 +291,14 @@
             this.dtgLadoVerdadero.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dtgLadoVerdadero.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgLadoVerdadero.GridColor = System.Drawing.Color.Lime;
-            this.dtgLadoVerdadero.Location = new System.Drawing.Point(904, 411);
+            this.dtgLadoVerdadero.Location = new System.Drawing.Point(885, 411);
             this.dtgLadoVerdadero.Name = "dtgLadoVerdadero";
             dataGridViewCellStyle6.BackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.dtgLadoVerdadero.RowsDefaultCellStyle = dataGridViewCellStyle6;
-            this.dtgLadoVerdadero.Size = new System.Drawing.Size(221, 134);
+            this.dtgLadoVerdadero.Size = new System.Drawing.Size(221, 118);
             this.dtgLadoVerdadero.TabIndex = 23;
             // 
             // dtgLadoFalso
@@ -314,21 +314,21 @@
             this.dtgLadoFalso.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dtgLadoFalso.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgLadoFalso.GridColor = System.Drawing.Color.Lime;
-            this.dtgLadoFalso.Location = new System.Drawing.Point(904, 571);
+            this.dtgLadoFalso.Location = new System.Drawing.Point(885, 554);
             this.dtgLadoFalso.Name = "dtgLadoFalso";
             dataGridViewCellStyle8.BackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.dtgLadoFalso.RowsDefaultCellStyle = dataGridViewCellStyle8;
-            this.dtgLadoFalso.Size = new System.Drawing.Size(221, 134);
+            this.dtgLadoFalso.Size = new System.Drawing.Size(221, 124);
             this.dtgLadoFalso.TabIndex = 24;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(900, 389);
+            this.label1.Location = new System.Drawing.Point(881, 388);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 20);
             this.label1.TabIndex = 25;
@@ -339,7 +339,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(900, 551);
+            this.label2.Location = new System.Drawing.Point(882, 532);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(72, 20);
             this.label2.TabIndex = 26;
@@ -358,21 +358,21 @@
             this.dtgLoop.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dtgLoop.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dtgLoop.GridColor = System.Drawing.Color.Lime;
-            this.dtgLoop.Location = new System.Drawing.Point(1137, 412);
+            this.dtgLoop.Location = new System.Drawing.Point(1112, 411);
             this.dtgLoop.Name = "dtgLoop";
             dataGridViewCellStyle10.BackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.Black;
             dataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.dtgLoop.RowsDefaultCellStyle = dataGridViewCellStyle10;
-            this.dtgLoop.Size = new System.Drawing.Size(221, 134);
+            this.dtgLoop.Size = new System.Drawing.Size(221, 141);
             this.dtgLoop.TabIndex = 27;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Cascadia Code", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(1133, 391);
+            this.label3.Location = new System.Drawing.Point(1114, 391);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(45, 20);
             this.label3.TabIndex = 28;
